@@ -1,41 +1,20 @@
-# ///////////////////////////////////////////////////////////////
-#
-# BY: WANDERSON M.PIMENTA
-# PROJECT MADE WITH: Qt Designer and PySide6
-# V: 1.0.0
-#
-# This project can be used freely for all uses, as long as they maintain the
-# respective credits only in the Python scripts, any information in the visual
-# interface (GUI) can be modified without any implication.
-#
-# There are limitations on Qt licenses if you want to use your products
-# commercially, I recommend reading them on the official website:
-# https://doc.qt.io/qtforpython/licenses.html
-#
-# ///////////////////////////////////////////////////////////////
-
 import sys
-import os
-import platform
-
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMainWindow, QHeaderView, QApplication
+from PySide6.QtWidgets import QMainWindow, QHeaderView, QApplication, QPushButton
 
 from framework.app_functions import AppFunctions
 from framework.app_settings import Settings
+from framework.demo_interfaces.demo_home_interface import DemoHomeInterface
+from framework.demo_interfaces.demo_new_page_interface import DemoNewPageInterface
 from framework.ui_functions import UIFunctions
 from framework.ui_main import Ui_MainWindow
-# IMPORT / GUI AND MODULES AND WIDGETS
-# ///////////////////////////////////////////////////////////////
+from modules.zhihu.zhihu_main_interface import ZhiHuMainInterface
+
 from resources.framework.icons import icons
 from widgets import *
 
 os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100%
-
-# SET AS GLOBAL WIDGETS
-# ///////////////////////////////////////////////////////////////
-widgets: Ui_MainWindow = None
 
 
 class MainWindow(QMainWindow):
@@ -46,9 +25,8 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        global widgets
-        widgets = self.ui
-
+        self.init_interfaces()  # 初始化界面
+        self.init_menu()  # 初始化菜单
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
         # ///////////////////////////////////////////////////////////////
         Settings.ENABLE_CUSTOM_TITLE_BAR = True
@@ -59,11 +37,11 @@ class MainWindow(QMainWindow):
         description = "PyDracula APP - Theme with colors based on Dracula for Python."
         # APPLY TEXTS
         self.setWindowTitle(title)
-        widgets.titleRightInfo.setText(description)
+        self.ui.titleRightInfo.setText(description)
 
         # TOGGLE MENU
         # ///////////////////////////////////////////////////////////////
-        widgets.toggleButton.clicked.connect(lambda: UIFunctions.toggleMenu(self, True))
+        self.ui.toggleButton.clicked.connect(lambda: UIFunctions.toggleMenu(self, True))
 
         # SET UI DEFINITIONS
         # ///////////////////////////////////////////////////////////////
@@ -71,29 +49,29 @@ class MainWindow(QMainWindow):
 
         # QTableWidget PARAMETERS
         # ///////////////////////////////////////////////////////////////
-        widgets.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         # BUTTONS CLICK
         # ///////////////////////////////////////////////////////////////
 
         # LEFT MENUS
-        widgets.btn_home.clicked.connect(self.buttonClick)
-        widgets.btn_widgets.clicked.connect(self.buttonClick)
-        widgets.btn_new.clicked.connect(self.buttonClick)
-        widgets.btn_save.clicked.connect(self.buttonClick)
+        self.ui.btn_home.clicked.connect(self.buttonClick)
+        self.ui.btn_widgets.clicked.connect(self.buttonClick)
+        self.ui.btn_new.clicked.connect(self.buttonClick)
+        self.ui.btn_save.clicked.connect(self.buttonClick)
 
         # EXTRA LEFT BOX
         def openCloseLeftBox():
             UIFunctions.toggleLeftBox(self, True)
 
-        widgets.toggleLeftBox.clicked.connect(openCloseLeftBox)
-        widgets.extraCloseColumnBtn.clicked.connect(openCloseLeftBox)
+        self.ui.toggleLeftBox.clicked.connect(openCloseLeftBox)
+        self.ui.extraCloseColumnBtn.clicked.connect(openCloseLeftBox)
 
         # EXTRA RIGHT BOX
         def openCloseRightBox():
             UIFunctions.toggleRightBox(self, True)
 
-        widgets.settingsTopBtn.clicked.connect(openCloseRightBox)
+        self.ui.settingsTopBtn.clicked.connect(openCloseRightBox)
 
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
@@ -115,8 +93,8 @@ class MainWindow(QMainWindow):
 
         # SET HOME PAGE AND SELECT MENU
         # ///////////////////////////////////////////////////////////////
-        widgets.stackedWidget.setCurrentWidget(widgets.home)
-        widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
+        self.ui.stackedWidget.setCurrentWidget(self.ui.demo_home_interface)
+        self.ui.btn_home.setStyleSheet(UIFunctions.selectMenu(self.ui.btn_home.styleSheet()))
 
     # 监听缩放事件
     # ///////////////////////////////////////////////////////////////
@@ -140,33 +118,67 @@ class MainWindow(QMainWindow):
     # 在这里发布点击按钮的功能
     # ///////////////////////////////////////////////////////////////
     def buttonClick(self):
+        """
+        按钮导航
+        :return:
+        """
         # GET BUTTON CLICKED
         btn = self.sender()
         btnName = btn.objectName()
 
         # SHOW HOME PAGE
         if btnName == "btn_home":
-            widgets.stackedWidget.setCurrentWidget(widgets.home)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.demo_home_interface)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # SHOW WIDGETS PAGE
         if btnName == "btn_widgets":
-            widgets.stackedWidget.setCurrentWidget(widgets.widgets)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.widgets)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # SHOW NEW PAGE
         if btnName == "btn_new":
-            widgets.stackedWidget.setCurrentWidget(widgets.new_page)  # SET PAGE
-            UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
-            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
+            self.ui.stackedWidget.setCurrentWidget(self.ui.demo_home_interface)  # SET PAGE
+            UIFunctions.resetStyle(self, btnName)  # 重置所选的其他按钮的样式
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # 设置所选按钮的样式
 
         if btnName == "btn_save":
             print("Save BTN clicked!")
 
         # PRINT BTN NAME
         print(f'Button "{btnName}" pressed!')
+
+    def init_menu(self):
+        """
+        菜单初始化
+        :return:
+        """
+        menus_list = [
+            {
+                "btn_icon": icons["知乎.svg"],  # 图标
+                "btn_id": "btn_zhihu",  # 按钮ID
+                "btn_text": "ZhiHu",  # 按钮文本
+                "btn_tooltip": "ZhiHu Page",  # 提示
+                "show_top": True,  # 是否显示在顶部
+                "is_active": False,  # 是否激活
+                "interface": self.ui.zhihu_main_interface
+            }
+        ]
+        UIFunctions.add_menus(self, self.ui, menus_list=menus_list)
+
+    def init_interfaces(self):
+        """
+        界面初始化
+        :return:
+        """
+        self.ui.demo_home_interface = DemoHomeInterface(parent=self)
+        self.ui.demo_new_page_interface = DemoNewPageInterface(parent=self)
+        self.ui.zhihu_main_interface = ZhiHuMainInterface(parent=self)
+        self.ui.stackedWidget.addWidget(self.ui.demo_home_interface)
+        self.ui.stackedWidget.addWidget(self.ui.demo_new_page_interface)
+        self.ui.stackedWidget.addWidget(self.ui.zhihu_main_interface)
 
 
 if __name__ == "__main__":

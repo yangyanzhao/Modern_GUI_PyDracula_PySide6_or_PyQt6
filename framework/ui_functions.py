@@ -13,9 +13,11 @@
 # https://doc.qt.io/qtforpython/licenses.html
 #
 # ///////////////////////////////////////////////////////////////
-from PySide6.QtCore import QPropertyAnimation, QEasingCurve, QParallelAnimationGroup, QEvent, QTimer, Qt
-from PySide6.QtGui import QColor, QIcon
-from PySide6.QtWidgets import QPushButton, QGraphicsDropShadowEffect, QSizeGrip
+import random
+
+from PySide6.QtCore import QPropertyAnimation, QEasingCurve, QParallelAnimationGroup, QEvent, QTimer, Qt, QSize
+from PySide6.QtGui import QColor, QIcon, QCursor, QFont, QPixmap
+from PySide6.QtWidgets import QPushButton, QGraphicsDropShadowEffect, QSizeGrip, QSizePolicy
 
 from framework.app_settings import Settings
 from widgets import CustomGrip
@@ -27,6 +29,7 @@ from widgets import CustomGrip
 # ///////////////////////////////////////////////////////////////
 GLOBAL_STATE = False
 GLOBAL_TITLE_BAR = True
+
 
 class UIFunctions:
     # MAXIMIZE/RESTORE
@@ -49,7 +52,7 @@ class UIFunctions:
         else:
             GLOBAL_STATE = False
             self.showNormal()
-            self.resize(self.width()+1, self.height()+1)
+            self.resize(self.width() + 1, self.height() + 1)
             self.ui.appMargins.setContentsMargins(10, 10, 10, 10)
             self.ui.maximizeRestoreAppBtn.setToolTip("Maximize")
             self.ui.maximizeRestoreAppBtn.setIcon(QIcon(u":/icons/images/icons/icon_maximize.png"))
@@ -123,7 +126,7 @@ class UIFunctions:
                 widthExtended = standard
                 # RESET BTN
                 self.ui.toggleLeftBox.setStyleSheet(style.replace(color, ''))
-                
+
         UIFunctions.start_box_animation(self, width, widthRightBox, "left")
 
     # TOGGLE RIGHT BOX
@@ -159,7 +162,7 @@ class UIFunctions:
     @staticmethod
     def start_box_animation(self, left_box_width, right_box_width, direction):
         right_width = 0
-        left_width = 0 
+        left_width = 0
 
         # Check values
         if left_box_width == 0 and direction == "left":
@@ -170,9 +173,9 @@ class UIFunctions:
         if right_box_width == 0 and direction == "right":
             right_width = 240
         else:
-            right_width = 0       
+            right_width = 0
 
-        # ANIMATION LEFT BOX        
+            # ANIMATION LEFT BOX
         self.left_box = QPropertyAnimation(self.ui.extraLeftBox, b"minimumWidth")
         self.left_box.setDuration(Settings.TIME_ANIMATION)
         self.left_box.setStartValue(left_box_width)
@@ -236,10 +239,11 @@ class UIFunctions:
             # IF DOUBLE CLICK CHANGE STATUS
             if event.type() == QEvent.MouseButtonDblClick:
                 QTimer.singleShot(250, lambda: UIFunctions.maximize_restore(self))
+
         self.ui.titleRightInfo.mouseDoubleClickEvent = dobleClickMaximizeRestore
 
         if Settings.ENABLE_CUSTOM_TITLE_BAR:
-            #STANDARD TITLE BAR
+            # STANDARD TITLE BAR
             self.setWindowFlags(Qt.FramelessWindowHint)
             self.setAttribute(Qt.WA_TranslucentBackground)
 
@@ -254,6 +258,7 @@ class UIFunctions:
                     self.move(new_pos)
                     self.dragPos = event.globalPosition()
                     event.accept()
+
             self.ui.titleRightInfo.mouseMoveEvent = moveWindow
 
             # CUSTOM GRIPS
@@ -298,5 +303,74 @@ class UIFunctions:
             self.top_grip.setGeometry(0, 0, self.width(), 10)
             self.bottom_grip.setGeometry(0, self.height() - 10, self.width(), 10)
 
+    @staticmethod
+    def add_menus(self, ui, menus_list):
+        right_slash = '\\'
+
+        for menu in menus_list:
+            if menu['show_top']:
+                ui.btn = QPushButton(ui.topMenu)
+                ui.btn.setObjectName(menu['btn_id'])
+                ui.btn.setText(menu['btn_text'])
+                ui.btn.setToolTip(menu['btn_tooltip'])
+                sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+                sizePolicy.setHeightForWidth(ui.btn.sizePolicy().hasHeightForWidth())
+                ui.btn.setSizePolicy(sizePolicy)
+                ui.btn.setMinimumSize(QSize(0, 45))
+
+                ui.btn.clicked.connect(lambda: ui.stackedWidget.setCurrentWidget(menu['interface']))
+                ui.btn.clicked.connect(
+                    lambda: ui.btn.setStyleSheet(UIFunctions.selectMenu(ui.btn.styleSheet())))  # 设置所选按钮的样式
+                ui.btn.clicked.connect(lambda: UIFunctions.resetStyle(self, menu['btn_id']))  # 重置所选的其他按钮的样式
+
+                ui.btn.clicked.connect(self.buttonClick)
+                font = QFont()
+                font.setFamily(u"Segoe UI")
+                font.setPointSize(10)
+                font.setBold(False)
+                font.setItalic(False)
+                ui.btn.setFont(font)
+
+                ui.btn.setCursor(QCursor(Qt.PointingHandCursor))
+                ui.btn.setLayoutDirection(Qt.LeftToRight)
+                ui.btn.setStyleSheet(rf"""
+                        QPushButton {{
+                                background-image: url({menu['btn_icon'].replace(right_slash, '/')});
+                            }}
+                        """)
+                ui.btn.update()
+                # ui.btn.setIcon(QIcon(QPixmap(menu['btn_icon'])))
+                ui.topMenuLayout.addWidget(ui.btn)
+            else:
+                ui.btn = QPushButton(ui.topMenu)
+                ui.btn.setObjectName(menu['btn_id'])
+                ui.btn.setText(menu['btn_text'])
+                ui.btn.setToolTip(menu['btn_tooltip'])
+                sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+                sizePolicy.setHeightForWidth(ui.btn.sizePolicy().hasHeightForWidth())
+                ui.btn.setSizePolicy(sizePolicy)
+                ui.btn.setMinimumSize(QSize(0, 45))
+
+                font = QFont()
+                font.setFamily(u"Segoe UI")
+                font.setPointSize(10)
+                font.setBold(False)
+                font.setItalic(False)
+                ui.btn.setFont(font)
+
+                ui.btn.setCursor(QCursor(Qt.PointingHandCursor))
+                ui.btn.setLayoutDirection(Qt.LeftToRight)
+                ui.btn.setStyleSheet(rf"""
+                                        QPushButton {{
+                                                background-image: url({menu['btn_icon'].replace(right_slash, '/')});
+                                            }}
+                                        """)
+                # ui.btn.setIcon(QIcon(QPixmap(menu['btn_icon'])))
+                ui.bottomMenuLayout.addWidget(ui.btn)
+
+    @staticmethod
+    def generate_random_color():
+        """生成随机颜色"""
+        return QColor(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
     # ///////////////////////////////////////////////////////////////
     # END - GUI DEFINITIONS
