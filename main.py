@@ -22,11 +22,13 @@ import platform
 # ///////////////////////////////////////////////////////////////
 from modules import *
 from widgets import *
-os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
+
+os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100%
 
 # SET AS GLOBAL WIDGETS
 # ///////////////////////////////////////////////////////////////
-widgets = None
+widgets: Ui_MainWindow = None
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -75,21 +77,24 @@ class MainWindow(QMainWindow):
         # EXTRA LEFT BOX
         def openCloseLeftBox():
             UIFunctions.toggleLeftBox(self, True)
+
         widgets.toggleLeftBox.clicked.connect(openCloseLeftBox)
         widgets.extraCloseColumnBtn.clicked.connect(openCloseLeftBox)
 
         # EXTRA RIGHT BOX
         def openCloseRightBox():
             UIFunctions.toggleRightBox(self, True)
+
         widgets.settingsTopBtn.clicked.connect(openCloseRightBox)
 
         # SHOW APP
         # ///////////////////////////////////////////////////////////////
         self.show()
 
-        # SET CUSTOM THEME
+        # 是否自定义主题
         # ///////////////////////////////////////////////////////////////
         useCustomTheme = False
+        # 自定义给主题QSS文件
         themeFile = r"themes\py_dracula_light.qss"
 
         # SET THEME AND HACKS
@@ -105,9 +110,26 @@ class MainWindow(QMainWindow):
         widgets.stackedWidget.setCurrentWidget(widgets.home)
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
 
+    # 监听缩放事件
+    # ///////////////////////////////////////////////////////////////
+    def resizeEvent(self, event):
+        # Update Size Grips
+        UIFunctions.resize_grips(self)
 
-    # BUTTONS CLICK
-    # Post here your functions for clicked buttons
+    # 监听点击事件
+    # ///////////////////////////////////////////////////////////////
+    def mousePressEvent(self, event):
+        # SET DRAG POS WINDOW
+        self.dragPos = event.globalPosition()
+
+        # PRINT MOUSE EVENTS
+        if event.buttons() == Qt.LeftButton:
+            print('Mouse click: LEFT CLICK')
+        if event.buttons() == Qt.RightButton:
+            print('Mouse click: RIGHT CLICK')
+
+    # 按钮点击事件
+    # 在这里发布点击按钮的功能
     # ///////////////////////////////////////////////////////////////
     def buttonClick(self):
         # GET BUTTON CLICKED
@@ -128,9 +150,9 @@ class MainWindow(QMainWindow):
 
         # SHOW NEW PAGE
         if btnName == "btn_new":
-            widgets.stackedWidget.setCurrentWidget(widgets.new_page) # SET PAGE
-            UIFunctions.resetStyle(self, btnName) # RESET ANOTHERS BUTTONS SELECTED
-            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet())) # SELECT MENU
+            widgets.stackedWidget.setCurrentWidget(widgets.new_page)  # SET PAGE
+            UIFunctions.resetStyle(self, btnName)  # RESET ANOTHERS BUTTONS SELECTED
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # SELECT MENU
 
         if btnName == "btn_save":
             print("Save BTN clicked!")
@@ -138,24 +160,6 @@ class MainWindow(QMainWindow):
         # PRINT BTN NAME
         print(f'Button "{btnName}" pressed!')
 
-
-    # RESIZE EVENTS
-    # ///////////////////////////////////////////////////////////////
-    def resizeEvent(self, event):
-        # Update Size Grips
-        UIFunctions.resize_grips(self)
-
-    # MOUSE CLICK EVENTS
-    # ///////////////////////////////////////////////////////////////
-    def mousePressEvent(self, event):
-        # SET DRAG POS WINDOW
-        self.dragPos = event.globalPosition()
-
-        # PRINT MOUSE EVENTS
-        if event.buttons() == Qt.LeftButton:
-            print('Mouse click: LEFT CLICK')
-        if event.buttons() == Qt.RightButton:
-            print('Mouse click: RIGHT CLICK')
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
