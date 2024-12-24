@@ -1,6 +1,9 @@
+# 获取当前文件的绝对路径
 import os
 
-# 获取当前文件的绝对路径
+"""
+键值数据库：键值对存储时访问、简单查询。
+"""
 current_file_path = os.path.abspath(__file__)
 # 获取当前文件所在的目录
 current_directory = os.path.dirname(current_file_path)
