@@ -13,14 +13,16 @@
 # https://doc.qt.io/qtforpython/licenses.html
 #
 # ///////////////////////////////////////////////////////////////
+from framework.app_settings import Settings
+
 
 # MAIN FILE
 # ///////////////////////////////////////////////////////////////
-from main import *
 
 # WITH ACCESS TO MAIN WINDOW WIDGETS
 # ///////////////////////////////////////////////////////////////
-class AppFunctions(MainWindow):
+class AppFunctions:
+    @staticmethod
     def setThemeHack(self):
         Settings.BTN_LEFT_BOX_COLOR = "background-color: #495474;"
         Settings.BTN_RIGHT_BOX_COLOR = "background-color: #495474;"

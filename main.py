@@ -18,9 +18,16 @@ import sys
 import os
 import platform
 
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
+from PySide6.QtWidgets import QMainWindow, QHeaderView, QApplication
+
+from framework.app_functions import AppFunctions
+from framework.app_settings import Settings
+from framework.ui_functions import UIFunctions
+from framework.ui_main import Ui_MainWindow
 # IMPORT / GUI AND MODULES AND WIDGETS
 # ///////////////////////////////////////////////////////////////
-from modules import *
 from resources.framework.icons import icons
 from widgets import *
 

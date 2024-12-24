@@ -13,20 +13,25 @@
 # https://doc.qt.io/qtforpython/licenses.html
 #
 # ///////////////////////////////////////////////////////////////
+from PySide6.QtCore import QPropertyAnimation, QEasingCurve, QParallelAnimationGroup, QEvent, QTimer, Qt
+from PySide6.QtGui import QColor, QIcon
+from PySide6.QtWidgets import QPushButton, QGraphicsDropShadowEffect, QSizeGrip
+
+from framework.app_settings import Settings
+from widgets import CustomGrip
 
 # MAIN FILE
 # ///////////////////////////////////////////////////////////////
-from main import *
-from modules import Settings
 
 # GLOBALS
 # ///////////////////////////////////////////////////////////////
 GLOBAL_STATE = False
 GLOBAL_TITLE_BAR = True
 
-class UIFunctions(MainWindow):
+class UIFunctions:
     # MAXIMIZE/RESTORE
-    # ///////////////////////////////////////////////////////////////
+    # ///////////////////////////////////////////////////////////////   z
+    @staticmethod
     def maximize_restore(self):
         global GLOBAL_STATE
         status = GLOBAL_STATE
@@ -56,17 +61,20 @@ class UIFunctions(MainWindow):
 
     # RETURN STATUS
     # ///////////////////////////////////////////////////////////////
+    @staticmethod
     def returStatus(self):
         return GLOBAL_STATE
 
     # SET STATUS
     # ///////////////////////////////////////////////////////////////
+    @staticmethod
     def setStatus(self, status):
         global GLOBAL_STATE
         GLOBAL_STATE = status
 
     # TOGGLE MENU
     # ///////////////////////////////////////////////////////////////
+    @staticmethod
     def toggleMenu(self, enable):
         if enable:
             # GET WIDTH
@@ -90,6 +98,7 @@ class UIFunctions(MainWindow):
 
     # TOGGLE LEFT BOX
     # ///////////////////////////////////////////////////////////////
+    @staticmethod
     def toggleLeftBox(self, enable):
         if enable:
             # GET WIDTH
@@ -119,6 +128,7 @@ class UIFunctions(MainWindow):
 
     # TOGGLE RIGHT BOX
     # ///////////////////////////////////////////////////////////////
+    @staticmethod
     def toggleRightBox(self, enable):
         if enable:
             # GET WIDTH
@@ -146,6 +156,7 @@ class UIFunctions(MainWindow):
 
             UIFunctions.start_box_animation(self, widthLeftBox, width, "right")
 
+    @staticmethod
     def start_box_animation(self, left_box_width, right_box_width, direction):
         right_width = 0
         left_width = 0 
@@ -184,22 +195,26 @@ class UIFunctions(MainWindow):
     # SELECT/DESELECT MENU
     # ///////////////////////////////////////////////////////////////
     # SELECT
+    @staticmethod
     def selectMenu(getStyle):
         select = getStyle + Settings.MENU_SELECTED_STYLESHEET
         return select
 
     # DESELECT
+    @staticmethod
     def deselectMenu(getStyle):
         deselect = getStyle.replace(Settings.MENU_SELECTED_STYLESHEET, "")
         return deselect
 
     # START SELECTION
+    @staticmethod
     def selectStandardMenu(self, widget):
         for w in self.ui.topMenu.findChildren(QPushButton):
             if w.objectName() == widget:
                 w.setStyleSheet(UIFunctions.selectMenu(w.styleSheet()))
 
     # RESET SELECTION
+    @staticmethod
     def resetStyle(self, widget):
         for w in self.ui.topMenu.findChildren(QPushButton):
             if w.objectName() != widget:
@@ -207,6 +222,7 @@ class UIFunctions(MainWindow):
 
     # IMPORT THEMES FILES QSS/CSS
     # ///////////////////////////////////////////////////////////////
+    @staticmethod
     def theme(self, file, useCustomTheme):
         if useCustomTheme:
             str = open(file, 'r').read()
@@ -214,6 +230,7 @@ class UIFunctions(MainWindow):
 
     # START - GUI DEFINITIONS
     # ///////////////////////////////////////////////////////////////
+    @staticmethod
     def uiDefinitions(self):
         def dobleClickMaximizeRestore(event):
             # IF DOUBLE CLICK CHANGE STATUS
@@ -273,6 +290,7 @@ class UIFunctions(MainWindow):
         # CLOSE APPLICATION
         self.ui.closeAppBtn.clicked.connect(lambda: self.close())
 
+    @staticmethod
     def resize_grips(self):
         if Settings.ENABLE_CUSTOM_TITLE_BAR:
             self.left_grip.setGeometry(0, 10, 10, self.height())
