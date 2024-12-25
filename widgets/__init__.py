@@ -14,6 +14,7 @@
 # https://doc.qt.io/qtforpython/licenses.html
 #
 # ///////////////////////////////////////////////////////////////
+import sys
 
 from .custom_grips import CustomGrip
 import os

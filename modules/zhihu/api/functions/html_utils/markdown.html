@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Editor</title>
+    <!-- 引入 EasyMDE 的 CSS -->
+    <link rel="stylesheet" href="./easymde.min.css">
+    <style>
+        /* 基本的页面样式 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            position: relative;
+        }
+        .toolbar {
+            background-color: #343a40;
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .toolbar div {
+            display: flex;
+            align-items: center;
+        }
+        .toolbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        .toolbar button {
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+        .toolbar button:hover {
+            background-color: #0056b3;
+        }
+        #clearButton {
+            background-color: #28a745;
+            margin-left: 20px;
+        }
+        .message {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            font-size: 14px;
+        }
+        .message.error {
+            background-color: #dc3545;
+        }
+        .editor-container {
+            margin-bottom: 20px;
+        }
+        .preview-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .preview-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .preview-container th, .preview-container td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .preview-container th {
+            background-color: #f2f2f2;
+        }
+        .preview-container h1, .preview-container h2, .preview-container h3 {
+            color: #333;
+        }
+        .preview-container p {
+            line-height: 1.6;
+            color: #555;
+        }
+        .preview-container code {
+            background-color: #f8f8f8;
+            border: 1px solid #e1e1e1;
+            border-radius: 4px;
+            padding: 2px 4px;
+            font-size: 90%;
+            color: #c7254e;
+        }
+        .preview-container pre {
+            background-color: #f8f8f8;
+            border: 1px solid #e1e1e1;
+            border-radius: 4px;
+            padding: 10px;
+            overflow: auto;
+        }
+        .preview-container blockquote {
+            margin: 0 0 20px;
+            padding: 10px 20px;
+            color: #666;
+            border-left: 5px solid #eee;
+        }
+        .preview-container ul, .preview-container ol {
+            padding-left: 20px;
+        }
+        .preview-container ul li, .preview-container ol li {
+            margin-bottom: 10px;
+        }
+        .editor-toolbar {
+            background-color: #343a40 !important;
+        }
+        .editor-toolbar .fa {
+            color: #fff !important;
+        }
+        .editor-toolbar button {
+            background-color: transparent !important;
+            border: 1px solid #495057 !important;
+            color: #fff !important;
+            font-size: 16px;
+            padding: 6px 12px;
+        }
+        .editor-toolbar button:hover {
+            background-color: #495057 !important;
+            border-color: #343a40 !important;
+        }
+        .editor-toolbar button .fa {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="toolbar">
+            <div>
+                <a href="#">Bold</a>
+                <a href="#">Italic</a>
+                <a href="#">Heading</a>
+                <a href="#">Quote</a>
+                <a href="#">List</a>
+                <a href="#">Link</a>
+                <a href="#">Image</a>
+            </div>
+            <div>
+                <button id="clearButton">Clear</button>
+                <button id="copyButton">Copy to Clipboard</button>
+            </div>
+        </div>
+        <div class="message" id="message"></div>
+        <div class="editor-container">
+            <textarea id="editor"></textarea>
+        </div>
+        <div class="preview-container">
+            <div id="preview"></div>
+        </div>
+    </div>
+
+    <!-- 引入 EasyMDE 的 JS -->
+    <script src="./easymde.min.js"></script>
+    <script>
+        // 初始化 EasyMDE 编辑器
+        var easyMDE = new EasyMDE({
+            element: document.getElementById('editor'),
+            autoDownloadFontAwesome: false,
+            placeholder: "Type here...",
+            renderingConfig: {
+                singleLineBreaks: false,
+                codeSyntaxHighlighting: true,
+            },
+            autosave: {
+                enabled: true,
+                uniqueId: "editorContent",
+                delay: 1000,
+            },
+            spellChecker: false,
+            toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "image", "code", "|", "preview", "side-by-side", "fullscreen", "|", "guide"],
+        });
+
+        // 更新预览的函数
+        function updatePreview() {
+            var markdownText = easyMDE.value();
+            var previewElement = document.getElementById('preview');
+            previewElement.innerHTML = easyMDE.options.previewRender(markdownText);
+            // 自动触发复制到剪切板的函数
+            copyToClipboard();
+        }
+
+        // 复制到剪切板的函数
+        function copyToClipboard() {
+            var previewElement = document.getElementById('preview');
+            var range = document.createRange();
+            range.selectNode(previewElement);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            try {
+                var successful = document.execCommand('copy');
+                showMessage(successful ? 'Copied to clipboard!' : 'Failed to copy.', successful ? '' : 'error');
+            } catch (err) {
+                showMessage('Failed to copy.', 'error');
+            }
+            window.getSelection().removeAllRanges();
+        }
+
+        // 显示消息的函数
+        function showMessage(message, type = '') {
+            var messageElement = document.getElementById('message');
+            messageElement.textContent = message;
+            messageElement.className = 'message ' + type;
+            messageElement.style.display = 'block';
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 3000);
+        }
+
+        // 清空编辑器内容的函数
+        function clearEditor() {
+            easyMDE.value('');
+            updatePreview();
+            // 延迟确保 EasyMDE 完全重置后再聚焦
+            setTimeout(() => {
+                var editorElement = easyMDE.codemirror.getWrapperElement();
+                if (editorElement) {
+                    editorElement.focus();
+                }
+            }, 100);
+        }
+
+        // 为编辑器添加内容变化事件监听
+        easyMDE.codemirror.on('change', updatePreview);
+
+        // 初始化时清空编辑器内容并更新预览
+        clearEditor();
+
+        // 页面加载完成后聚焦到编辑框
+        document.addEventListener('DOMContentLoaded', () => {
+            // 延迟聚焦，确保 EasyMDE 初始化完成
+            setTimeout(() => {
+                var editorElement = easyMDE.codemirror.getWrapperElement();
+                if (editorElement) {
+                    editorElement.focus();
+                }
+            }, 500);
+        });
+
+        // 添加按钮事件监听器
+        document.getElementById('clearButton').addEventListener('click', clearEditor);
+        document.getElementById('copyButton').addEventListener('click', copyToClipboard);
+    </script>
+</body>
+</html>

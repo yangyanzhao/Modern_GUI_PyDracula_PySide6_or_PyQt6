@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Page Textarea</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        textarea {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 16px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="fullPageTextarea" placeholder="Type something here..."></textarea>
+    <script>
+        document.body.addEventListener('click', function() {
+            document.getElementById('fullPageTextarea').focus();
+        });
+    </script>
+</body>
+</html>

@@ -1,4 +1,6 @@
 import sys
+
+from PySide6 import QtAsyncio
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMainWindow, QHeaderView, QApplication, QPushButton
@@ -9,7 +11,6 @@ from framework.demo_interfaces.demo_home_interface import DemoHomeInterface
 from framework.demo_interfaces.demo_new_page_interface import DemoNewPageInterface
 from framework.ui_functions import UIFunctions
 from framework.ui_main import Ui_MainWindow
-from modules.zhihu.zhihu_main_interface import ZhiHuMainInterface
 
 from resources.framework.icons import icons
 from widgets import *
@@ -175,14 +176,14 @@ class MainWindow(QMainWindow):
         """
         self.ui.demo_home_interface = DemoHomeInterface(parent=self)
         self.ui.demo_new_page_interface = DemoNewPageInterface(parent=self)
-        self.ui.zhihu_main_interface = ZhiHuMainInterface(parent=self)
+        self.ui.zhihu_main_interface = DemoNewPageInterface(parent=self)
         self.ui.stackedWidget.addWidget(self.ui.demo_home_interface)
         self.ui.stackedWidget.addWidget(self.ui.demo_new_page_interface)
         self.ui.stackedWidget.addWidget(self.ui.zhihu_main_interface)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon(icons["icon.ico"]))
     window = MainWindow()
-    sys.exit(app.exec())
+    # 显示窗口
+    QtAsyncio.run(handle_sigint=True)
