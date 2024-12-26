@@ -6,7 +6,8 @@ from PySide6 import QtAsyncio
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QApplication, QDialog, QFrame, QVBoxLayout, QWidget
 
-from cocos_widgets.widgets_test.c_dialog.py_grips import PyGrips
+from cocos_widgets.c_grips import CGrips
+from cocos_widgets.c_title_bar.c_title_bar import CTitleBar
 from dayu_widgets import MPushButton
 
 """
@@ -15,17 +16,22 @@ from dayu_widgets import MPushButton
 
 
 class FramelessDialogAbstract(QDialog):
-    def __init__(self, has_title_bar=True, has_min_btn=True, has_max_btn=True, has_close_btn=True,
-                 attach_title_bar_layout=None, parent=None):
+    def __init__(self, parent=None, has_title_bar=True, has_min_btn=True, has_max_btn=True, has_close_btn=True,
+                 background_color='#3c4454',
+                 attach_title_bar_layout=None):
         """
         窗口包装器
         :param has_title_bar: 是否带标题栏
         :param attach_title_bar_layout: 标题附着点（默认为包装器顶部）
+        :param has_min_btn: 最小化按钮
+        :param has_max_btn: 最大化按钮
+        :param has_close_btn: 关闭按钮
         """
         super().__init__(parent)
         self.parent = parent
         self.has_title_bar = has_title_bar
         self.attach_title_bar_layout = attach_title_bar_layout
+        self.background_color = background_color
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.center_widget = QWidget()
@@ -44,33 +50,10 @@ class FramelessDialogAbstract(QDialog):
             self.title_bar_layout = QVBoxLayout(self.title_bar_frame)
             self.title_bar_layout.setContentsMargins(0, 0, 0, 0)
             # 标题栏
-            self.title_bar = PyTitleBar(
-                self,
-                app_parent=self,
-                logo_width=100,
-                logo_image="logo_top_100x22.svg",
-                bg_color=self.themes["app_color"]["bg_two"],
-                div_color=self.themes["app_color"]["bg_three"],
-                btn_bg_color=self.themes["app_color"]["bg_two"],
-                btn_bg_color_hover=self.themes["app_color"]["bg_three"],
-                btn_bg_color_pressed=self.themes["app_color"]["bg_one"],
-                icon_color=self.themes["app_color"]["icon_color"],
-                icon_color_hover=self.themes["app_color"]["icon_hover"],
-                icon_color_pressed=self.themes["app_color"]["icon_pressed"],
-                icon_color_active=self.themes["app_color"]["icon_active"],
-                context_color=self.themes["app_color"]["context_color"],
-                dark_one=self.themes["app_color"]["dark_one"],
-                text_foreground=self.themes["app_color"]["text_foreground"],
-                radius=8,
-                radius_corners=[1, 2, 3, 4] if self.attach_title_bar_layout else [1, 2],
-                font_family=self.settings["font"]["family"],
-                title_size=self.settings["font"]["title_size"],
-                is_custom_title_bar=self.settings["custom_title_bar"],
-                is_custom_title_min_btn=has_min_btn,
-                is_custom_title_max_btn=has_max_btn,
-                is_custom_title_close_btn=has_close_btn,
-                is_show_datetime=False,
-            )
+            self.title_bar = CTitleBar(self, app_parent=self, is_custom_title_bar=has_title_bar,
+                                       is_custom_title_min_btn=has_min_btn,
+                                       is_custom_title_max_btn=has_max_btn,
+                                       is_custom_title_close_btn=has_close_btn, )
             self.title_bar_layout.addWidget(self.title_bar)
             if self.attach_title_bar_layout is None:
                 self.layout.insertWidget(0, self.title_bar_frame)
@@ -81,7 +64,7 @@ class FramelessDialogAbstract(QDialog):
                 #center_widget {{
                     border-bottom-left-radius: 10px;
                     border-bottom-right-radius: 10px;
-                    background-color: '{self.themes["app_color"]["bg_three"]}';
+                    background-color: '{self.background_color}';
                 }}
                 """ if self.has_title_bar and not self.attach_title_bar_layout else f"""
                 #center_widget {{
@@ -89,7 +72,7 @@ class FramelessDialogAbstract(QDialog):
                     border-top-right-radius: 10px;
                     border-bottom-left-radius: 10px;
                     border-bottom-right-radius: 10px;
-                    background-color: '{self.themes["app_color"]["bg_three"]}';
+                    background-color: '{self.background_color}';
                 }}
                 """
         self.center_widget.setStyleSheet(style)
@@ -101,14 +84,14 @@ class FramelessDialogAbstract(QDialog):
 
         # 调整边缘缩放
         self.hide_grips = True  # 显示/隐藏调整大小边缘点
-        self.left_grip = PyGrips(self, "left", self.hide_grips)
-        self.right_grip = PyGrips(self, "right", self.hide_grips)
-        self.top_grip = PyGrips(self, "top", self.hide_grips)
-        self.bottom_grip = PyGrips(self, "bottom", self.hide_grips)
-        self.top_left_grip = PyGrips(self, "top_left", self.hide_grips)
-        self.top_right_grip = PyGrips(self, "top_right", self.hide_grips)
-        self.bottom_left_grip = PyGrips(self, "bottom_left", self.hide_grips)
-        self.bottom_right_grip = PyGrips(self, "bottom_right", self.hide_grips)
+        self.left_grip = CGrips(self, "left", self.hide_grips)
+        self.right_grip = CGrips(self, "right", self.hide_grips)
+        self.top_grip = CGrips(self, "top", self.hide_grips)
+        self.bottom_grip = CGrips(self, "bottom", self.hide_grips)
+        self.top_left_grip = CGrips(self, "top_left", self.hide_grips)
+        self.top_right_grip = CGrips(self, "top_right", self.hide_grips)
+        self.bottom_left_grip = CGrips(self, "bottom_left", self.hide_grips)
+        self.bottom_right_grip = CGrips(self, "bottom_right", self.hide_grips)
 
         self.adjustSize()
         self.show_centered()
@@ -129,8 +112,8 @@ class FramelessDialogAbstract(QDialog):
 
     # 鼠标点击事件
     def mousePressEvent(self, event):
-        # SET DRAG POS WINDOW
-        self.dragPos = event.globalPos()
+        super(FramelessDialogAbstract, self).mousePressEvent(event)
+        self.dragPos = event.globalPosition().toPoint()  # 使用 globalPosition().toPoint()
 
     def show_centered(self):
         if self.parent:

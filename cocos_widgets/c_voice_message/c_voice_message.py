@@ -9,7 +9,7 @@ from PySide6.QtMultimedia import QMediaPlayer
 from PySide6.QtCore import QUrl, Qt, QTimer
 from PySide6.QtGui import QColor, QPalette
 
-from cocos_widgets.widgets_test.c_voice_message.icons import icons
+from cocos_widgets.c_voice_message.icons import icons
 from dayu_widgets import MBadge, MToolButton
 from dayu_widgets.qt import MIcon
 from mutagen.mp3 import MP3
