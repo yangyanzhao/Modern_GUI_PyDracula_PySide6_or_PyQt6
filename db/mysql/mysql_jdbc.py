@@ -5,10 +5,9 @@ import json
 import aiomysql
 import logging
 
-import nest_asyncio
+# import nest_asyncio
 from pymysql import OperationalError
 
-from gui.utils.loop_util import is_event_loop_running
 from concurrent.futures import ThreadPoolExecutor
 
 """
@@ -29,6 +28,14 @@ type_mapping = {
 # 创建一个线程池
 executor = ThreadPoolExecutor()
 
+def is_event_loop_running():
+    try:
+        # 尝试获取当前运行的事件循环
+        loop = asyncio.get_running_loop()
+        return loop is not None
+    except RuntimeError:
+        # 如果没有运行中的事件循环，会抛出 RuntimeError
+        return False
 
 async def create_pool_with_no_db(host='localhost', port=3366, user='root', password=None, autocommit=True, minsize=1,
                                  maxsize=100):
@@ -1154,5 +1161,4 @@ async def main():
 if __name__ == '__main__':
     # 配置日志记录
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    nest_asyncio.apply()
     asyncio.run(main())

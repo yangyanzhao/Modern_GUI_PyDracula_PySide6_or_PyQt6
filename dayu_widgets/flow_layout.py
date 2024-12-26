@@ -7,7 +7,6 @@
 ###################################################################
 """MFlowLayout"""
 
-
 # Import future modules
 from __future__ import absolute_import
 from __future__ import division
@@ -27,7 +26,7 @@ class MFlowLayout(QtWidgets.QLayout):
         super(MFlowLayout, self).__init__(parent)
 
         if parent is not None:
-            self.setMargin(margin)
+            self.setContentsMargins(margin, margin, margin, margin)
 
         self.setSpacing(spacing)
 
