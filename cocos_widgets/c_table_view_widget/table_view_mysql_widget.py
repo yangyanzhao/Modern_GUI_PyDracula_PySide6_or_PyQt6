@@ -1,30 +1,19 @@
 import asyncio
 import json
-import logging
-import sys
+import random
 import traceback
 
-from PySide6 import QtAsyncio
+import qasync
 from PySide6.QtWidgets import QApplication
 
 from cocos_widgets.c_table_view_widget.table_view_widget import TableViewWidgetAbstract, ColumnConfig
-from dayu_widgets import MTheme, MPushButton
+from dayu_widgets import MPushButton
 from db.mysql.mysql_jdbc import create_pool, close_pool, insert, delete_by_ids, update_by_id, \
-    select_count, select_page, select_list, truncate_table, executor
+    select_count, select_page, select_list, truncate_table
 
 """
 增删改查窗口封装控件,MYSQL快捷版
 """
-
-
-def is_event_loop_running():
-    try:
-        # 尝试获取当前运行的事件循环
-        loop = asyncio.get_running_loop()
-        return loop is not None
-    except RuntimeError:
-        # 如果没有运行中的事件循环，会抛出 RuntimeError
-        return False
 
 
 class TableViewWidgetMySQLAbstract(TableViewWidgetAbstract):
@@ -41,7 +30,7 @@ class TableViewWidgetMySQLAbstract(TableViewWidgetAbstract):
         """
         raise NotImplementedError
 
-    def update_api(self, data, id):
+    async def update_api(self, data, id):
         # 这里要对data进行预处理，将list或者dict进行序列化
         for k, v in data.items():
             if k is not None and v is not None:
@@ -61,15 +50,9 @@ class TableViewWidgetMySQLAbstract(TableViewWidgetAbstract):
             finally:
                 await close_pool(pool)
 
-        if is_event_loop_running():
-            loop = asyncio.get_running_loop()
-            task = loop.create_task(async_slot_function())
-            # 为任务添加回调函数
-            task.add_done_callback(lambda t: self.reload_data())
-        else:
-            result = asyncio.run(async_slot_function())
+        await async_slot_function()
 
-    def delete_api(self, id_list: list):
+    async def delete_api(self, id_list: list):
         async def async_slot_function():
             pool = await create_pool(db=self.get_database_name())
             try:
@@ -82,15 +65,9 @@ class TableViewWidgetMySQLAbstract(TableViewWidgetAbstract):
             finally:
                 await close_pool(pool)
 
-        if is_event_loop_running():
-            loop = asyncio.get_running_loop()
-            task = loop.create_task(async_slot_function())
-            # 为任务添加回调函数
-            task.add_done_callback(lambda t: self.reload_data())
-        else:
-            result = asyncio.run(async_slot_function())
+        await async_slot_function()
 
-    def insert_api(self, data=None):
+    async def insert_api(self, data=None):
         default_data = self._get_default_data_()
         # 这里要对data进行预处理，将list或者dict进行序列化
         for k, v in default_data.items():
@@ -110,15 +87,9 @@ class TableViewWidgetMySQLAbstract(TableViewWidgetAbstract):
             finally:
                 await close_pool(pool)
 
-        if is_event_loop_running():
-            loop = asyncio.get_running_loop()
-            task = loop.create_task(async_slot_function())
-            # 为任务添加回调函数
-            task.add_done_callback(lambda t: self.reload_data())
-        else:
-            result = asyncio.run(async_slot_function())
+        await async_slot_function()
 
-    def select_api(self, page_number, page_size, conditions: dict = None, orderby_list=None) -> (int, list[dict]):
+    async def select_api(self, page_number, page_size, conditions: dict = None, orderby_list=None) -> (int, list[dict]):
         """
         conditions:条件字典，格式：{field:{field:field,value:value,op:op}}。field为字段名，value为条件值，op为查询方式【op为模糊，eq为精确查询，bt为范围查询（value_0,value_1）,in为包含查询（values:list）......】：[{'field':'command','value':'ASBC','op':'ct'}]
         orderby_list:排序列表,field为字段名，value为排序值【'asc','desc'】：[{'field':'command','value':'asc'}]
@@ -149,18 +120,7 @@ class TableViewWidgetMySQLAbstract(TableViewWidgetAbstract):
             finally:
                 await close_pool(pool)
 
-        # 获取或创建新的事件循环
-        # count, data_list = asyncio.run(async_slot_function())
-        # 使用线程池执行异步任务
-        future = executor.submit(lambda: QtAsyncio.run(async_slot_function(),keep_running=False))
-        try:
-            data_list = future.result(timeout=5)  # 阻塞等待结果
-            print(data_list)  # 打印结果
-        except Exception as e:
-            import traceback
-            traceback.print_exc()
-            exc_info = traceback.format_exc()
-            count, data_list = 0, []
+        count, data_list = await async_slot_function()
 
         # 获取异步槽函数的结果
         # 这里要对data_list进行逆向序列化
@@ -177,7 +137,7 @@ class TableViewWidgetMySQLAbstract(TableViewWidgetAbstract):
 
         return count, data_list
 
-    def select_list(self, conditions: list[dict] = None, orderby_list=None) -> list[dict]:
+    async def select_list(self, conditions: list[dict] = None, orderby_list=None) -> list[dict]:
         """
         conditions:条件列表，field为字段名，value为条件值，op为查询方式【op为模糊，eq为精确查询，bt为范围查询（value_0,value_1）,in为包含查询（values:list）......】：[{'field':'command','value':'ASBC','op':'ct'}]
         orderby_list:排序列表,field为字段名，value为排序值【'asc','desc'】：[{'field':'command','value':'asc'}]
@@ -204,7 +164,7 @@ class TableViewWidgetMySQLAbstract(TableViewWidgetAbstract):
                 await close_pool(pool)
 
         # 获取或创建新的事件循环
-        data_list = asyncio.run(async_slot_function())
+        data_list = await async_slot_function()
 
         # 获取异步槽函数的结果
         # 这里要对data_list进行逆向序列化
@@ -220,7 +180,7 @@ class TableViewWidgetMySQLAbstract(TableViewWidgetAbstract):
 
         return data_list
 
-    def truncate_api(self):
+    async def truncate_api(self):
         """
         截断表（清空数据）
         """
@@ -238,13 +198,7 @@ class TableViewWidgetMySQLAbstract(TableViewWidgetAbstract):
             finally:
                 await close_pool(pool)
 
-        if is_event_loop_running():
-            loop = asyncio.get_running_loop()
-            task = loop.create_task(async_slot_function())
-            # 为任务添加回调函数
-            task.add_done_callback(lambda t: self.reload_data())
-        else:
-            result = asyncio.run(async_slot_function())
+        await async_slot_function()
 
 
 class DemoInterface(TableViewWidgetMySQLAbstract):
@@ -283,7 +237,7 @@ class DemoInterface(TableViewWidgetMySQLAbstract):
             {"text": "DEMO按鈕",
              # "icon": MIcon(icons['API输出.svg'], "#4CAF50"),
              'dayu_type': MPushButton.DefaultType,
-             'clicked': lambda: print(1)
+             'clicked': lambda: self.paginationBar.setTotalPages(random.randint(0,20))
              }
         ]
 
@@ -293,11 +247,17 @@ def get_header_domain_list_by_DDL(ddl: str):
     pass
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    # 创建窗口
+
+if __name__ == "__main__":
+    # 创建主循环
+    app = QApplication()
+
+    # 创建异步事件循环
+    loop = qasync.QEventLoop(app)
+    asyncio.set_event_loop(loop)
     demo_widget = DemoInterface()
     # 显示窗口
     demo_widget.show()
-
-    QtAsyncio.run(handle_sigint=True)
+    # 创建窗口
+    with loop:
+        loop.run_forever()

@@ -1,3 +1,4 @@
+import random
 import sys
 
 from PySide6 import QtAsyncio
@@ -59,7 +60,7 @@ class DemoWindow(QWidget):
     def doSetPageNumber(self):
         page = self.pageEdit.text().strip()
         if not page:
-            return
+            page = random.randint(0,10)
         page = int(page)
         self.paginationBar1.setTotalPages(page)
         self.paginationBar2.setTotalPages(page)

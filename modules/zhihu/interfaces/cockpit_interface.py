@@ -2,9 +2,8 @@ import asyncio
 import functools
 import logging
 
-from PySide2.QtWidgets import QWidget, QApplication, QVBoxLayout, QHBoxLayout, QListView
+from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout, QHBoxLayout, QListView
 from dayu_widgets.qt import MIcon
-from qasync import QEventLoop
 from dayu_widgets import MTheme, MListView, MPushButtonGroup, MPushButton, MLineEdit, \
     MFieldMixin, MLoadingWrapper, dayu_theme, MToolButton
 

@@ -100,11 +100,11 @@ class CConfirmDialog(FramelessDialogAbstract):
                 self.mask_widget.resize(self.parent.size())
         return super().eventFilter(obj, event)
 
-    def closeEvent(self, event):
+    def close(self):
         # 隐藏遮罩层
         if self.is_mask:
             self.mask_widget.hide()
-        super().closeEvent(event)
+        super(CConfirmDialog, self).close()
 
     @staticmethod
     def error(title, content, parent, is_mask=True):
@@ -237,7 +237,7 @@ class CMessageDialog(FramelessDialogAbstract):
         super().closeEvent(event)
 
     @staticmethod
-    def error(content, parent, duration=3000, is_mask=False):
+    def error(content, parent, duration=1000, is_mask=False):
         svg_widget = QSvgWidget(icons['操作失败.svg'])
         svg_widget.setFixedSize(QSize(16, 16))
         widget = CMessageDialog(content=content, parent=parent, duration=duration, is_mask=is_mask,
@@ -247,7 +247,7 @@ class CMessageDialog(FramelessDialogAbstract):
         exec_ = widget.exec()
 
     @staticmethod
-    def success(content, parent, duration=3000, is_mask=False):
+    def success(content, parent, duration=1000, is_mask=False):
         svg_widget = QSvgWidget(icons['操作成功.svg'])
         svg_widget.setFixedSize(QSize(16, 16))
         widget = CMessageDialog(content=content, parent=parent, duration=duration, is_mask=is_mask,
@@ -258,7 +258,7 @@ class CMessageDialog(FramelessDialogAbstract):
         exec_ = widget.exec()
 
     @staticmethod
-    def message(content, parent, duration=3000, is_mask=False):
+    def message(content, parent, duration=1000, is_mask=False):
         svg_widget = QSvgWidget(icons['操作信息.svg'])
         svg_widget.setFixedSize(QSize(16, 16))
         widget = CMessageDialog(content=content, parent=parent, duration=duration, is_mask=is_mask, icon=svg_widget)
@@ -266,7 +266,7 @@ class CMessageDialog(FramelessDialogAbstract):
         exec_ = widget.exec()
 
     @staticmethod
-    def warning(content, parent, duration=3000, is_mask=False):
+    def warning(content, parent, duration=1000, is_mask=False):
         svg_widget = QSvgWidget(icons['操作警告.svg'])
         svg_widget.setFixedSize(QSize(16, 16))
         widget = CMessageDialog(content=content, parent=parent, duration=duration, is_mask=is_mask,
@@ -276,7 +276,7 @@ class CMessageDialog(FramelessDialogAbstract):
         exec_ = widget.exec()
 
     @staticmethod
-    def danger(content, parent, duration=3000, is_mask=False):
+    def danger(content, parent, duration=1000, is_mask=False):
         svg_widget = QSvgWidget(icons['操作危险.svg'])
         svg_widget.setFixedSize(QSize(16, 16))
         widget = CMessageDialog(content=content, parent=parent, duration=duration, is_mask=is_mask,

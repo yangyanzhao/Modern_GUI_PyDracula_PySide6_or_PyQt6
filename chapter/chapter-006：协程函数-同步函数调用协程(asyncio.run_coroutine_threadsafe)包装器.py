@@ -1,0 +1,80 @@
+import asyncio
+import threading
+import time
+from concurrent.futures import Future
+"""
+1.协程函数必须运行在事件循环中。
+2.同一个线程中，事件循环不可嵌套调用。只能有一个事件循环。
+3.在同步函数中调用协程：
+    3.1 同步函数不处于异步上下文中，需要开启事件循环来运行协程：asyncio.run(async_func())并返回协程结果。
+    3.2 同步函数处于异步上下文中：
+
+        3.2.1 上下文事件循环处于未运行
+            【启动协程】【非阻塞】
+            3.2.1.1 使用 asyncio.run_coroutine_threadsafe() 在同步函数中安全地调度协程。用于在多线程环境中调度协程。返回一个 concurrent.futures.Future 对象，可以通过它获取协程的结果或异常。不会阻塞调用线程。返回：Future 对象
+            【启动协程】【阻塞】
+            3.2.1.2 使用 asyncio.run_until_complete() 用于在当前运行的事件循环中等待一个协程完成，这通常用于事件循环首次创建时或在主线程中执行时，因为它会阻塞当前线程，直到协程完成，且不会关闭事件循环。。
+
+        3.2.2 上下文事件循环处于运行中
+            如果事件循环整在运行中，也就是running是True,则不能直接使用该事件循环来执行新的协程，因为事件循环已经在运行中，不能再次被启动。要么调度，要阻塞。
+            【调度协程】【非阻塞】
+            3.2.2.1 使用 asyncio.create_task() 用于在异步上下文中并发执行多个协程,并立即调度它。不会阻塞当前协程。但是处于同步函数中，无法使用await，只能将任务返回到上个协程中进行await获取结果。,返回：Task 对象
+            3.2.2.2 使用 asyncio.ensure_future() 用于确保一个对象可以被调度执行。如果传入的是协程，会将其包装为 Task 对象。如果传入的是 Future 对象，则直接返回。
+"""
+
+# 模拟协程函数
+async def async_task():
+    return 1
+
+
+# 包装器
+def run_coroutine_threadsafe_wrapper(async_task, loop, timeout):
+    """
+    在另一个线程中调度协程的函数
+    :param async_task: 目标协程
+    :param loop: 事件循环
+    :param timeout: 超时时间
+    :return:
+    """
+    assert not loop.is_running()  # 传入的loop 不能处于运行中。
+
+    def function(loop, async_task, future, timeout):
+        # 使用 run_coroutine_threadsafe 调度协程
+        asyncio_future = asyncio.run_coroutine_threadsafe(async_task(), loop)
+        # 等待协程完成并获取结果
+        try:
+            result = asyncio_future.result(timeout=timeout)  # 设置超时时间
+            future.set_result(result)  # 将结果设置到 future 中
+        except asyncio.TimeoutError:
+            future.set_exception(TimeoutError("超时了！！！"))
+        except Exception as e:
+            future.set_exception(e)
+
+    def run_event_loop():
+        asyncio.set_event_loop(loop)
+        loop.run_forever()
+
+    future = Future()  # 创建一个 Future 对象
+
+    threading.Thread(target=run_event_loop, daemon=True).start()
+    # 在主线程中启动另一个线程来调度协程
+    threading.Thread(target=function, args=(loop, async_task, future, timeout)).start()
+    # 主线程继续执行其他工作
+    time.sleep(timeout)  # 这里要等待一下，否则支线程可能还没有没有，主线程已经结束了。
+    # 停止事件循环
+    loop.call_soon_threadsafe(loop.stop)
+
+    # 获取并打印结果
+    try:
+        result = future.result(timeout=timeout)  # 设置超时时间
+        return result
+    except Exception as e:
+        print(f"Exception: {e}")
+        raise
+
+
+if __name__ == "__main__":
+    loop = asyncio.new_event_loop()
+    assert not loop.is_running()  # loop不能处于运行状态，因为事件循环已经在运行中，不能再次被启动。运行状态的loop只能调度，不能直接启动。
+    result = run_coroutine_threadsafe_wrapper(async_task, loop, timeout=1)
+    print(result)

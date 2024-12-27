@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 import json
+import traceback
 
 import aiomysql
 import logging
@@ -72,6 +73,7 @@ async def create_pool(db, host='localhost', port=3366, user='root', password=Non
         )
         return pool
     except OperationalError as e:
+
         if e.args[0] == 1049:
             logging.error(f"数据库不存在：【{db}】，自动创建数据库：【{db}】")
             pool_ = await create_pool_with_no_db(host=host, port=port, user=user, password=password,
@@ -92,7 +94,11 @@ async def create_pool(db, host='localhost', port=3366, user='root', password=Non
             finally:
                 await close_pool(pool_)
         else:
-            raise OperationalError
+            traceback.print_exc()
+            exc_info = traceback.format_exc()
+    except:
+        traceback.print_exc()
+        exc_info = traceback.format_exc()
 
 
 async def close_pool(pool):

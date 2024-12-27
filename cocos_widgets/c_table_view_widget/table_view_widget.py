@@ -17,6 +17,7 @@ from dayu_widgets.qt import MIcon
 from dayu_widgets import MTheme, MFieldMixin, dayu_theme, MTableModel, MLineEdit, \
     MTableView, MPushButtonGroup, MPushButton, MComboBox, MMenu, MFlowLayout, \
     MSpinBox, MDoubleSpinBox, MDateTimeEdit, MDateEdit, MTimeEdit, MTag
+from db.mysql.async_utils import is_in_async_context
 
 """
 增删改查窗口封装控件
@@ -666,33 +667,48 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
         self.layout.addStretch()
 
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#
-    @run_in_background(callback=lambda self, result: self.set_data())
     def reload_data(self, *args, **kwargs):
         """
         加载数据,后台查询数据后，载入model
         :return:
         """
+
+        def handle_data_list(total_count, data_list):
+            self.total_count = total_count
+            self.data_list = data_list
+            # 要对data_list进行处理，field_list数据是字符串，要转成列表才行。
+            selectable_keys = [i['key'] for i in self.header_list if 'selectable' in i and i['selectable']]
+            for data in self.data_list:
+                for selectable_key in selectable_keys:
+                    if f'{selectable_key}_list' in data:
+                        if isinstance(data[f'{selectable_key}_list'], str):
+                            data[f'{selectable_key}_list'] = data[f'{selectable_key}_list'].split(',')
+            # 载入表格
+            self.table_model.set_data_list(self.data_list)
+            self.total_page = ceil(self.total_count / self.page_size)  # 计算总页码
+            self.paginationBar.setTotalPages(self.total_page)
+            self.paginationBar.setInfos(f'共 {self.total_count} 条')
+            self.paginationBar.setCurrentPage(self.page_number)
+
         self.total_page = ceil(self.total_count / self.page_size)  # 计算总页码
         # 防止超页
         if self.page_number > self.total_page and self.page_number != 1:
             self.page_number = self.total_page
-        self.total_count, self.data_list = self.select_api(self.page_number, self.page_size, self.conditions,
-                                                           self.orderby_list)
-        # 要对data_list进行处理，field_list数据是字符串，要转成列表才行。
-        selectable_keys = [i['key'] for i in self.header_list if 'selectable' in i and i['selectable']]
-        for data in self.data_list:
-            for selectable_key in selectable_keys:
-                if f'{selectable_key}_list' in data:
-                    if isinstance(data[f'{selectable_key}_list'], str):
-                        data[f'{selectable_key}_list'] = data[f'{selectable_key}_list'].split(',')
+        if is_in_async_context():
+            loop = asyncio.get_event_loop()
+            running = loop.is_running()
+            if running:
+                def callback(t):
+                    count, datas = t.result()
+                    handle_data_list(count, datas)
 
-    def set_data(self):
-        # 载入表格
-        self.table_model.set_data_list(self.data_list)
-        self.total_page = ceil(self.total_count / self.page_size)  # 计算总页码
-        self.paginationBar.setTotalPages(self.total_page)
-        self.paginationBar.setInfos(f'共 {self.total_count} 条')
-        self.paginationBar.setCurrentPage(self.page_number)
+                task = asyncio.create_task(
+                    self.select_api(self.page_number, self.page_size, self.conditions, self.orderby_list))
+                task.add_done_callback(callback)
+        else:
+            total_count, data_list = asyncio.run(
+                self.select_api(self.page_number, self.page_size, self.conditions, self.orderby_list))
+            handle_data_list(total_count, data_list)
 
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#
     def page_changed_slot(self, page):
@@ -717,19 +733,35 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
             row_data = model.get_data_list()[row]  # 当前行数据，xxx_checked是否选中
             copy = row_data.copy()
             del copy['_parent']  # 去除出循环引用
-            self.update_api(data=copy, id=copy['id'])
+            if is_in_async_context():
+                if asyncio.get_event_loop().is_running():
+                    task = asyncio.create_task(self.update_api(data=copy, id=copy['id']))
+                    task.add_done_callback(lambda t: self.reload_data())
+                    asyncio.gather(task)
+                else:
+                    pass
+            else:
+                pass
+            # self.reload_data() # 这里重新加载数据没有意义，因此此时异步任务还没有完成。
 
     def add_btn_slot(self):
         """
         新增数据
         :return:
         """
-        self.insert_api()
+        if is_in_async_context():
+            if asyncio.get_event_loop().is_running():
+                task = asyncio.create_task(self.insert_api())
+                task.add_done_callback(lambda t: self.reload_data())
+                asyncio.gather(task)
+            else:
+                pass
+        else:
+            pass
         self.total_count += + 1
         self.total_page = ceil(self.total_count / self.page_size)
         self.page_number = self.total_page
         self.paginationBar.setCurrentPage(self.page_number)
-        self.reload_data()
         CMessageDialog.success(content="新增成功", parent=self, is_mask=False)
 
     def delete_btn_slot(self):
@@ -739,7 +771,14 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
         """
         data_list = self.table_model.get_data_list()
         # 删除选中项
-        checked_doc_ids = [data['id'] for data in data_list if data.get("id_checked", 0) == 2]
+        checked_doc_ids = []
+        for data in data_list:
+            if isinstance(data.get("id_checked", 0), int):
+                if data.get("id_checked", 0) == 2:
+                    checked_doc_ids.append(data['id'])
+            else:
+                if data.get("id_checked", 0).value == 2:
+                    checked_doc_ids.append(data['id'])
         if len(checked_doc_ids) == 0:
             CMessageDialog.error("Please select the data first.", parent=self)
             return
@@ -749,13 +788,19 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
                                          parent=self)
         exec_ = confirm.exec_()
         if exec_ == 1:
-            pass
+            if is_in_async_context():
+                if asyncio.get_event_loop().is_running():
+                    task = asyncio.create_task(self.delete_api(checked_doc_ids))
+                    task.add_done_callback(lambda t: self.reload_data())
+                else:
+                    pass
+            else:
+                pass
+            self.total_count = self.total_count - len(set(checked_doc_ids))
+            # self.reload_data() # 这里重新加载数据没有意义，因此此时异步任务还没有完成。
+            CMessageDialog.success(content="删除成功", parent=self, is_mask=False)
         else:
             return
-        self.delete_api(checked_doc_ids)
-        self.total_count = self.total_count - len(set(checked_doc_ids))
-        self.reload_data()
-        CMessageDialog.success(content="删除成功", parent=self, is_mask=False)
 
     def truncate_btn_slot(self):
         """
@@ -768,16 +813,24 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
                                         parent=self)
         exec_ = confirm.exec_()
         if exec_ == 1:
-            pass
+            if is_in_async_context():
+                if asyncio.get_event_loop().is_running():
+                    task = asyncio.create_task(self.truncate_api())
+                    task.add_done_callback(lambda t: self.reload_data())
+                    asyncio.gather(task)
+                else:
+                    pass
+            else:
+                pass
+
+            # self.reload_data() # 这里重新加载数据没有意义，因此此时异步任务还没有完成。去异步任务完成时回调的时候加载
+            CMessageDialog.success(content="清空成功", parent=self, is_mask=False)
         else:
             return
-        self.truncate_api()
-        self.reload_data()
-        CMessageDialog.success(content="清空成功", parent=self, is_mask=False)
 
     # /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#
 
-    def update_api(self, data, id) -> bool:
+    async def update_api(self, data, id) -> bool:
         """
         JDBC 更新API 这里根据不同的数据库类型，执行不同的更新语句
         :param data 数据内容
@@ -785,21 +838,21 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
         """
         raise NotImplementedError
 
-    def delete_api(self, id_list: list) -> bool:
+    async def delete_api(self, id_list: list) -> bool:
         """
         JDBC 删除API 这里根据不同的数据库类型，执行不同的删除语句
         :param id_list id列表
         """
         raise NotImplementedError
 
-    def insert_api(self, data=None) -> bool:
+    async def insert_api(self, data=None) -> bool:
         """
         JDBC 新增API 这里根据不同的数据库类型，执行不同的新增语句
         """
         # 获取默认数据，进行插入数据库，然后用户通过修改去填入数据
         raise NotImplementedError
 
-    def select_api(self, page_number, page_size, conditions: dict = None, orderby_list=None) -> (int, list[dict]):
+    async def select_api(self, page_number, page_size, conditions: dict = None, orderby_list=None) -> (int, list[dict]):
         """
         JDBC 查询API 这里根据不同的数据库类型，执行不同的查询语句
         :param page_number: 页码
@@ -811,7 +864,7 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
 
         raise NotImplementedError
 
-    def truncate_api(self):
+    async def truncate_api(self):
         raise NotImplementedError
 
     def _get_default_data_(self):
@@ -828,14 +881,3 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
                     raise ValueError(f"{header_domain.key} selectable_list is None.")
                 default_data[f'{header_domain.key}_list'] = header_domain.selectable_list
         return default_data
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    # 创建主循环
-    demo_widget = TableViewWidgetAbstract()
-    MTheme("dark").apply(demo_widget)
-    # 显示窗口
-    demo_widget.show()
-
-    QtAsyncio.run(handle_sigint=True)
