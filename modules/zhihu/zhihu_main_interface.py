@@ -6,8 +6,10 @@ import time
 from PySide6 import QtCore
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
+from qasync import QEventLoop
+
 from dayu_widgets.qt import MIcon
-from dayu_widgets import MFieldMixin, dayu_theme, MLineTabWidget
+from dayu_widgets import MFieldMixin, dayu_theme, MLineTabWidget, MTheme
 
 from db.widget_pointer import widget_pointer_mapping
 from modules.zhihu.interfaces.cockpit_interface import CockpitInterface
@@ -80,8 +82,18 @@ class ZhiHuMainWidget(QWidget, MFieldMixin):
         logging.info(f"知乎整体任务执行结束；耗时: {elapsed_time:.3f} 秒")
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon(icons["icon.ico"]))
-    window = ZhiHuMainWidget()
-    sys.exit(app.exec())
+if __name__ == '__main__':
+    # 配置日志记录器
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    # 创建主循环
+    app = QApplication([])
+    # 创建异步事件循环
+    loop = QEventLoop(app)
+    asyncio.set_event_loop(loop)
+    # 创建窗口
+    demo_widget = ZhiHuMainWidget()
+    MTheme(theme='dark').apply(demo_widget)
+    # 显示窗口
+    demo_widget.show()
+    loop.run_forever()
+    pass

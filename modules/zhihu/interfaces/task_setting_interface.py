@@ -2,14 +2,15 @@ import asyncio
 import logging
 import traceback
 
-from PySide2.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
+
+from cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
+from cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
 from dayu_widgets import MTheme
 
-from db.mysql.mysql_jdbc import create_pool, select_list, close_pool, select_list_by_database_table
-from gui.uis.windows.startup_window.main import increase_counter
-from gui.widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
-from gui.widgets.c_table_view_widget.table_view_widget import ColumnConfig
+from db.mysql.mysql_jdbc import select_list_by_database_table
 
 """
 任务配置管理

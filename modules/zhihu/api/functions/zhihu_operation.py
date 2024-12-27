@@ -7,26 +7,24 @@ import traceback
 from asyncio import Lock
 from collections import defaultdict
 
-from gui.utils.tinydb_util import build_query
-from gui.widgets.c_table_view_widget.table_view_tinydb_widget import TableViewWidgetTinyDBAbstract
-from modules.zhihu_auto.api.functions import pictures_file_path
-from modules.zhihu_auto.api.functions.ask_questions import AskingQuestions
-from modules.zhihu_auto.api.functions.follow import Follow
-from modules.zhihu_auto.api.functions.follow_recommend import FollowRecommend
-from modules.zhihu_auto.api.functions.post_answers import PostAnswers
-from modules.zhihu_auto.api.functions.post_answers_message_invitation import PostAnswersMessageInvitation
-from modules.zhihu_auto.api.functions.publish_article import PublishArticle
-from modules.zhihu_auto.api.functions.publish_ideas import PublishIdeas
-from modules.zhihu_auto.api.functions.random_browsing import RandomBrowsing
-from modules.zhihu_auto.api.functions.refresh_likes import RefreshLikes
-from modules.zhihu_auto.api.resource.douyin_hot_topic_spider import DouyinHotTopicSpider
-from modules.zhihu_auto.api.resource.picture_pixabay_spider import PicturePixabaySpider
-from modules.zhihu_auto.api.resource.resources_service import ResourcesService
-from modules.zhihu_auto.api.resource.weibo_hot_topic_spider import WeiboHotTopicSpider
-from modules.zhihu_auto.api.utils.common_utils import find_chrome_path, find_edge_path, kill_process_by_name
+from modules.zhihu.api.functions import pictures_file_path
+from modules.zhihu.api.functions.ask_questions import AskingQuestions
+from modules.zhihu.api.functions.follow import Follow
+from modules.zhihu.api.functions.follow_recommend import FollowRecommend
+from modules.zhihu.api.functions.post_answers import PostAnswers
+from modules.zhihu.api.functions.post_answers_message_invitation import PostAnswersMessageInvitation
+from modules.zhihu.api.functions.publish_article import PublishArticle
+from modules.zhihu.api.functions.publish_ideas import PublishIdeas
+from modules.zhihu.api.functions.random_browsing import RandomBrowsing
+from modules.zhihu.api.functions.refresh_likes import RefreshLikes
+from modules.zhihu.api.resource.douyin_hot_topic_spider import DouyinHotTopicSpider
+from modules.zhihu.api.resource.picture_pixabay_spider import PicturePixabaySpider
+from modules.zhihu.api.resource.resources_service import ResourcesService
+from modules.zhihu.api.resource.weibo_hot_topic_spider import WeiboHotTopicSpider
+from modules.zhihu.api.utils.common_utils import find_chrome_path, find_edge_path, kill_process_by_name
 from db.mysql.mysql_jdbc import update_by_id, select_list, insert_batch, create_pool, \
     close_pool, select_list_by_database_table
-from modules.zhihu_auto.api.functions import current_directory
+from modules.zhihu.api.functions import current_directory
 
 util_html_path = os.path.join(current_directory, "html_utils", "util.html")
 markdown_html_path = os.path.join(current_directory, "html_utils", "markdown.html")

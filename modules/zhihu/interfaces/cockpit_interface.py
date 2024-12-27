@@ -3,13 +3,14 @@ import functools
 import logging
 
 from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout, QHBoxLayout, QListView
+from qasync import QEventLoop
+
+from cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
 from dayu_widgets.qt import MIcon
 from dayu_widgets import MTheme, MListView, MPushButtonGroup, MPushButton, MLineEdit, \
     MFieldMixin, MLoadingWrapper, dayu_theme, MToolButton
 
-from db.pickle_db.data_storage_service import data_session_storage_py_one_dark
-from gui.uis.windows.startup_window.main import SplashScreen, increase_counter
-from modules.zhihu_auto.icons import icons
+from modules.zhihu.icons import icons
 
 """
 驾驶舱
@@ -45,7 +46,7 @@ if __name__ == '__main__':
     loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
     # 创建窗口
-    demo_widget = SplashScreen(CockpitInterface)
+    demo_widget = CockpitInterface()
     MTheme(theme='dark').apply(demo_widget)
     # 显示窗口
     demo_widget.show()

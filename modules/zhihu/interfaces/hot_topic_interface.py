@@ -2,19 +2,20 @@ import asyncio
 import datetime
 import logging
 
-from PySide2.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
+
+from cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
+from cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
 from dayu_widgets.qt import MIcon
 from qasync import QEventLoop
 from dayu_widgets import MTheme, MPushButton
 
-from gui.uis.windows.startup_window.main import increase_counter
-from gui.utils.dialog_util import are_you_sure_dialog
-from gui.widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
-from gui.widgets.c_table_view_widget.table_view_widget import ColumnConfig
-from modules.zhihu_auto.api.resource.douyin_hot_topic_spider import DouyinHotTopicSpider
-from modules.zhihu_auto.api.resource.picture_pixabay_spider import PicturePixabaySpider
-from modules.zhihu_auto.api.resource.weibo_hot_topic_spider import WeiboHotTopicSpider
-from modules.zhihu_auto.icons import icons
+from modules.zhihu.api.resource.douyin_hot_topic_spider import DouyinHotTopicSpider
+from modules.zhihu.api.resource.picture_pixabay_spider import PicturePixabaySpider
+from modules.zhihu.api.resource.weibo_hot_topic_spider import WeiboHotTopicSpider
+from modules.zhihu.icons import icons
+from utils.dialog_util import are_you_sure_dialog
 
 """
 热点管理

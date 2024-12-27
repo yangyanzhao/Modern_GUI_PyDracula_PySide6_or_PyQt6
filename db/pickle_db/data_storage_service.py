@@ -2,7 +2,7 @@ import asyncio
 import logging
 import random
 
-from PySide2.QtWidgets import QWidget, QApplication, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
 from dayu_widgets import MFieldMixin, MTheme, MLabel, MLineEdit, MPushButton
 from qasync import QEventLoop
 

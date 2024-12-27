@@ -13,14 +13,14 @@ from asyncio import Lock
 
 from playwright.async_api import async_playwright
 
-from modules.zhihu_auto.api.resource.resources_service import ResourcesService
-from modules.zhihu_auto.api.utils.common_utils import close_browser_by_domain, kill_process_by_port, \
+from modules.zhihu.api.resource.resources_service import ResourcesService
+from modules.zhihu.api.utils.common_utils import close_browser_by_domain, kill_process_by_port, \
     kill_processes_by_user_data_dir, ping_website
 from db.mysql.mysql_jdbc import insert, select_list, create_pool
-from modules.zhihu_auto.plugin_email.email_notice import email_notification
-from modules.zhihu_auto.plugin_screenshot.screenshot_page_element import screenshot_page
+from modules.zhihu.plugin_email.email_notice import email_notification
+from modules.zhihu.plugin_screenshot.screenshot_page_element import screenshot_page
 
-from modules.zhihu_auto.api.functions import current_directory
+from modules.zhihu.api.functions import current_directory
 util_html_path = os.path.join(current_directory, "html_utils", "util.html")
 markdown_html_path = os.path.join(current_directory, "html_utils", "markdown.html")
 

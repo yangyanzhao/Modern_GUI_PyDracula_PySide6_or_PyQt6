@@ -11,8 +11,8 @@ import traceback
 import requests
 from playwright.async_api import async_playwright
 
-from modules.zhihu_auto.api.functions import current_directory
-from modules.zhihu_auto.api.utils.common_utils import find_chrome_path, create_dir, close_browser_by_domain, \
+from modules.zhihu.api.functions import current_directory
+from modules.zhihu.api.utils.common_utils import find_chrome_path, create_dir, close_browser_by_domain, \
     kill_process_by_port
 from db.mysql.mysql_jdbc import select_last_one, insert, select_count, create_pool, close_pool
 

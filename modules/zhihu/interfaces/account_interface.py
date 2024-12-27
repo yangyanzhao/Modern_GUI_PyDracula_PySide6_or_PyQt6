@@ -4,16 +4,17 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QIcon
+from qasync import QEventLoop
 
+from cocos_widgets.c_dialog.c_confirm_dialog import CMessageDialog, CConfirmDialog
+from cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
+from cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
 from dayu_widgets.qt import MIcon
-from dayu_widgets import MPushButton
+from dayu_widgets import MPushButton, MTheme
 
 from db.mysql.mysql_jdbc import create_pool, select_list, select_list_by_database_table, select_by_id_by_database_table
 from db.widget_pointer import widget_pointer_mapping
-from gui.uis.windows.startup_window.main import increase_counter
-from gui.widgets.c_dialog.c_confirm_dialog import CConfirmDialog, CMessageDialog
-from gui.widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
-from gui.widgets.c_table_view_widget.table_view_widget import ColumnConfig
 from modules.zhihu.api.functions.zhihu_operation import generate_plan_, generate_plans
 from modules.zhihu.icons import icons
 
@@ -209,9 +210,19 @@ class AccountInterface(TableViewWidgetMySQLAbstract):
         await generate_plans(accounts=accounts, task_setting_list_mapping=task_setting_list_mapping)
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon(icons["icon.ico"]))
-    window = AccountInterface()
-    sys.exit(app.exec())
 
+if __name__ == '__main__':
+    # 配置日志记录器
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    # 创建主循环
+    app = QApplication([])
+    # 创建异步事件循环
+    loop = QEventLoop(app)
+    asyncio.set_event_loop(loop)
+    # 创建窗口
+    demo_widget = AccountInterface()
+    MTheme(theme='dark').apply(demo_widget)
+    # 显示窗口
+    demo_widget.show()
+    loop.run_forever()
+    pass

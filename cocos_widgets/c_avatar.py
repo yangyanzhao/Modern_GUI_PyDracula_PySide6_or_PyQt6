@@ -10,6 +10,8 @@ from PySide6.QtGui import QPixmap, QColor, QPainter, QPainterPath, QMovie, QClip
 from PySide6.QtWidgets import QWidget, QApplication, QHBoxLayout, QMenu, QFileDialog
 from PySide6 import QtAsyncio
 
+from db.mysql.async_utils import is_in_async_context
+
 
 class CAvatar(QWidget):
     Circle = 0  # 圆形
@@ -46,7 +48,11 @@ class CAvatar(QWidget):
         self.setShape(shape)
         self.setCacheDir(cacheDir)
         self.setSize(size)
-        asyncio.run(self.setUrl(url))
+        if is_in_async_context():
+            task = asyncio.create_task(self.setUrl(url))
+            asyncio.gather(task)
+        else:
+            asyncio.run(self.setUrl(url))
 
     def paintEvent(self, event):
         super(CAvatar, self).paintEvent(event)

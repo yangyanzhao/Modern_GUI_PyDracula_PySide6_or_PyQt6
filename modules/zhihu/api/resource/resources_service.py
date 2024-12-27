@@ -12,8 +12,8 @@ from asyncio import Lock
 
 import aiomysql
 
-from gui.utils.file_lock import create_fold_path
-from modules.zhihu_auto.chat.api import chat
+
+from modules.zhihu.chat.api import chat
 from db.mysql.mysql_jdbc import create_pool
 
 
@@ -26,7 +26,9 @@ class ResourcesService:
         # 等待异步任务完成
         self.accounts = accounts
         self.folder_path = folder_path
-        create_fold_path(fold_path=folder_path)
+        if os.path.exists(folder_path) is False:
+            os.makedirs(folder_path)
+
         files = os.listdir(folder_path)
         files_arr = ResourcesService.split_array(files, len(self.accounts))
         self.files_account = {}

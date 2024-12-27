@@ -4,12 +4,7 @@ import platform
 import subprocess
 import json
 import logging
-import smtplib
 import threading
-import traceback
-from email.header import Header
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
 import psutil
 import requests

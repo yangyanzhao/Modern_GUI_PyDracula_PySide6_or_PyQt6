@@ -6,7 +6,7 @@ import random
 import re
 
 from modules.gpt_4_free.interface.chat_interface import llm_mapping
-from modules.zhihu_auto.chat.default_prompts import mouth_suck_king_prompt
+from modules.zhihu.chat.default_prompts import mouth_suck_king_prompt
 from db.mysql.mysql_jdbc import create_pool, close_pool
 
 except_servers = []

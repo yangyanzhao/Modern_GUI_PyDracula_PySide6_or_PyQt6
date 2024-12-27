@@ -12,9 +12,8 @@ from cocos_widgets.c_dialog.c_confirm_dialog import CMessageDialog, CConfirmDial
 from cocos_widgets.c_pagination_bar import CPaginationBar
 from cocos_widgets.c_table_view_widget.ddl_parse_util import parse_ddl
 from cocos_widgets.c_table_view_widget.icons import icons
-from cocos_widgets.c_table_view_widget.run_in_background_util import run_in_background
 from dayu_widgets.qt import MIcon
-from dayu_widgets import MTheme, MFieldMixin, dayu_theme, MTableModel, MLineEdit, \
+from dayu_widgets import MFieldMixin, dayu_theme, MTableModel, MLineEdit, \
     MTableView, MPushButtonGroup, MPushButton, MComboBox, MMenu, MFlowLayout, \
     MSpinBox, MDoubleSpinBox, MDateTimeEdit, MDateEdit, MTimeEdit, MTag
 from db.mysql.async_utils import is_in_async_context
@@ -773,11 +772,11 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
         # 删除选中项
         checked_doc_ids = []
         for data in data_list:
-            if isinstance(data.get("id_checked", 0), int):
+            if data.get("id_checked", 0) is not None and isinstance(data.get("id_checked", 0), int):
                 if data.get("id_checked", 0) == 2:
                     checked_doc_ids.append(data['id'])
             else:
-                if data.get("id_checked", 0).value == 2:
+                if data.get("id_checked", 0) is not None and data.get("id_checked", 0).value == 2:
                     checked_doc_ids.append(data['id'])
         if len(checked_doc_ids) == 0:
             CMessageDialog.error("Please select the data first.", parent=self)

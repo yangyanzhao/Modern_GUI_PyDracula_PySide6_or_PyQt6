@@ -5,7 +5,7 @@ import random
 
 from playwright.async_api import async_playwright, ElementHandle, Page
 
-from modules.zhihu_auto.plugin_email.email_notice import email_notification
+from modules.zhihu.plugin_email.email_notice import email_notification
 
 
 async def screenshot_page(page: ElementHandle,
