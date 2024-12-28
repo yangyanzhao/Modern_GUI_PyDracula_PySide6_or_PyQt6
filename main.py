@@ -1,3 +1,4 @@
+import os
 import sys
 
 from PySide6 import QtAsyncio
@@ -13,7 +14,6 @@ from framework.ui_functions import UIFunctions
 from framework.ui_main import Ui_MainWindow
 
 from resources.framework.icons import icons
-from widgets import *
 
 os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100%
 

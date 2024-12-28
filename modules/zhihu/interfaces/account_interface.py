@@ -1,17 +1,15 @@
 import asyncio
 import logging
-import sys
 
 from PySide6.QtWidgets import QApplication
-from PySide6.QtGui import QIcon
 from qasync import QEventLoop
 
-from cocos_widgets.c_dialog.c_confirm_dialog import CMessageDialog, CConfirmDialog
-from cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
-from cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
-from cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
-from dayu_widgets.qt import MIcon
-from dayu_widgets import MPushButton, MTheme
+from widgets.cocos_widgets import CMessageDialog, CConfirmDialog
+from widgets.cocos_widgets.c_splash_screen import increase_counter
+from widgets.cocos_widgets import TableViewWidgetMySQLAbstract
+from widgets.cocos_widgets import ColumnConfig
+from widgets.dayu_widgets import MIcon
+from widgets.dayu_widgets import MPushButton, MTheme
 
 from db.mysql.mysql_jdbc import create_pool, select_list, select_list_by_database_table, select_by_id_by_database_table
 from db.widget_pointer import widget_pointer_mapping

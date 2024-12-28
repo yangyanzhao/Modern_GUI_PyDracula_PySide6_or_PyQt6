@@ -1,4 +1,4 @@
-from cocos_widgets.c_dialog.c_confirm_dialog import CConfirmDialog
+from widgets.cocos_widgets import CConfirmDialog
 
 
 # 执行方法之前出确定弹框

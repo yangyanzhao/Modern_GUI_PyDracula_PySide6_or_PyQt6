@@ -1,15 +1,13 @@
 import asyncio
 import logging
-import sys
 import time
 
 from PySide6 import QtCore
-from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
 from qasync import QEventLoop
 
-from dayu_widgets.qt import MIcon
-from dayu_widgets import MFieldMixin, dayu_theme, MLineTabWidget, MTheme
+from widgets.dayu_widgets import MIcon
+from widgets.dayu_widgets import MFieldMixin, dayu_theme, MLineTabWidget, MTheme
 
 from db.widget_pointer import widget_pointer_mapping
 from modules.zhihu.interfaces.cockpit_interface import CockpitInterface

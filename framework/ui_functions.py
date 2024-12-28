@@ -20,7 +20,7 @@ from PySide6.QtGui import QColor, QIcon, QCursor, QFont, QPixmap
 from PySide6.QtWidgets import QPushButton, QGraphicsDropShadowEffect, QSizeGrip, QSizePolicy
 
 from framework.app_settings import Settings
-from widgets import CustomGrip
+from framework.custom_grips import CustomGrip
 
 # MAIN FILE
 # ///////////////////////////////////////////////////////////////

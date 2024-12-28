@@ -1,14 +1,13 @@
 import asyncio
 import logging
-import traceback
 
 from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
 
-from cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
-from cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
-from cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
-from dayu_widgets import MTheme
+from widgets.cocos_widgets.c_splash_screen import increase_counter
+from widgets.cocos_widgets import TableViewWidgetMySQLAbstract
+from widgets.cocos_widgets import ColumnConfig
+from widgets.dayu_widgets import MTheme
 
 from db.mysql.mysql_jdbc import select_list_by_database_table
 

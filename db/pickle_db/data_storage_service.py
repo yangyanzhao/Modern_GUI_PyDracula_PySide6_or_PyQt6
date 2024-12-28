@@ -3,7 +3,7 @@ import logging
 import random
 
 from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
-from dayu_widgets import MFieldMixin, MTheme, MLabel, MLineEdit, MPushButton
+from widgets.dayu_widgets import MFieldMixin, MTheme, MLabel, MLineEdit, MPushButton
 from qasync import QEventLoop
 
 from db.pickle_db.pickle_jdbc import pickle

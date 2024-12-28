@@ -4,9 +4,9 @@ import logging
 from PySide6 import QtCore
 from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
 
-from cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from widgets.cocos_widgets.c_splash_screen import increase_counter
 from qasync import QEventLoop
-from dayu_widgets import MFieldMixin, dayu_theme, MLineTabWidget
+from widgets.dayu_widgets import MFieldMixin, dayu_theme, MLineTabWidget
 
 from db.widget_pointer import widget_pointer_mapping
 from modules.gpt_4_free.icons import icons

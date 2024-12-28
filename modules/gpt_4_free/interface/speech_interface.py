@@ -12,13 +12,13 @@ from PySide6.QtWidgets import (
     QSplitter,
     QSizePolicy, QLabel
 )
-from PySide6.QtCore import Qt, Signal, QTimer, QSize
+from PySide6.QtCore import Qt, Signal, QTimer
 
-from cocos_widgets.c_avatar import CAvatar
-from cocos_widgets.c_dialog.c_confirm_dialog import CConfirmDialog
-from cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
-from cocos_widgets.c_voice_message.c_voice_message import CVoiceMessageWidget
-from dayu_widgets import MFieldMixin, MTheme, MTextEdit, MPushButton, MLabel, MComboBox, MMenu
+from widgets.cocos_widgets import CAvatar
+from widgets.cocos_widgets import CConfirmDialog
+from widgets.cocos_widgets.c_splash_screen import increase_counter
+from widgets.cocos_widgets import CVoiceMessageWidget
+from widgets.dayu_widgets import MFieldMixin, MTheme, MTextEdit, MPushButton, MLabel, MComboBox, MMenu
 from qasync import QEventLoop
 
 from db.mysql.async_utils import is_in_async_context
