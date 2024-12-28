@@ -14,13 +14,19 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, Signal, QTimer, QSize
 
-from widgets.cocos_widgets import CAvatar
-from widgets.cocos_widgets import CConfirmDialog
-from widgets.cocos_widgets.c_splash_screen import increase_counter
-from widgets.dayu_widgets import MFieldMixin, MTheme, MTextEdit, MPushButton, MLabel, MComboBox, MMenu
 from qasync import QEventLoop
 
 from db.mysql.async_utils import is_in_async_context
+from framework.widgets.cocos_widgets.c_avatar import CAvatar
+from framework.widgets.cocos_widgets.c_dialog.c_confirm_dialog import CConfirmDialog
+from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from framework.widgets.dayu_widgets import MTheme
+from framework.widgets.dayu_widgets.combo_box import MComboBox
+from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
+from framework.widgets.dayu_widgets.label import MLabel
+from framework.widgets.dayu_widgets.menu import MMenu
+from framework.widgets.dayu_widgets.push_button import MPushButton
+from framework.widgets.dayu_widgets.text_edit import MTextEdit
 from modules.gpt_4_free.api.doubao.jimeng_free_api_one import JiMengAPIOne
 from modules.gpt_4_free.api.doubao.jimeng_free_api_two import JiMengAPITwo
 from modules.gpt_4_free.api.glm.glm_free_api_four import GlmAPIFour

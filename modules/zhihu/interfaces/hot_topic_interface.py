@@ -4,13 +4,14 @@ import logging
 
 from PySide6.QtWidgets import QApplication
 
-from widgets.cocos_widgets.c_splash_screen import increase_counter
-from widgets.cocos_widgets import TableViewWidgetMySQLAbstract
-from widgets.cocos_widgets import ColumnConfig
-from widgets.dayu_widgets import MIcon
 from qasync import QEventLoop
-from widgets.dayu_widgets import MTheme, MPushButton
 
+from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from framework.widgets.cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
+from framework.widgets.cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
+from framework.widgets.dayu_widgets import MTheme
+from framework.widgets.dayu_widgets.push_button import MPushButton
+from framework.widgets.dayu_widgets.qt import MIcon
 from modules.zhihu.api.resource.douyin_hot_topic_spider import DouyinHotTopicSpider
 from modules.zhihu.api.resource.picture_pixabay_spider import PicturePixabaySpider
 from modules.zhihu.api.resource.weibo_hot_topic_spider import WeiboHotTopicSpider

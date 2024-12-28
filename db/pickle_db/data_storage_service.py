@@ -3,10 +3,14 @@ import logging
 import random
 
 from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
-from widgets.dayu_widgets import MFieldMixin, MTheme, MLabel, MLineEdit, MPushButton
 from qasync import QEventLoop
 
 from db.pickle_db.pickle_jdbc import pickle
+from framework.widgets.dayu_widgets import MTheme
+from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
+from framework.widgets.dayu_widgets.label import MLabel
+from framework.widgets.dayu_widgets.line_edit import MLineEdit
+from framework.widgets.dayu_widgets.push_button import MPushButton
 
 """
 作为pickle键值数据库的一个应用

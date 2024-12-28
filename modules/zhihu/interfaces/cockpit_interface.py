@@ -4,10 +4,10 @@ import logging
 from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout, QHBoxLayout
 from qasync import QEventLoop
 
-from widgets.cocos_widgets.c_splash_screen import increase_counter
-from widgets.dayu_widgets import MIcon
-from widgets.dayu_widgets import MTheme, MFieldMixin
-
+from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from framework.widgets.dayu_widgets import MTheme
+from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
+from framework.widgets.dayu_widgets.qt import MIcon
 from modules.zhihu.icons import icons
 
 """

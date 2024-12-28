@@ -4,11 +4,13 @@ import logging
 from PySide6 import QtCore
 from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
 
-from widgets.cocos_widgets.c_splash_screen import increase_counter
 from qasync import QEventLoop
-from widgets.dayu_widgets import MFieldMixin, dayu_theme, MLineTabWidget
 
 from db.widget_pointer import widget_pointer_mapping
+from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from framework.widgets.dayu_widgets import dayu_theme
+from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
+from framework.widgets.dayu_widgets.line_tab_widget import MLineTabWidget
 from modules.gpt_4_free.icons import icons
 from modules.gpt_4_free.interface.chat_api_log_interface import ChatAPILogInterface
 from modules.gpt_4_free.interface.chat_interface import ChatInterface

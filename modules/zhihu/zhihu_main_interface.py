@@ -6,10 +6,11 @@ from PySide6 import QtCore
 from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
 from qasync import QEventLoop
 
-from widgets.dayu_widgets import MIcon
-from widgets.dayu_widgets import MFieldMixin, dayu_theme, MLineTabWidget, MTheme
 
 from db.widget_pointer import widget_pointer_mapping
+from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
+from framework.widgets.dayu_widgets.line_tab_widget import MLineTabWidget
+from framework.widgets.dayu_widgets.qt import MIcon
 from modules.zhihu.interfaces.cockpit_interface import CockpitInterface
 from modules.zhihu.interfaces.account_interface import AccountInterface
 from modules.zhihu.interfaces.hot_topic_interface import HotTopicsInterface

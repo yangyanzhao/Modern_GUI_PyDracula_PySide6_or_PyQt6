@@ -4,15 +4,16 @@ import logging
 
 from PySide6.QtWidgets import QApplication
 
-from widgets.cocos_widgets import CMessageDialog, CConfirmDialog
-from widgets.cocos_widgets.c_splash_screen import increase_counter
-from widgets.cocos_widgets import TableViewWidgetMySQLAbstract
-from widgets.cocos_widgets import ColumnConfig
-from widgets.dayu_widgets import MIcon
 from qasync import QEventLoop
-from widgets.dayu_widgets import MTheme, MPushButton
 
 from db.mysql.mysql_jdbc import select_list_by_database_table
+from framework.widgets.cocos_widgets.c_dialog.c_confirm_dialog import CMessageDialog, CConfirmDialog
+from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from framework.widgets.cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
+from framework.widgets.cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
+from framework.widgets.dayu_widgets import MTheme
+from framework.widgets.dayu_widgets.push_button import MPushButton
+from framework.widgets.dayu_widgets.qt import MIcon
 from modules.zhihu.api.functions.zhihu_operation import start_all_task, start_one_task
 from modules.zhihu.api.utils.common_utils import kill_process_by_name
 from modules.zhihu.icons import icons

@@ -4,13 +4,13 @@ import logging
 import os
 from PySide6.QtWidgets import QApplication
 
-from widgets.cocos_widgets.c_splash_screen import increase_counter
-from widgets.cocos_widgets import TableViewWidgetMySQLAbstract
-from widgets.cocos_widgets import ColumnConfig
-from widgets.dayu_widgets import MIcon
 from qasync import QEventLoop
-from widgets.dayu_widgets import MPushButton
 
+from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from framework.widgets.cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
+from framework.widgets.cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
+from framework.widgets.dayu_widgets.push_button import MPushButton
+from framework.widgets.dayu_widgets.qt import MIcon
 from modules.gpt_4_free.icons import icons
 from modules.gpt_4_free.interface.chat_interface import llm_mapping
 

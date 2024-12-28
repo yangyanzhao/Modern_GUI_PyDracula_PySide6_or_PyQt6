@@ -4,12 +4,12 @@ import logging
 from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
 
-from widgets.cocos_widgets.c_splash_screen import increase_counter
-from widgets.cocos_widgets import TableViewWidgetMySQLAbstract
-from widgets.cocos_widgets import ColumnConfig
-from widgets.dayu_widgets import MTheme
 
 from db.mysql.mysql_jdbc import select_list_by_database_table
+from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
+from framework.widgets.cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
+from framework.widgets.cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
+from framework.widgets.dayu_widgets import MTheme
 
 """
 任务配置管理
