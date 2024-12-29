@@ -8,6 +8,7 @@ from qasync import QEventLoop
 
 
 from db.widget_pointer import widget_pointer_mapping
+from framework.widgets.dayu_widgets import MTheme, dayu_theme
 from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
 from framework.widgets.dayu_widgets.line_tab_widget import MLineTabWidget
 from framework.widgets.dayu_widgets.qt import MIcon

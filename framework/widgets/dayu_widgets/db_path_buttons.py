@@ -17,7 +17,7 @@ from itertools import izip_longest
 
 # Import third-party modules
 from qt import *
-import utils
+from framework import utils
 
 
 def parse_db_orm(orm):

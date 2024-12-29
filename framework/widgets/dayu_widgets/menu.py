@@ -21,11 +21,11 @@ import six
 from PySide6.QtGui import QAction, QActionGroup
 from PySide6.QtWidgets import QStyle
 
+from framework.widgets.dayu_widgets import utils
 # Import local modules
 from framework.widgets.dayu_widgets.line_edit import MLineEdit
 from framework.widgets.dayu_widgets.mixin import property_mixin
 from framework.widgets.dayu_widgets.popup import MPopup
-from framework.widgets import dayu_widgets as utils
 
 
 @property_mixin

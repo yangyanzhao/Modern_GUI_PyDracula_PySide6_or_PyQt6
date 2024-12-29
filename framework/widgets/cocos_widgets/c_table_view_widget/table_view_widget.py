@@ -6,7 +6,7 @@ from PySide6 import QtCore
 from PySide6.QtCore import QModelIndex, QDateTime
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
 
-from framework.widgets.cocos_widgets.c_calendar import CCalendarWidget
+from framework.widgets.cocos_widgets.c_calendar import CCalendar
 from framework.widgets.cocos_widgets.c_dialog.c_confirm_dialog import CMessageDialog, CConfirmDialog
 from framework.widgets.cocos_widgets.c_pagination_bar import CPaginationBar
 from framework.widgets.cocos_widgets.c_table_view_widget.ddl_parse_util import parse_ddl
@@ -351,7 +351,7 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
                             datetime=QtCore.QDateTime.fromString(key_value, "yyyy-MM-dd HH:mm:ss")).small()
                         date_time_edit_0.setDisplayFormat("yyyy-MM-dd HH:mm:ss")
                         date_time_edit_0.setCalendarPopup(True)
-                        custom_calendar = CCalendarWidget(date_time_edit_0, self)
+                        custom_calendar = CCalendar(date_time_edit_0, self)
                         layout.addWidget(custom_calendar)
                         date_time_edit_0.setCalendarWidget(custom_calendar)
                         date_time_edit_0.setDateTime(QDateTime(datetime.today().year, 1, 1, 0, 0, 0))
@@ -389,7 +389,7 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
                                 datetime=QtCore.QDateTime.fromString(key_value, "yyyy-MM-dd HH:mm:ss")).small()
                             date_time_edit_1.setDisplayFormat("yyyy-MM-dd HH:mm:ss")
                             date_time_edit_1.setCalendarPopup(True)
-                            custom_calendar = CCalendarWidget(date_time_edit_0, self)
+                            custom_calendar = CCalendar(date_time_edit_0, self)
                             layout.addWidget(custom_calendar)
                             date_time_edit_1.setCalendarWidget(custom_calendar)
                             date_time_edit_1.setDateTime(QDateTime(datetime.today().year, 1, 1, 0, 0, 0))
@@ -414,7 +414,7 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
                         date_edit_0 = MDateEdit().small()
                         date_edit_0.setDisplayFormat("yyyy-MM-dd")
                         date_edit_0.setCalendarPopup(True)
-                        custom_calendar = CCalendarWidget(date_edit_0, self)
+                        custom_calendar = CCalendar(date_edit_0, self)
                         layout.addWidget(custom_calendar)
                         date_edit_0.setCalendarWidget(custom_calendar)
                         date_edit_0.setDateTime(QDateTime(100, 1, 1, 0, 0, 0))
@@ -452,7 +452,7 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
                                 date=QtCore.QDate.fromString(key_value, "yyyy-MM-dd")).small()
                             date_edit_1.setDisplayFormat("yyyy-MM-dd")
                             date_edit_1.setCalendarPopup(True)
-                            custom_calendar = CCalendarWidget(date_edit_1, self)
+                            custom_calendar = CCalendar(date_edit_1, self)
                             layout.addWidget(custom_calendar)
                             date_edit_1.setCalendarWidget(custom_calendar)
                             date_edit_1.setDateTime(QDateTime(100, 1, 1, 0, 0, 0))

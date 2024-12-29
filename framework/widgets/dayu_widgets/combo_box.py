@@ -14,12 +14,11 @@ from __future__ import print_function
 from PySide6 import QtWidgets, QtCore
 
 # Import local modules
-from framework.widgets.dayu_widgets import dayu_theme
+from framework.widgets.dayu_widgets import dayu_theme, utils
 from framework.widgets.dayu_widgets.completer import MCompleter
 from framework.widgets.dayu_widgets.mixin import cursor_mixin
 from framework.widgets.dayu_widgets.mixin import focus_shadow_mixin
 from framework.widgets.dayu_widgets.mixin import property_mixin
-from framework.widgets import dayu_widgets as utils
 
 
 @property_mixin

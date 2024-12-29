@@ -16,7 +16,7 @@ from modules.zhihu.api.resource.douyin_hot_topic_spider import DouyinHotTopicSpi
 from modules.zhihu.api.resource.picture_pixabay_spider import PicturePixabaySpider
 from modules.zhihu.api.resource.weibo_hot_topic_spider import WeiboHotTopicSpider
 from modules.zhihu.icons import icons
-from utils.dialog_util import are_you_sure_dialog
+from framework.utils.dialog_util import are_you_sure_dialog
 
 """
 热点管理

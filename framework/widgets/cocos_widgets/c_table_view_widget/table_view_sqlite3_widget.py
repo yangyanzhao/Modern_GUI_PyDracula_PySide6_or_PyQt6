@@ -3,10 +3,11 @@ import json
 import logging
 import traceback
 
-from PySide2.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
+
+from framework.widgets.cocos_widgets.c_table_view_widget.table_view_widget import TableViewWidgetAbstract, ColumnConfig
 from framework.widgets.dayu_widgets import MTheme, MPushButton
-from gui.widgets.c_table_view_widget.table_view_widget import TableViewWidgetAbstract, ColumnConfig
 from db.sqlite_db.sqlite3_jdbc import insert, delete_by_ids, update_by_id, \
     select_count, select_page, truncate_table
 

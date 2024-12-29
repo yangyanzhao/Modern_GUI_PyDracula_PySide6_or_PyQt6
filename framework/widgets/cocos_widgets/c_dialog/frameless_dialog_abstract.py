@@ -5,7 +5,7 @@ from PySide6 import QtAsyncio
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QApplication, QDialog, QFrame, QVBoxLayout, QWidget
 
-from framework.widgets.cocos_widgets.c_grips import CGrips
+from framework.widgets.cocos_widgets.custom_grips import CustomGrip
 from framework.widgets.cocos_widgets.c_title_bar.c_title_bar import CTitleBar
 from framework.widgets.dayu_widgets import MPushButton
 
@@ -83,14 +83,14 @@ class FramelessDialogAbstract(QDialog):
 
         # 调整边缘缩放
         self.hide_grips = True  # 显示/隐藏调整大小边缘点
-        self.left_grip = CGrips(self, "left", self.hide_grips)
-        self.right_grip = CGrips(self, "right", self.hide_grips)
-        self.top_grip = CGrips(self, "top", self.hide_grips)
-        self.bottom_grip = CGrips(self, "bottom", self.hide_grips)
-        self.top_left_grip = CGrips(self, "top_left", self.hide_grips)
-        self.top_right_grip = CGrips(self, "top_right", self.hide_grips)
-        self.bottom_left_grip = CGrips(self, "bottom_left", self.hide_grips)
-        self.bottom_right_grip = CGrips(self, "bottom_right", self.hide_grips)
+        self.left_grip = CustomGrip(self, "left", self.hide_grips)
+        self.right_grip = CustomGrip(self, "right", self.hide_grips)
+        self.top_grip = CustomGrip(self, "top", self.hide_grips)
+        self.bottom_grip = CustomGrip(self, "bottom", self.hide_grips)
+        self.top_left_grip = CustomGrip(self, "top_left", self.hide_grips)
+        self.top_right_grip = CustomGrip(self, "top_right", self.hide_grips)
+        self.bottom_left_grip = CustomGrip(self, "bottom_left", self.hide_grips)
+        self.bottom_right_grip = CustomGrip(self, "bottom_right", self.hide_grips)
 
         self.adjustSize()
         self.show_centered()

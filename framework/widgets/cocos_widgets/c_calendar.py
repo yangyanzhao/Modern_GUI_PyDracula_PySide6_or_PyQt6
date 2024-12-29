@@ -4,7 +4,7 @@ from PySide6.QtCore import QDate, QDateTime
 from framework.widgets.dayu_widgets.push_button import MPushButton
 
 
-class CCalendarWidget(QCalendarWidget):
+class CCalendar(QCalendarWidget):
     def __init__(self, datetime_edit, parent=None):
         super().__init__(parent)
 
@@ -59,7 +59,7 @@ class MainWindow(QWidget):
         self.datetime_edit.setDateTime(current_datetime)
 
         # 自定义日历控件
-        self.custom_calendar = CCalendarWidget(self.datetime_edit, self)
+        self.custom_calendar = CCalendar(self.datetime_edit, self)
         self.datetime_edit.setCalendarWidget(self.custom_calendar)
 
         # 添加 QDateTimeEdit 到布局

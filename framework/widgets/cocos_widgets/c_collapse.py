@@ -2,9 +2,9 @@ from PySide6 import QtWidgets
 from framework.widgets.dayu_widgets.collapse import MCollapse
 
 
-class CCollapseWidget(QtWidgets.QWidget):
+class CCollapse(QtWidgets.QWidget):
     def __init__(self, parent=None):
-        super(CCollapseWidget, self).__init__(parent)
+        super(CCollapse, self).__init__(parent)
         # 初始化UI
         self._init_ui()
 

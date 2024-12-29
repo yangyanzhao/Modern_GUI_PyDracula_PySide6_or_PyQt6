@@ -40,7 +40,7 @@ from modules.gpt_4_free.api.qwen.qwen_free_api_two import QwenAPITwo
 from modules.gpt_4_free.api.spark.spark_free_api_one import SparkAPIOne
 from modules.gpt_4_free.api.spark.spark_free_api_two import SparkAPITwo
 from modules.gpt_4_free.icons import icons
-from utils.position_util import find_all_parent_widgets
+from framework.utils.position_util import find_all_parent_widgets
 
 # 大模型映射
 llm_mapping = {

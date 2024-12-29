@@ -20,7 +20,6 @@ from PySide6 import QtWidgets, QtCore
 # Import third-party modules
 import six
 
-from framework.widgets.dayu_widgets import dayu_theme
 # Import local modules
 from framework.widgets.dayu_widgets.avatar import MAvatar
 from framework.widgets.dayu_widgets.label import MLabel
@@ -49,7 +48,7 @@ class MAlert(QtWidgets.QWidget):
         super(MAlert, self).__init__(parent, flags)
         self.setAttribute(QtCore.Qt.WA_StyledBackground)
         self._icon_label = MAvatar()
-        self._icon_label.set_dayu_size(dayu_theme.tiny)
+        # self._icon_label.set_dayu_size(dayu_theme.tiny)
         self._content_label = MLabel().secondary()
         self._close_button = MToolButton().svg("close_line.svg").tiny().icon_only()
         self._close_button.clicked.connect(functools.partial(self.setVisible, False))
@@ -95,7 +94,7 @@ class MAlert(QtWidgets.QWidget):
         self._icon_label.set_dayu_image(
             MPixmap(
                 "{}_fill.svg".format(self._dayu_type),
-                vars(dayu_theme).get(self._dayu_type + "_color"),
+                # vars(dayu_theme).get(self._dayu_type + "_color"),
             )
         )
         self.style().polish(self)

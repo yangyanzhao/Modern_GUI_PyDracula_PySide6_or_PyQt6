@@ -17,7 +17,7 @@ from framework.widgets.dayu_widgets.qt import MIcon
 from modules.zhihu.api.functions.zhihu_operation import start_all_task, start_one_task
 from modules.zhihu.api.utils.common_utils import kill_process_by_name
 from modules.zhihu.icons import icons
-from utils.table_widget_util import remove_list_keys
+from framework.utils.table_widget_util import remove_list_keys
 
 """
 任务管理

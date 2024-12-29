@@ -17,9 +17,9 @@ import functools
 # Import third-party modules
 from PySide6 import QtWidgets, QtCore, QtGui
 
+from framework.widgets.dayu_widgets import utils
 # Import local modules
 from framework.widgets.dayu_widgets.menu import MMenu
-from framework.widgets import dayu_widgets as utils
 
 
 class MHeaderView(QtWidgets.QHeaderView):

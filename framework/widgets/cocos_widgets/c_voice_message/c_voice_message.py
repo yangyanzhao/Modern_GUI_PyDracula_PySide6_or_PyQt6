@@ -14,7 +14,7 @@ from framework.widgets.dayu_widgets.qt import MIcon
 from mutagen.mp3 import MP3
 
 
-class CVoiceMessageWidget(QWidget):
+class CVoiceMessage(QWidget):
     def __init__(self, audio_data, alignment=Qt.AlignRight, has_dot=False, parent=None):
         super().__init__(parent)
         self.volume_icons = [
@@ -237,9 +237,9 @@ class DemoWidget(QWidget):
         self.setWindowTitle("Demo")
         self.resize(400, 300)
         layout = QVBoxLayout(self)
-        c_voice_message_widget_right = CVoiceMessageWidget(audio_data='12月20日.MP3', alignment=Qt.AlignRight,
+        c_voice_message_widget_right = CVoiceMessage(audio_data='12月20日.MP3', alignment=Qt.AlignRight,
                                                            has_dot=True)
-        c_voice_message_widget_left = CVoiceMessageWidget(audio_data='12月20日.MP3', alignment=Qt.AlignLeft,
+        c_voice_message_widget_left = CVoiceMessage(audio_data='12月20日.MP3', alignment=Qt.AlignLeft,
                                                           has_dot=True)
 
         layout.addWidget(c_voice_message_widget_right)

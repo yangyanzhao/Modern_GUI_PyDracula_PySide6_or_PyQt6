@@ -33,7 +33,7 @@ from modules.gpt_4_free.api.hailuo.hailuo_free_api_one import HailuoAPIOne
 from modules.gpt_4_free.api.hailuo.hailuo_free_api_three import HailuoAPIThree
 from modules.gpt_4_free.api.hailuo.hailuo_free_api_two import HailuoAPITwo
 from modules.gpt_4_free.icons import icons
-from utils.position_util import find_all_parent_widgets
+from framework.utils.position_util import find_all_parent_widgets
 
 # 大模型映射
 llm_mapping = {

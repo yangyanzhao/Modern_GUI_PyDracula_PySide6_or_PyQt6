@@ -1,7 +1,7 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
 
-from framework.widgets.cocos_widgets.c_grips import CGrips
+from framework.widgets.cocos_widgets.custom_grips import CGrips
 
 
 # 假设 PyGrips 和 Widgets 类已经在同一个文件中定义

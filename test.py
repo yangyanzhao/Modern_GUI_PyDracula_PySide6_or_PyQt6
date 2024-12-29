@@ -3,7 +3,7 @@ import sys
 from PySide6 import QtAsyncio
 from PySide6.QtWidgets import QApplication
 
-from framework.widgets import MComboBox, MMenu
+from framework.widgets.dayu_widgets import MComboBox, MMenu
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
