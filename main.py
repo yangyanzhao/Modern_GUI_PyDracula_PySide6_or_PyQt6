@@ -1,3 +1,5 @@
+import asyncio
+import logging
 import os
 import sys
 
@@ -5,6 +7,7 @@ from PySide6 import QtAsyncio
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QMainWindow, QHeaderView, QApplication, QPushButton
+from qasync import QEventLoop
 
 from framework.app_functions import AppFunctions
 from framework.app_settings import Settings
@@ -12,6 +15,8 @@ from framework.demo_interfaces.demo_home_interface import DemoHomeInterface
 from framework.demo_interfaces.demo_new_page_interface import DemoNewPageInterface
 from framework.ui_functions import UIFunctions
 from framework.ui_main import Ui_MainWindow
+from framework.widgets.dayu_widgets import MTheme
+from modules.zhihu.zhihu_main_interface import ZhiHuMainInterface
 
 from resources.framework.icons import icons
 
@@ -176,14 +181,24 @@ class MainWindow(QMainWindow):
         """
         self.ui.demo_home_interface = DemoHomeInterface(parent=self)
         self.ui.demo_new_page_interface = DemoNewPageInterface(parent=self)
-        self.ui.zhihu_main_interface = DemoNewPageInterface(parent=self)
+        self.ui.zhihu_main_interface = ZhiHuMainInterface(parent=self)
         self.ui.stackedWidget.addWidget(self.ui.demo_home_interface)
         self.ui.stackedWidget.addWidget(self.ui.demo_new_page_interface)
         self.ui.stackedWidget.addWidget(self.ui.zhihu_main_interface)
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = MainWindow()
+    # 配置日志记录器
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    # 创建主循环
+    app = QApplication([])
+    # 创建异步事件循环
+    loop = QEventLoop(app)
+    asyncio.set_event_loop(loop)
+    # 创建窗口
+    demo_widget = MainWindow()
+    MTheme(theme='dark').apply(demo_widget)
     # 显示窗口
-    QtAsyncio.run(handle_sigint=True)
+    demo_widget.show()
+    with loop:
+        loop.run_forever()

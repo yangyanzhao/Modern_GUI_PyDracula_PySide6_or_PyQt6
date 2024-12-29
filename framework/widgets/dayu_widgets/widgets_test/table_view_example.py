@@ -105,7 +105,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     # 创建窗口
     demo_widget = TableViewExample()
-    MTheme().apply(demo_widget)
     # 显示窗口
     demo_widget.show()
 

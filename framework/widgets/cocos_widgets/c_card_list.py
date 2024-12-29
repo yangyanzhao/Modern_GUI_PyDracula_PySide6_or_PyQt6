@@ -69,7 +69,6 @@ if __name__ == '__main__':
     demo_widget.add_setting(widget=MLabel("黑龙江中医药大学"))
     demo_widget.task_card_lay.addStretch()
 
-    MTheme().apply(demo_widget)
     # 显示窗口
     demo_widget.show()
 

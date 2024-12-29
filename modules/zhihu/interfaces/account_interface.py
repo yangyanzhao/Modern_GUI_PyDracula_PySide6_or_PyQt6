@@ -5,7 +5,6 @@ from PySide6.QtWidgets import QApplication
 from qasync import QEventLoop
 
 from db.mysql.mysql_jdbc import create_pool, select_list, select_list_by_database_table, select_by_id_by_database_table
-from db.widget_pointer import widget_pointer_mapping
 from framework.widgets.cocos_widgets.c_dialog.c_confirm_dialog import CMessageDialog, CConfirmDialog
 from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
 from framework.widgets.cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
@@ -94,7 +93,6 @@ class AccountInterface(TableViewWidgetMySQLAbstract):
         """
         生成账号任务
         """
-        widget_pointer_mapping['gpt_4_free.1'] = self.table_model
         data_list = self.table_model.get_data_list()
 
         checked_doc_ids = [data['id'] for data in data_list if data.get("id_checked", 0) == 2]
@@ -219,7 +217,6 @@ if __name__ == '__main__':
     asyncio.set_event_loop(loop)
     # 创建窗口
     demo_widget = AccountInterface()
-    MTheme(theme='dark').apply(demo_widget)
     # 显示窗口
     demo_widget.show()
     loop.run_forever()

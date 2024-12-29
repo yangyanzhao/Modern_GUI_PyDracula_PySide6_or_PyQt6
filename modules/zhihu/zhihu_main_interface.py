@@ -7,7 +7,6 @@ from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
 from qasync import QEventLoop
 
 
-from db.widget_pointer import widget_pointer_mapping
 from framework.widgets.dayu_widgets import MTheme, dayu_theme
 from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
 from framework.widgets.dayu_widgets.line_tab_widget import MLineTabWidget
@@ -21,9 +20,9 @@ from modules.zhihu.interfaces.task_setting_interface import TaskSettingInterface
 from modules.zhihu.icons import icons
 
 
-class ZhiHuMainWidget(QWidget, MFieldMixin):
+class ZhiHuMainInterface(QWidget, MFieldMixin):
     def __init__(self, parent=None):
-        super(ZhiHuMainWidget, self).__init__(parent)
+        super(ZhiHuMainInterface, self).__init__(parent)
         self.init_ui()
 
     def init_ui(self):
@@ -35,19 +34,14 @@ class ZhiHuMainWidget(QWidget, MFieldMixin):
 
         # 主页
         self.cockpit_interface = CockpitInterface()
-        widget_pointer_mapping['zhihu.cockpit_interface'] = self.cockpit_interface
         # 用户管理
         self.account_interface = AccountInterface()
-        widget_pointer_mapping['zhihu.account_interface'] = self.account_interface
         # 任务管理
         self.task_plan_interface = TaskPlanInterface()
-        widget_pointer_mapping['zhihu.task_plan_interface'] = self.task_plan_interface
         # 配置管理
         self.task_setting_interface = TaskSettingInterface()
-        widget_pointer_mapping['zhihu.task_setting_interface'] = self.task_setting_interface
         # 热点管理
         self.hot_topics_interface = HotTopicsInterface()
-        widget_pointer_mapping['zhihu.hot_topics_interface'] = self.hot_topics_interface
 
         # 导航条
         self.tab_center = MLineTabWidget(alignment=QtCore.Qt.AlignLeft)
@@ -91,8 +85,7 @@ if __name__ == '__main__':
     loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
     # 创建窗口
-    demo_widget = ZhiHuMainWidget()
-    MTheme(theme='dark').apply(demo_widget)
+    demo_widget = ZhiHuMainInterface()
     # 显示窗口
     demo_widget.show()
     loop.run_forever()

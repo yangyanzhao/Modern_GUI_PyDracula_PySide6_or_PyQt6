@@ -659,7 +659,6 @@ if __name__ == '__main__':
     asyncio.set_event_loop(loop)
     # 创建窗口
     demo_widget = ChatInterface()
-    MTheme(theme='dark').apply(demo_widget)
     # 显示窗口
     demo_widget.show()
     loop.run_forever()

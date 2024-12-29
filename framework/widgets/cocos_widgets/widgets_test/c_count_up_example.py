@@ -29,8 +29,6 @@ if __name__ == '__main__':
     layout.addWidget(button2)
     layout.addWidget(button3)
 
-    MTheme().apply(widget)
-
     # 显示窗口
     widget.show()
 
