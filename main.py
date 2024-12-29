@@ -87,7 +87,7 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         useCustomTheme = False
         # 自定义给主题QSS文件
-        themeFile = r"themes\py_dracula_light.qss"
+        themeFile = r"themes\py_dracula_dark.qss"
 
         # SET THEME AND HACKS
         if useCustomTheme:
