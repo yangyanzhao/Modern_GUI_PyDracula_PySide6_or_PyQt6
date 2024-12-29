@@ -3,16 +3,13 @@ import logging
 import os
 import sys
 
-from PySide6 import QtAsyncio
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMainWindow, QHeaderView, QApplication, QPushButton
+from PySide6.QtWidgets import QMainWindow, QHeaderView, QApplication
 from qasync import QEventLoop
 
 from framework.app_functions import AppFunctions
 from framework.app_settings import Settings
 from framework.demo_interfaces.demo_home_interface import DemoHomeInterface
-from framework.demo_interfaces.demo_new_page_interface import DemoNewPageInterface
 from framework.ui_functions import UIFunctions
 from framework.ui_main import Ui_MainWindow
 from framework.widgets.dayu_widgets import MTheme
@@ -95,7 +92,7 @@ class MainWindow(QMainWindow):
             UIFunctions.theme(self, themeFile, True)
 
             # SET HACKS
-            AppFunctions.setThemeHack(self)
+            # AppFunctions.setThemeHack(self)
 
         # SET HOME PAGE AND SELECT MENU
         # ///////////////////////////////////////////////////////////////
@@ -180,10 +177,8 @@ class MainWindow(QMainWindow):
         :return:
         """
         self.ui.demo_home_interface = DemoHomeInterface(parent=self)
-        self.ui.demo_new_page_interface = DemoNewPageInterface(parent=self)
         self.ui.zhihu_main_interface = ZhiHuMainInterface(parent=self)
         self.ui.stackedWidget.addWidget(self.ui.demo_home_interface)
-        self.ui.stackedWidget.addWidget(self.ui.demo_new_page_interface)
         self.ui.stackedWidget.addWidget(self.ui.zhihu_main_interface)
 
 

@@ -41,6 +41,10 @@ class CWindow(QFrame):
             text_color="#fff",
             text_font="9pt 'Segoe UI'",
             border_radius=10,
+            border_top_left_radius=10,
+            border_top_right_radius=10,
+            border_bottom_left_radius=10,
+            border_bottom_right_radius=10,
             border_size=2,
             border_color="#343b48",
             enable_shadow=True
@@ -59,6 +63,10 @@ class CWindow(QFrame):
         self.text_color = text_color
         self.text_font = text_font
         self.border_radius = border_radius
+        self.border_top_left_radius = border_top_left_radius
+        self.border_top_right_radius = border_top_right_radius
+        self.border_bottom_left_radius = border_bottom_left_radius
+        self.border_bottom_right_radius = border_bottom_right_radius
         self.border_size = border_size
         self.border_color = border_color
         self.enable_shadow = enable_shadow
