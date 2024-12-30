@@ -22,7 +22,9 @@ class DemoWidget(QWidget):
         self.main_layout.addLayout(self.sub_layout_1)
         self.sub_layout_1.addWidget(MPushButton("默认按钮"))
         self.sub_layout_1.addWidget(MPushButton("主要按钮").primary())
-        self.sub_layout_1.addWidget(MPushButton("成功按钮").success())
+
+        success = MPushButton("成功按钮").success()
+        self.sub_layout_1.addWidget(success)
         self.sub_layout_1.addWidget(MPushButton("警告按钮").warning())
         self.sub_layout_1.addWidget(MPushButton("危险按钮").danger())
         self.sub_layout_1.addStretch()
@@ -58,7 +60,7 @@ class DemoWidget(QWidget):
         # 自定义图标、自定义颜色
         self.sub_layout_5 = QHBoxLayout()
         self.main_layout.addLayout(self.sub_layout_5)
-        self.sub_layout_5.addWidget(MPushButton("自定义颜色按钮").custom_color("#000000"))
+        self.sub_layout_5.addWidget(MPushButton("自定义颜色按钮").custom_color("#21ffee"))
         # 将自定义的图标文件放置在dayu_widgets/static资源文件夹中，然后引用即可。
         self.sub_layout_5.addWidget(MPushButton("自定义图标按钮", MIcon("check.png", "#ddd")))
         self.sub_layout_5.addStretch()
@@ -78,12 +80,15 @@ class DemoWidget(QWidget):
         self.sub_layout_6.addWidget(button_group)
         self.sub_layout_6.addStretch()
         self.main_layout.addStretch()
+        sheet = success.styleSheet()
+        pass
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # 创建窗口
     demo_widget = DemoWidget()
+    MTheme().apply(demo_widget)
     # 显示窗口
     demo_widget.show()
 

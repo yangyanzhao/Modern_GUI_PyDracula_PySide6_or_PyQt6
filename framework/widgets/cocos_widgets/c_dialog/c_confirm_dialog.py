@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QApplication, QHBoxLayout, QWidget
 
 from framework.widgets.cocos_widgets.c_dialog import icons
 from framework.widgets.cocos_widgets.c_dialog.frameless_dialog_abstract import FramelessDialogAbstract
-from framework.widgets.dayu_widgets import MLabel, MPushButton
+from framework.widgets.dayu_widgets import MLabel, MPushButton, MTheme
 from PySide6.QtWidgets import QVBoxLayout
 
 
@@ -317,5 +317,5 @@ if __name__ == '__main__':
     demo_widget = DemoWidget()
     # 显示窗口
     demo_widget.show()
-
+    MTheme().apply(demo_widget)
     QtAsyncio.run(handle_sigint=True)

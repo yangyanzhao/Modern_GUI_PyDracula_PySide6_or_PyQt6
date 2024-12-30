@@ -1,7 +1,10 @@
 import random
+import sys
 
-from PySide6 import QtWidgets
-from framework.widgets.dayu_widgets import MFieldMixin
+from PySide6 import QtWidgets, QtAsyncio
+from PySide6.QtWidgets import QApplication
+
+from framework.widgets.dayu_widgets import MFieldMixin, MMenu, dayu_theme, MComboBox, MLabel, MDivider, MTheme
 
 
 class ComboBoxExample(QtWidgets.QWidget, MFieldMixin):
@@ -165,16 +168,20 @@ class ComboBoxExample(QtWidgets.QWidget, MFieldMixin):
         main_lay.addLayout(sub_lay5)
         main_lay.addLayout(sub_lay6)
         main_lay.addStretch()
-
+        combo_box = MComboBox()
+        combo_box.addItems(cities)
+        sheet = combo_box.styleSheet()
         self.setLayout(main_lay)
+        main_lay.addWidget(combo_box)
+        pass
 
 
-if __name__ == "__main__":
-    # Import local modules
-    from framework.widgets.dayu_widgets import dayu_theme, MFieldMixin, MMenu, MComboBox, MDivider, MLabel
-    from framework.widgets.dayu_widgets.qt import application
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    # 创建窗口
+    demo_widget = ComboBoxExample()
+    # 显示窗口
+    demo_widget.show()
+    MTheme('dark').apply(demo_widget)
 
-    with application() as app:
-        test = ComboBoxExample()
-        dayu_theme.apply(test)
-        test.show()
+    QtAsyncio.run(handle_sigint=True)

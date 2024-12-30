@@ -86,7 +86,7 @@ if __name__ == '__main__':
     asyncio.set_event_loop(loop)
     # 创建窗口
     demo_widget = ZhiHuMainInterface()
-    # MTheme(theme='light').apply(demo_widget)
+    MTheme('dark').apply(demo_widget)
     # 显示窗口
     demo_widget.show()
     loop.run_forever()

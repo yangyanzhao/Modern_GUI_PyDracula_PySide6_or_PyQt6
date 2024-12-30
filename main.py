@@ -1,112 +1,211 @@
+# -*- coding: utf-8 -*-
 import asyncio
 import logging
-import os
-import sys
-
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QMainWindow, QHeaderView, QApplication
+from PySide6.QtCore import QSize, QRect, Qt, QCoreApplication
+from PySide6.QtGui import QFont, QCursor, QIcon
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame, QLabel, QSizePolicy, QGridLayout, \
+    QStackedWidget, QPushButton, QTextEdit, QMainWindow, QApplication
 from qasync import QEventLoop
 
-from framework.app_functions import AppFunctions
 from framework.app_settings import Settings
 from framework.demo_interfaces.demo_home_interface import DemoHomeInterface
 from framework.ui_functions import UIFunctions
-from framework.ui_main import Ui_MainWindow
+from framework.widgets.cocos_widgets.c_content_top_bg import CContentTopBg
+from framework.widgets.cocos_widgets.c_extra_left_box import CExtraLeftBox
+from framework.widgets.cocos_widgets.c_extra_right_box import CExtraRightBox
+from framework.widgets.cocos_widgets.c_left_box import CLeftBox
+from framework.widgets.cocos_widgets.c_left_menu_bg import CLeftMenuBg
+from framework.widgets.cocos_widgets.c_left_menu_frame import CLeftMenuFrame
+from framework.widgets.cocos_widgets.c_right_buttons import CRightButtons
+from framework.widgets.cocos_widgets.c_top_logo_info import CTopLogoInfo
 from framework.widgets.dayu_widgets import MTheme
-from modules.zhihu.zhihu_main_interface import ZhiHuMainInterface
-
 from resources.framework.icons import icons
-
-os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100%
+from modules.zhihu.zhihu_main_interface import ZhiHuMainInterface
+from resources.framework.images import images
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
-        QMainWindow.__init__(self)
-
-        # SET AS GLOBAL WIDGETS
-        # ///////////////////////////////////////////////////////////////
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+    def __init__(self, parent=None):
+        super(MainWindow, self).__init__(parent=parent)
+        # 初始化UI
+        self.setupUi()
         self.init_interfaces()  # 初始化界面
         self.init_menu()  # 初始化菜单
         # USE CUSTOM TITLE BAR | USE AS "False" FOR MAC OR LINUX
-        # ///////////////////////////////////////////////////////////////
         Settings.ENABLE_CUSTOM_TITLE_BAR = True
 
-        # APP NAME
-        # ///////////////////////////////////////////////////////////////
-        title = "PyDracula - Modern GUI"
-        description = "PyDracula APP - Theme with colors based on Dracula for Python."
-        # APPLY TEXTS
-        self.setWindowTitle(title)
-        self.ui.titleRightInfo.setText(description)
-
-        # TOGGLE MENU
-        # ///////////////////////////////////////////////////////////////
-        self.ui.toggleButton.clicked.connect(lambda: UIFunctions.toggleMenu(self, True))
-
         # SET UI DEFINITIONS
-        # ///////////////////////////////////////////////////////////////
         UIFunctions.uiDefinitions(self)
 
-        # QTableWidget PARAMETERS
-        # ///////////////////////////////////////////////////////////////
-        self.ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-
-        # BUTTONS CLICK
-        # ///////////////////////////////////////////////////////////////
-
         # LEFT MENUS
-        self.ui.btn_home.clicked.connect(self.buttonClick)
-        self.ui.btn_widgets.clicked.connect(self.buttonClick)
-        self.ui.btn_new.clicked.connect(self.buttonClick)
-        self.ui.btn_save.clicked.connect(self.buttonClick)
+        self.leftMenuBg.leftMenuFrame.btn_home.clicked.connect(self.buttonClick)
+        self.leftMenuBg.leftMenuFrame.btn_widgets.clicked.connect(self.buttonClick)
+        self.leftMenuBg.leftMenuFrame.btn_new.clicked.connect(self.buttonClick)
+        self.leftMenuBg.leftMenuFrame.btn_save.clicked.connect(self.buttonClick)
 
         # EXTRA LEFT BOX
         def openCloseLeftBox():
             UIFunctions.toggleLeftBox(self, True)
 
-        self.ui.toggleLeftBox.clicked.connect(openCloseLeftBox)
-        self.ui.extraCloseColumnBtn.clicked.connect(openCloseLeftBox)
+        self.leftMenuBg.leftMenuFrame.toggleLeftBox.clicked.connect(openCloseLeftBox)
+        self.extraLeftBox.extraCloseColumnBtn.clicked.connect(openCloseLeftBox)
 
         # EXTRA RIGHT BOX
         def openCloseRightBox():
             UIFunctions.toggleRightBox(self, True)
 
-        self.ui.settingsTopBtn.clicked.connect(openCloseRightBox)
+        self.contentTopBg.rightButtons.settingsTopBtn.clicked.connect(openCloseRightBox)
 
-        # SHOW APP
-        # ///////////////////////////////////////////////////////////////
         self.show()
 
-        # 是否自定义主题
-        # ///////////////////////////////////////////////////////////////
-        useCustomTheme = False
-        # 自定义给主题QSS文件
-        themeFile = r"themes\py_dracula_dark.qss"
+    def setupUi(self):
+        self.setObjectName(u"MainWindow")
+        self.resize(1280, 720)
+        self.setMinimumSize(QSize(940, 560))
+        self.styleSheet = QWidget(self)
+        self.styleSheet.setObjectName(u"styleSheet")
+        font = QFont()
+        font.setFamily(u"Segoe UI")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setItalic(False)
+        self.styleSheet.setFont(font)
+        self.appMargins = QVBoxLayout(self.styleSheet)
+        self.appMargins.setSpacing(0)
+        self.appMargins.setObjectName(u"appMargins")
+        self.appMargins.setContentsMargins(10, 10, 10, 10)
 
-        # SET THEME AND HACKS
-        if useCustomTheme:
-            # LOAD AND APPLY STYLE
-            UIFunctions.theme(self, themeFile, True)
+        # 背景
+        self.bgApp = QFrame(self.styleSheet)
+        self.bgApp.setObjectName(u"bgApp")
+        self.bgApp.setStyleSheet(u"")
+        self.bgApp.setFrameShape(QFrame.NoFrame)
+        self.bgApp.setFrameShadow(QFrame.Raised)
+        self.appLayout = QHBoxLayout(self.bgApp)
+        self.appLayout.setSpacing(0)
+        self.appLayout.setObjectName(u"appLayout")
+        self.appLayout.setContentsMargins(0, 0, 0, 0)
 
-            # SET HACKS
-            # AppFunctions.setThemeHack(self)
+        # 左侧菜单
+        self.leftMenuBg = CLeftMenuBg(self.bgApp)
+        self.appLayout.addWidget(self.leftMenuBg)
 
-        # SET HOME PAGE AND SELECT MENU
-        # ///////////////////////////////////////////////////////////////
-        self.ui.stackedWidget.setCurrentWidget(self.ui.demo_home_interface)
-        self.ui.btn_home.setStyleSheet(UIFunctions.selectMenu(self.ui.btn_home.styleSheet()))
+        # 左侧扩展界面
+        self.extraLeftBox = CExtraLeftBox(self.bgApp)
+
+        self.appLayout.addWidget(self.extraLeftBox)
+
+        self.contentBox = QFrame(self.bgApp)
+        self.contentBox.setObjectName(u"contentBox")
+        self.contentBox.setFrameShape(QFrame.NoFrame)
+        self.contentBox.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.contentBox)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+
+        # 右侧顶部
+        self.contentTopBg = CContentTopBg(self.contentBox)
+        self.verticalLayout_2.addWidget(self.contentTopBg)
+
+        self.contentBottom = QFrame(self.contentBox)
+        self.contentBottom.setObjectName(u"contentBottom")
+        self.contentBottom.setFrameShape(QFrame.NoFrame)
+        self.contentBottom.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_6 = QVBoxLayout(self.contentBottom)
+        self.verticalLayout_6.setSpacing(0)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
+
+
+        self.content = QFrame(self.contentBottom)
+        self.content.setObjectName(u"content")
+        self.content.setFrameShape(QFrame.NoFrame)
+        self.content.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.content)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+
+        self.pagesContainer = QFrame(self.content)
+        self.pagesContainer.setObjectName(u"pagesContainer")
+        self.pagesContainer.setStyleSheet(u"")
+        self.pagesContainer.setFrameShape(QFrame.NoFrame)
+        self.pagesContainer.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_15 = QVBoxLayout(self.pagesContainer)
+        self.verticalLayout_15.setSpacing(0)
+        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
+        self.verticalLayout_15.setContentsMargins(10, 10, 10, 10)
+        self.stackedWidget = QStackedWidget(self.pagesContainer)
+        self.stackedWidget.setObjectName(u"stackedWidget")
+        self.stackedWidget.setStyleSheet(u"background: transparent;")
+
+        self.verticalLayout_15.addWidget(self.stackedWidget)
+
+        self.horizontalLayout_4.addWidget(self.pagesContainer)
+
+        # 右侧扩展界面
+        self.extraRightBox = CExtraRightBox(self.content)
+        self.horizontalLayout_4.addWidget(self.extraRightBox)
+
+        self.verticalLayout_6.addWidget(self.content)
+
+        self.bottomBar = QFrame(self.contentBottom)
+        self.bottomBar.setObjectName(u"bottomBar")
+        self.bottomBar.setMinimumSize(QSize(0, 22))
+        self.bottomBar.setMaximumSize(QSize(16777215, 22))
+        self.bottomBar.setFrameShape(QFrame.NoFrame)
+        self.bottomBar.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_5 = QHBoxLayout(self.bottomBar)
+        self.horizontalLayout_5.setSpacing(0)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.creditsLabel = QLabel(self.bottomBar)
+        self.creditsLabel.setText("By: Wanderson M. Pimenta")
+        self.creditsLabel.setObjectName(u"creditsLabel")
+        self.creditsLabel.setMaximumSize(QSize(16777215, 16))
+        font5 = QFont()
+        font5.setFamily(u"Segoe UI")
+        font5.setBold(False)
+        font5.setItalic(False)
+        self.creditsLabel.setFont(font5)
+        self.creditsLabel.setAlignment(Qt.AlignLeading | Qt.AlignLeft | Qt.AlignVCenter)
+
+        self.horizontalLayout_5.addWidget(self.creditsLabel)
+
+        self.version = QLabel(self.bottomBar)
+        self.version.setText("v1.0.3")
+        self.version.setObjectName(u"version")
+        self.version.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
+
+        self.horizontalLayout_5.addWidget(self.version)
+
+        self.frame_size_grip = QFrame(self.bottomBar)
+        self.frame_size_grip.setObjectName(u"frame_size_grip")
+        self.frame_size_grip.setMinimumSize(QSize(20, 0))
+        self.frame_size_grip.setMaximumSize(QSize(20, 16777215))
+        self.frame_size_grip.setFrameShape(QFrame.NoFrame)
+        self.frame_size_grip.setFrameShadow(QFrame.Raised)
+
+        self.horizontalLayout_5.addWidget(self.frame_size_grip)
+
+        self.verticalLayout_6.addWidget(self.bottomBar)
+
+        self.verticalLayout_2.addWidget(self.contentBottom)
+
+        self.appLayout.addWidget(self.contentBox)
+
+        self.appMargins.addWidget(self.bgApp)
+
+        self.setCentralWidget(self.styleSheet)
+        self.stackedWidget.setCurrentIndex(2)
 
     # 监听缩放事件
-    # ///////////////////////////////////////////////////////////////
     def resizeEvent(self, event):
         # Update Size Grips
         UIFunctions.resize_grips(self)
 
     # 监听点击事件
-    # ///////////////////////////////////////////////////////////////
     def mousePressEvent(self, event):
         # SET DRAG POS WINDOW
         self.dragPos = event.globalPosition()
@@ -118,8 +217,6 @@ class MainWindow(QMainWindow):
             print('Mouse click: RIGHT CLICK')
 
     # 按钮点击事件
-    # 在这里发布点击按钮的功能
-    # ///////////////////////////////////////////////////////////////
     def buttonClick(self):
         """
         按钮导航
@@ -131,19 +228,20 @@ class MainWindow(QMainWindow):
 
         # SHOW HOME PAGE
         if btnName == "btn_home":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.demo_home_interface)
+            self.stackedWidget.setCurrentWidget(self.demo_home_interface)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # SHOW WIDGETS PAGE
         if btnName == "btn_widgets":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.widgets)
+            # self.ui.stackedWidget.setCurrentWidget(self.ui.widgets)
+            self.stackedWidget.setCurrentWidget(self.demo_home_interface)
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
         # SHOW NEW PAGE
         if btnName == "btn_new":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.demo_home_interface)  # SET PAGE
+            self.stackedWidget.setCurrentWidget(self.demo_home_interface)  # SET PAGE
             UIFunctions.resetStyle(self, btnName)  # 重置所选的其他按钮的样式
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))  # 设置所选按钮的样式
 
@@ -166,20 +264,20 @@ class MainWindow(QMainWindow):
                 "btn_tooltip": "ZhiHu Page",  # 提示
                 "show_top": True,  # 是否显示在顶部
                 "is_active": False,  # 是否激活
-                "interface": self.ui.zhihu_main_interface
+                "interface": self.zhihu_main_interface
             }
         ]
-        UIFunctions.add_menus(self, self.ui, menus_list=menus_list)
+        UIFunctions.add_menus(self, menus_list=menus_list)
 
     def init_interfaces(self):
         """
         界面初始化
         :return:
         """
-        self.ui.demo_home_interface = DemoHomeInterface(parent=self)
-        self.ui.zhihu_main_interface = ZhiHuMainInterface(parent=self)
-        self.ui.stackedWidget.addWidget(self.ui.demo_home_interface)
-        self.ui.stackedWidget.addWidget(self.ui.zhihu_main_interface)
+        self.demo_home_interface = DemoHomeInterface(parent=self)
+        self.zhihu_main_interface = ZhiHuMainInterface(parent=self)
+        self.stackedWidget.addWidget(self.demo_home_interface)
+        self.stackedWidget.addWidget(self.zhihu_main_interface)
 
 
 if __name__ == '__main__':
@@ -192,7 +290,7 @@ if __name__ == '__main__':
     asyncio.set_event_loop(loop)
     # 创建窗口
     demo_widget = MainWindow()
-    MTheme(theme='dark').apply(demo_widget)
+    MTheme('dark').apply(demo_widget)
     # 显示窗口
     demo_widget.show()
     with loop:
