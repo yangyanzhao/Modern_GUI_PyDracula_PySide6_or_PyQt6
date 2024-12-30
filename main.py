@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import asyncio
 import logging
-from PySide6.QtCore import QSize, QRect, Qt, QCoreApplication
-from PySide6.QtGui import QFont, QCursor, QIcon
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QFont
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame, QLabel, QSizePolicy, QGridLayout, \
-    QStackedWidget, QPushButton, QTextEdit, QMainWindow, QApplication
+    QStackedWidget, QMainWindow, QApplication
 from qasync import QEventLoop
 
 from framework.app_settings import Settings
@@ -13,15 +13,10 @@ from framework.ui_functions import UIFunctions
 from framework.widgets.cocos_widgets.c_content_top_bg import CContentTopBg
 from framework.widgets.cocos_widgets.c_extra_left_box import CExtraLeftBox
 from framework.widgets.cocos_widgets.c_extra_right_box import CExtraRightBox
-from framework.widgets.cocos_widgets.c_left_box import CLeftBox
 from framework.widgets.cocos_widgets.c_left_menu_bg import CLeftMenuBg
-from framework.widgets.cocos_widgets.c_left_menu_frame import CLeftMenuFrame
-from framework.widgets.cocos_widgets.c_right_buttons import CRightButtons
-from framework.widgets.cocos_widgets.c_top_logo_info import CTopLogoInfo
 from framework.widgets.dayu_widgets import MTheme
 from resources.framework.icons import icons
 from modules.zhihu.zhihu_main_interface import ZhiHuMainInterface
-from resources.framework.images import images
 
 
 class MainWindow(QMainWindow):
