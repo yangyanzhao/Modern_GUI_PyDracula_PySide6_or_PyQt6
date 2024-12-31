@@ -4,8 +4,9 @@ import os
 import socket
 import sys
 
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QPixmap, QColor, QCloseEvent
-from PySide6.QtWidgets import QApplication, QDialog
+from PySide6.QtWidgets import QApplication, QDialog, QVBoxLayout
 from qasync import QEventLoop, asyncSlot
 
 from db.pickle_db.data_storage_service import data_local_storage_authorization
@@ -16,7 +17,10 @@ from framework.api.auth import api_login_user, api_logout_user, api_token_check
 from framework.utils.position_util import center_point_alignment
 from framework.utils.qss_utils import set_label_background_image
 from framework.widgets.cocos_widgets import CMessageDialog
-from framework.widgets.dayu_widgets import MPushButton, MLineEdit, MFieldMixin
+from framework.widgets.dayu_widgets import MPushButton, MLineEdit, MFieldMixin, MTheme
+from framework.widgets.framework_widgets.c_grips import CGrips
+from framework.widgets.framework_widgets.c_title_bar.c_title_bar import CTitleBar
+from framework.widgets.framework_widgets.c_window.c_window import CWindow
 from framework.widgets.framework_widgets.login_window.Ui_LoginWindow import Ui_Form
 from resources.framework.icons import icons
 
@@ -211,6 +215,78 @@ class LoginWindow(QDialog, Ui_Form, MFieldMixin):
         super(LoginWindow, self).closeEvent(arg__1)
 
 
+class LoginWindowWrapper(QDialog, MFieldMixin):
+    """
+    自定义窗口+自定义标题栏+边缘缩放+窗口移动+登录表单
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 设置窗口初始大小为背景图像的尺寸
+        self.resize(1066, 600)
+        # 隐藏标题栏
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        # 设置背景透明
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        layout = QVBoxLayout(self)
+        layout.setSpacing(0)
+        # 设置自定义窗口背景控件
+        self.c_window = CWindow(parent=self, margin=0, bg_color="#FFF", border_color="#343b48",
+                                layout=Qt.Orientation.Vertical,
+                                enable_shadow=True)
+        self.c_window.set_stylesheet(border_top_left_radius=0, border_top_right_radius=0, border_bottom_left_radius=0,
+                                     border_bottom_right_radius=0, border_size=0)
+        layout.addWidget(self.c_window)
+
+        # 自定义标题栏
+        self.c_title_bar = CTitleBar(parent=self, app_parent=self)
+        self.c_title_bar.setFixedHeight(40)
+        layout.insertWidget(0, self.c_title_bar)
+
+        # 边缘缩放
+        disable_color = True
+        self.top_grip = CGrips(parent=self, position="top", disable_color=disable_color)
+        self.bottom_grip = CGrips(self, "bottom", disable_color=disable_color)
+        self.left_grip = CGrips(self, "left", disable_color=disable_color)
+        self.right_grip = CGrips(self, "right", disable_color=disable_color)
+        self.top_left_grip = CGrips(self, "top_left", disable_color=disable_color)
+        self.top_right_grip = CGrips(self, "top_right", disable_color=disable_color)
+        self.bottom_left_grip = CGrips(self, "bottom_left", disable_color=disable_color)
+        self.bottom_right_grip = CGrips(self, "bottom_right", disable_color=disable_color)
+
+        # 业务UI
+        self.init_UI()
+
+    def mousePressEvent(self, event):
+        """
+        窗口移动
+        :param event:
+        :return:
+        """
+        super().mousePressEvent(event)
+        self.dragPos = event.globalPosition().toPoint()  # 使用 globalPosition().toPoint()
+
+    def resizeEvent(self, event):
+        # 边缘缩放
+        self.left_grip.setGeometry(0, 10, 10, self.height())
+        self.right_grip.setGeometry(self.width() - 10, 10, 10, self.height())
+        self.top_grip.setGeometry(0, 0, self.width(), 10)
+        self.bottom_grip.setGeometry(0, self.height() - 10, self.width(), 10)
+
+        self.top_left_grip.setGeometry(5, 5, 20, 20)
+        self.top_right_grip.setGeometry(self.width() - 25, 5, 20, 20)
+        self.bottom_left_grip.setGeometry(5, self.height() - 25, 20, 20)
+        self.bottom_right_grip.setGeometry(self.width() - 25, self.height() - 25, 20, 20)
+
+    def init_UI(self):
+        """
+        业务UI初始化
+        :return:
+        """
+
+        self.c_window.layout.addWidget(LoginWindow())
+
+
 if __name__ == '__main__':
     # 创建主循环
     app = QApplication([])
@@ -218,7 +294,8 @@ if __name__ == '__main__':
     loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
     # 创建窗口
-    login_window = LoginWindow()
+    login_window = LoginWindowWrapper()
+    MTheme().apply(login_window)
     login_window.show()
     with loop:
         loop.run_forever()
