@@ -6,7 +6,6 @@ from PySide6 import QtCore
 from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
 from qasync import QEventLoop
 
-
 from framework.widgets.dayu_widgets import MTheme, dayu_theme
 from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
 from framework.widgets.dayu_widgets.line_tab_widget import MLineTabWidget
@@ -24,6 +23,7 @@ class ZhiHuMainInterface(QWidget, MFieldMixin):
     def __init__(self, parent=None):
         super(ZhiHuMainInterface, self).__init__(parent)
         self.init_ui()
+        MTheme('dark').apply(self)
 
     def init_ui(self):
         self.setWindowTitle('知乎')
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     asyncio.set_event_loop(loop)
     # 创建窗口
     demo_widget = ZhiHuMainInterface()
-    MTheme('dark').apply(demo_widget)
+
     # 显示窗口
     demo_widget.show()
     loop.run_forever()

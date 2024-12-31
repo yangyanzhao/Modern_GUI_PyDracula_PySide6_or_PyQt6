@@ -280,7 +280,6 @@ if __name__ == '__main__':
     asyncio.set_event_loop(loop)
     # 创建窗口
     demo_widget = MainWindow()
-    MTheme('dark').apply(demo_widget)
     # 显示窗口
     demo_widget.show()
     with loop:
