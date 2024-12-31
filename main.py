@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
 import asyncio
 import logging
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QFont
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame, QLabel, QSizePolicy, QGridLayout, \
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame, \
     QStackedWidget, QMainWindow, QApplication
 from qasync import QEventLoop
 
 from framework.app_settings import Settings
 from framework.demo_interfaces.demo_home_interface import DemoHomeInterface
 from framework.ui_functions import UIFunctions
+from framework.widgets.cocos_widgets.c_bottom_bar import CBottomBar
 from framework.widgets.cocos_widgets.c_content_top_bg import CContentTopBg
 from framework.widgets.cocos_widgets.c_extra_left_box import CExtraLeftBox
 from framework.widgets.cocos_widgets.c_extra_right_box import CExtraRightBox
@@ -76,6 +76,14 @@ class MainWindow(QMainWindow):
         self.bgApp.setStyleSheet(u"")
         self.bgApp.setFrameShape(QFrame.NoFrame)
         self.bgApp.setFrameShadow(QFrame.Raised)
+        self.bgApp.setStyleSheet(
+            rf"""
+            #bgApp {{
+                background-color: rgb(40, 44, 52);
+                border: 1px solid rgb(44, 49, 58);
+            }}
+            """
+        )
         self.appLayout = QHBoxLayout(self.bgApp)
         self.appLayout.setSpacing(0)
         self.appLayout.setObjectName(u"appLayout")
@@ -90,6 +98,7 @@ class MainWindow(QMainWindow):
 
         self.appLayout.addWidget(self.extraLeftBox)
 
+        # 内容盒子
         self.contentBox = QFrame(self.bgApp)
         self.contentBox.setObjectName(u"contentBox")
         self.contentBox.setFrameShape(QFrame.NoFrame)
@@ -107,11 +116,17 @@ class MainWindow(QMainWindow):
         self.contentBottom.setObjectName(u"contentBottom")
         self.contentBottom.setFrameShape(QFrame.NoFrame)
         self.contentBottom.setFrameShadow(QFrame.Raised)
+        self.contentBottom.setStyleSheet(
+            rf"""
+            #contentBottom{{
+                border-top: 3px solid rgb(44, 49, 58);
+            }}
+            """
+        )
         self.verticalLayout_6 = QVBoxLayout(self.contentBottom)
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
-
 
         self.content = QFrame(self.contentBottom)
         self.content.setObjectName(u"content")
@@ -122,11 +137,29 @@ class MainWindow(QMainWindow):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
 
+        # 页面容器
         self.pagesContainer = QFrame(self.content)
         self.pagesContainer.setObjectName(u"pagesContainer")
         self.pagesContainer.setStyleSheet(u"")
         self.pagesContainer.setFrameShape(QFrame.NoFrame)
         self.pagesContainer.setFrameShadow(QFrame.Raised)
+        self.pagesContainer.setStyleSheet(
+            rf"""
+            #pagesContainer QPushButton {{
+                border: 2px solid rgb(52, 59, 72);
+                border-radius: 5px;
+                background-color: rgb(52, 59, 72);
+            }}
+            #pagesContainer QPushButton:hover {{
+                background-color: rgb(57, 65, 80);
+                border: 2px solid rgb(61, 70, 86);
+            }}
+            #pagesContainer QPushButton:pressed {{
+                background-color: rgb(35, 40, 49);
+                border: 2px solid rgb(43, 50, 61);
+            }}
+            """
+        )
         self.verticalLayout_15 = QVBoxLayout(self.pagesContainer)
         self.verticalLayout_15.setSpacing(0)
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
@@ -145,44 +178,7 @@ class MainWindow(QMainWindow):
 
         self.verticalLayout_6.addWidget(self.content)
 
-        self.bottomBar = QFrame(self.contentBottom)
-        self.bottomBar.setObjectName(u"bottomBar")
-        self.bottomBar.setMinimumSize(QSize(0, 22))
-        self.bottomBar.setMaximumSize(QSize(16777215, 22))
-        self.bottomBar.setFrameShape(QFrame.NoFrame)
-        self.bottomBar.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_5 = QHBoxLayout(self.bottomBar)
-        self.horizontalLayout_5.setSpacing(0)
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.creditsLabel = QLabel(self.bottomBar)
-        self.creditsLabel.setText("By: Wanderson M. Pimenta")
-        self.creditsLabel.setObjectName(u"creditsLabel")
-        self.creditsLabel.setMaximumSize(QSize(16777215, 16))
-        font5 = QFont()
-        font5.setFamily(u"Segoe UI")
-        font5.setBold(False)
-        font5.setItalic(False)
-        self.creditsLabel.setFont(font5)
-        self.creditsLabel.setAlignment(Qt.AlignLeading | Qt.AlignLeft | Qt.AlignVCenter)
-
-        self.horizontalLayout_5.addWidget(self.creditsLabel)
-
-        self.version = QLabel(self.bottomBar)
-        self.version.setText("v1.0.3")
-        self.version.setObjectName(u"version")
-        self.version.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
-
-        self.horizontalLayout_5.addWidget(self.version)
-
-        self.frame_size_grip = QFrame(self.bottomBar)
-        self.frame_size_grip.setObjectName(u"frame_size_grip")
-        self.frame_size_grip.setMinimumSize(QSize(20, 0))
-        self.frame_size_grip.setMaximumSize(QSize(20, 16777215))
-        self.frame_size_grip.setFrameShape(QFrame.NoFrame)
-        self.frame_size_grip.setFrameShadow(QFrame.Raised)
-
-        self.horizontalLayout_5.addWidget(self.frame_size_grip)
+        self.bottomBar = CBottomBar(self.contentBottom)
 
         self.verticalLayout_6.addWidget(self.bottomBar)
 
@@ -193,7 +189,6 @@ class MainWindow(QMainWindow):
         self.appMargins.addWidget(self.bgApp)
 
         self.setCentralWidget(self.styleSheet)
-        self.stackedWidget.setCurrentIndex(2)
 
     # 监听缩放事件
     def resizeEvent(self, event):

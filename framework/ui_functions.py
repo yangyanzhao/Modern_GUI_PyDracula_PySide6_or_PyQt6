@@ -44,7 +44,7 @@ class UIFunctions:
             self.appMargins.setContentsMargins(0, 0, 0, 0)
             self.contentTopBg.rightButtons.maximizeRestoreAppBtn.setToolTip("Restore")
             self.contentTopBg.rightButtons.maximizeRestoreAppBtn.setIcon(QIcon(u":/icons/images/icons/icon_restore.png"))
-            self.frame_size_grip.hide()
+            self.bottomBar.frame_size_grip.hide()
             self.left_grip.hide()
             self.right_grip.hide()
             self.top_grip.hide()
@@ -56,7 +56,7 @@ class UIFunctions:
             self.appMargins.setContentsMargins(10, 10, 10, 10)
             self.contentTopBg.rightButtons.maximizeRestoreAppBtn.setToolTip("Maximize")
             self.contentTopBg.rightButtons.maximizeRestoreAppBtn.setIcon(QIcon(u":/icons/images/icons/icon_maximize.png"))
-            self.frame_size_grip.show()
+            self.bottomBar.frame_size_grip.show()
             self.left_grip.show()
             self.right_grip.show()
             self.top_grip.show()
@@ -272,7 +272,7 @@ class UIFunctions:
             self.minimizeAppBtn.hide()
             self.maximizeRestoreAppBtn.hide()
             self.closeAppBtn.hide()
-            self.frame_size_grip.hide()
+            self.bottomBar.frame_size_grip.hide()
 
         # DROP SHADOW
         self.shadow = QGraphicsDropShadowEffect(self)
@@ -283,8 +283,8 @@ class UIFunctions:
         self.bgApp.setGraphicsEffect(self.shadow)
 
         # RESIZE WINDOW
-        self.sizegrip = QSizeGrip(self.frame_size_grip)
-        self.sizegrip.setStyleSheet("width: 20px; height: 20px; margin 0px; padding: 0px;")
+        self.bottomBar.sizegrip = QSizeGrip(self.bottomBar.frame_size_grip)
+        self.bottomBar.sizegrip.setStyleSheet("width: 20px; height: 20px; margin 0px; padding: 0px;")
 
         # MINIMIZE
         self.contentTopBg.rightButtons.minimizeAppBtn.clicked.connect(lambda: self.showMinimized())
