@@ -109,6 +109,8 @@ class MComboBox(MComboBoxSearchMixin, QtWidgets.QComboBox):
     def set_placeholder(self, text):
         """Display the text when no item selected."""
         self.lineEdit().setPlaceholderText(text)
+        self.setPlaceholderText(text)
+
 
     def set_value(self, value):
         self.setProperty("value", value)

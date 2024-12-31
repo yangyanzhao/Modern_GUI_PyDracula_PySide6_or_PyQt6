@@ -1,0 +1,45 @@
+/*light {*/
+/*  title_color  color: #262626;*/
+/*  primary_text_color  color: #595959;*/
+/*  secondary_text_color  color: #8c8c8c;*/
+/*  disable_color  color: #e5e5e5;*/
+/*  border_color  color: #d9d9d9;*/
+/*  divider_color  color: #e8e8e8;*/
+/*  header_color  color: #fafafa;*/
+/*  icon_color  color: #8c8c8c;*/
+
+/*  background_color  color: #f8f8f9;*/
+/*  background_selected_color  color: #bfbfbf;*/
+/*  background_in_color  color: #ffffff;*/
+/*  background_out_color  color: #eeeeee;*/
+/*  mask_color  color: #f8f8f9*90%*/
+/*  toast_color  color: #333333;*/
+/*}*/
+
+/*dark {*/
+/*  title_color  color: #ffffff;*/
+/*  primary_text_color  color: #d9d9d9;*/
+/*  secondary_text_color  color: #a6a6a6;*/
+/*  disable_color  color: #737373;*/
+/*  border_color  color: #1e1e1e;*/
+/*  divider_color  color: #262626;*/
+/*  header_color  color: #0a0a0a;*/
+/*  icon_color  color: #a6a6a6;*/
+
+/*  background_color  color: #323232;*/
+/*  background_selected_color  color: #292929;*/
+/*  background_in_color  color: #3a3a3a;*/
+/*  background_out_color  color: #494949;*/
+/*  mask_color  color: #323232*90%*/
+/*  toast_color  color: #555555;*/
+/*}*/
+
+/*dark_yellow {*/
+/*  q_primary_color  color: #ffff00;*/
+/*  q_primary_light_color  color: #ffff5a;*/
+/*  q_secondary_color  color: #232629;*/
+/*  q_secondary_light_color  color: #4f5b62;*/
+/*  q_secondary_dark_color  color: #31363b;*/
+/*  q_primary_text_color  color: #000000;*/
+/*  q_secondary_text_color  color: #ffffff;*/
+/*}*/

@@ -13,6 +13,9 @@ from __future__ import print_function
 # Import built-in modules
 import string
 
+from qt_material import list_themes, get_theme
+
+from framework.utils.color_util import invert_color, adjust_brightness
 # Import local modules
 from framework.widgets.dayu_widgets import DEFAULT_STATIC_FOLDER
 from framework.widgets.dayu_widgets import utils
@@ -123,6 +126,11 @@ class MTheme(object):
     male_color = "#4ebbff"
 
     def __init__(self, theme="light", primary_color=None):
+        """
+        初始化主题
+        :param theme: 提供了light和dark两种主题，另外还支持qt_material的主题，传入主题xml文件名称即可。
+        :param primary_color:
+        """
         super(MTheme, self).__init__()
         default_qss_file = utils.get_static_file("main.qss")
         with open(default_qss_file, "r") as f:
@@ -156,8 +164,11 @@ class MTheme(object):
     def set_theme(self, theme):
         if theme == "light":
             self._light()
-        else:
+        elif theme == "dark":
             self._dark()
+        elif theme.endswith(".xml"):
+            # 支持qt_material
+            self._qt_material(theme)
         self._init_icon(theme)
 
     def set_primary_color(self, color):
@@ -310,6 +321,49 @@ class MTheme(object):
         self.background_out_color = "#eeeeee"
         self.mask_color = utils.fade_color(self.background_color, "90%")
         self.toast_color = "#333333"
+
+    def _qt_material(self, theme):
+        themes = list_themes()
+        if not theme in themes:
+            raise Exception(f"主题错误: {theme}，请选择正确的主题，目前支持 {themes}")
+        theme_color_dict = get_theme(theme)
+        q_primary_color = theme_color_dict["primaryColor"]  # 原色
+        q_primary_light_color = theme_color_dict["primaryLightColor"]  # 主光色
+        q_secondary_color = theme_color_dict["secondaryColor"]  # 次要颜色
+        q_secondary_light_color = theme_color_dict["secondaryLightColor"]  # 次级光色
+        q_secondary_dark_color = theme_color_dict["secondaryDarkColor"]  # 次要深色
+        q_primary_text_color = theme_color_dict["primaryTextColor"]  # 主文本颜色
+        q_secondary_text_color = theme_color_dict["secondaryTextColor"]  # 次要文本颜色
+
+        # 标题颜色
+        self.title_color = q_primary_color
+        # 主要文字
+        self.primary_text_color = q_primary_text_color
+        # 次要文字
+        self.secondary_text_color = q_secondary_text_color
+        # 禁用
+        self.disable_color = q_secondary_color
+        # 边缘
+        self.border_color = invert_color(q_primary_color)
+        # 分割线
+        self.divider_color = adjust_brightness(invert_color(q_primary_color), 1.5)
+        # 头部颜色
+        self.header_color = invert_color(q_primary_color)  # 采用原色的反色
+        # 图标颜色
+        self.icon_color = q_secondary_text_color
+
+        # 背景色
+        self.background_color = q_primary_light_color
+        # 背景选中色
+        self.background_selected_color = q_secondary_light_color
+        # 背景内色
+        self.background_in_color = q_secondary_text_color
+        # 背景外色
+        self.background_out_color = q_secondary_light_color
+        # 遮罩色
+        self.mask_color = utils.fade_color(self.background_color, "90%")
+        # 提示框颜色
+        self.toast_color = q_secondary_dark_color
 
     def apply(self, widget):
         size_dict = get_theme_size()

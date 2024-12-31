@@ -6,8 +6,8 @@ from PySide6.QtGui import Qt
 from PySide6.QtWidgets import QApplication, QDialog, QFrame, QVBoxLayout, QWidget
 
 from framework.widgets.cocos_widgets.custom_grips import CustomGrip
-from framework.widgets.cocos_widgets.c_title_bar.c_title_bar import CTitleBar
 from framework.widgets.dayu_widgets import MPushButton
+from framework.widgets.framework_widgets.c_title_bar.c_title_bar import CTitleBar
 
 """
 弹窗包装器，用于将普通弹窗，包装成符合当前UI风格的边框和标题栏，标题栏位置可选择（默认为包装器顶部）。

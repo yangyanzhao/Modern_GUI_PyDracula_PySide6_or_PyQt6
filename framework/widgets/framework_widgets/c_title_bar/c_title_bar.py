@@ -1,52 +1,19 @@
-# ///////////////////////////////////////////////////////////////
-#
-# BY: WANDERSON M.PIMENTA
-# PROJECT MADE WITH: Qt Designer and PySide6
-# V: 1.0.0
-#
-# This project can be used freely for all uses, as long as they maintain the
-# respective credits only in the Python scripts, any information in the visual
-# interface (GUI) can be modified without any implication.
-#
-# There are limitations on Qt licenses if you want to use your products
-# commercially, I recommend reading them on the official website:
-# https://doc.qt.io/qtforpython/licenses.html
-#
-# ///////////////////////////////////////////////////////////////
 import os.path
 
 from PySide6.QtCore import QSize, Signal, QDateTime, QTimer
-from PySide6.QtGui import QCursor, Qt
+from PySide6.QtGui import QCursor, Qt, QColor
 from PySide6.QtSvgWidgets import QSvgWidget
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QFrame, QHBoxLayout, QLabel
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QFrame, QHBoxLayout, QLabel, QGraphicsDropShadowEffect
 
 from . import current_directory
 from .c_div import CDiv
-# IMPORT QT CORE
-# ///////////////////////////////////////////////////////////////
-# IMPORT FUNCTIONS
-# ///////////////////////////////////////////////////////////////
-# IMPORT SETTINGS
-# ///////////////////////////////////////////////////////////////
-
-# IMPORT DIV
-# ///////////////////////////////////////////////////////////////
-# IMPORT BUTTON
-# ///////////////////////////////////////////////////////////////
 from .c_title_button import CTitleButton
 
-# GLOBALS
-# ///////////////////////////////////////////////////////////////
 _is_maximized = False
 _old_size = QSize()
 
 
-# PY TITLE BAR
-# Top bar with move application, maximize, restore, minimize,
-# close buttons and extra buttons
-# ///////////////////////////////////////////////////////////////
 class CTitleBar(QWidget):
-    # SIGNALS
     clicked = Signal(object)
     released = Signal(object)
 
@@ -56,7 +23,6 @@ class CTitleBar(QWidget):
             app_parent,
             logo_image=os.path.join(current_directory, "logo_top_100x22.svg"),
             logo_width=100,
-            buttons=None,
             dark_one="#1b1e23",
             bg_color="#343b48",
             div_color="#3c4454",
@@ -76,6 +42,7 @@ class CTitleBar(QWidget):
             radius_corners=None,
             font_family="Segoe UI",
             title_size=10,
+            enable_shadow=True,
             is_custom_title_bar=True,
             is_custom_title_min_btn=True,
             is_custom_title_max_btn=True,
@@ -104,6 +71,7 @@ class CTitleBar(QWidget):
         self._icon_color_active = icon_color_active
         self._font_family = font_family
         self._title_size = title_size
+        self._enable_shadow = enable_shadow
         self._text_foreground = text_foreground
         self._is_custom_title_bar = is_custom_title_bar
         self.is_custom_title_min_btn = is_custom_title_min_btn
@@ -398,3 +366,10 @@ class CTitleBar(QWidget):
 
         # ADD TO LAYOUT
         self.title_bar_layout.addWidget(self.bg)
+        if self._enable_shadow:
+            self.shadow = QGraphicsDropShadowEffect()
+            self.shadow.setBlurRadius(20)
+            self.shadow.setXOffset(0)
+            self.shadow.setYOffset(0)
+            self.shadow.setColor(QColor(0, 0, 0, 160))
+            self.setGraphicsEffect(self.shadow)

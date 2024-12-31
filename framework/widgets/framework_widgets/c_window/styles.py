@@ -18,7 +18,10 @@ class Styles(object):
     bg_style = """
     #pod_bg_app {{
         background-color: {_bg_color};
-        border-radius: {_border_radius};
+        border-top-left-radius: {_border_top_left_radius};
+        border-top-right-radius: {_border_top_right_radius};
+        border-bottom-left-radius: {_border_bottom_left_radius};
+        border-bottom-right-radius: {_border_bottom_right_radius};
         border: {_border_size}px solid {_border_color};
     }}
     QFrame {{ 

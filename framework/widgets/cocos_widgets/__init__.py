@@ -18,7 +18,6 @@ from framework.widgets.cocos_widgets.c_count_up import CCountUp
 from framework.widgets.cocos_widgets.c_credits import CCredits
 from framework.widgets.cocos_widgets.c_dialog.c_confirm_dialog import CConfirmDialog, CMessageDialog
 from framework.widgets.cocos_widgets.c_drawer import CDrawer
-from framework.widgets.cocos_widgets.c_grips import CGrips
 from framework.widgets.cocos_widgets.custom_grips.custom_grips import CustomGrip
 from framework.widgets.cocos_widgets.c_icon_button import CIconButton
 from framework.widgets.cocos_widgets.c_left_column.c_icon import CIcon
@@ -36,11 +35,13 @@ from framework.widgets.cocos_widgets.c_table_view_widget.table_view_mysql_widget
 from framework.widgets.cocos_widgets.c_table_view_widget.table_view_sqlite3_widget import TableViewWidgetSQLite3Abstract
 from framework.widgets.cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
 from framework.widgets.cocos_widgets.c_table_widget.c_table_widget import CTableWidget
-from framework.widgets.cocos_widgets.c_title_bar.c_title_bar import CTitleBar
-from framework.widgets.cocos_widgets.c_title_bar.c_title_button import CTitleButton
 from framework.widgets.cocos_widgets.c_toggle import CToggle
 from framework.widgets.cocos_widgets.c_voice_message.c_voice_message import CVoiceMessage
-from framework.widgets.cocos_widgets.c_window.c_window import CWindow
+from framework.widgets.framework_widgets.c_grips import CGrips
+from framework.widgets.framework_widgets.c_title_bar.c_title_bar import CTitleBar
+from framework.widgets.framework_widgets.c_title_bar.c_title_button import CTitleButton
+from framework.widgets.framework_widgets.c_window.c_window import CWindow
+
 
 __all__ = [
     "CAvatar",
@@ -79,4 +80,5 @@ __all__ = [
     "CVoiceMessage",
     "CWindow",
 ]
+
 

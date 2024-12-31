@@ -13,6 +13,7 @@ from __future__ import print_function
 
 # Import built-in modules
 from functools import partial
+from framework.widgets.dayu_widgets import dayu_theme
 import re
 
 # Import third-party modules
