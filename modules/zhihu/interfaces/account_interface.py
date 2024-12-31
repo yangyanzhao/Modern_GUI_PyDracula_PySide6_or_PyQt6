@@ -6,12 +6,12 @@ from qasync import QEventLoop
 
 from db.mysql.mysql_jdbc import create_pool, select_list, select_list_by_database_table, select_by_id_by_database_table
 from framework.widgets.cocos_widgets.c_dialog.c_confirm_dialog import CMessageDialog, CConfirmDialog
-from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
 from framework.widgets.cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
 from framework.widgets.cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
 from framework.widgets.dayu_widgets import MTheme
 from framework.widgets.dayu_widgets.push_button import MPushButton
 from framework.widgets.dayu_widgets.qt import MIcon
+from framework.widgets.framework_widgets.c_splash_screen.c_splash_screen import increase_counter
 from modules.zhihu.api.functions.zhihu_operation import generate_plan_, generate_plans
 from modules.zhihu.icons import icons
 
