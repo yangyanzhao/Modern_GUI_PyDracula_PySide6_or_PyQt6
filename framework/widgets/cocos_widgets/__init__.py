@@ -11,7 +11,7 @@ import sys
 
 from framework.widgets.cocos_widgets.c_avatar import CAvatar
 from framework.widgets.cocos_widgets.c_calendar import CCalendar
-from framework.widgets.cocos_widgets.c_card_list import MCardList
+from framework.widgets.cocos_widgets.c_card_list import CCardList
 from framework.widgets.cocos_widgets.c_circular_progress import CCircularProgress
 from framework.widgets.cocos_widgets.c_collapse import CCollapse
 from framework.widgets.cocos_widgets.c_count_up import CCountUp
@@ -30,7 +30,6 @@ from framework.widgets.cocos_widgets.c_marquee_label import AnimatedLabel, Marqu
 from framework.widgets.cocos_widgets.c_pagination_bar import CPaginationBar
 from framework.widgets.cocos_widgets.c_push_button import CPushButton
 from framework.widgets.cocos_widgets.c_slider import CSlider
-from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import CSplashScreen
 from framework.widgets.cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
 from framework.widgets.cocos_widgets.c_table_view_widget.table_view_sqlite3_widget import TableViewWidgetSQLite3Abstract
 from framework.widgets.cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
@@ -38,6 +37,7 @@ from framework.widgets.cocos_widgets.c_table_widget.c_table_widget import CTable
 from framework.widgets.cocos_widgets.c_toggle import CToggle
 from framework.widgets.cocos_widgets.c_voice_message.c_voice_message import CVoiceMessage
 from framework.widgets.framework_widgets.c_grips import CGrips
+from framework.widgets.framework_widgets.c_splash_screen.c_splash_screen import CSplashScreen
 from framework.widgets.framework_widgets.c_title_bar.c_title_bar import CTitleBar
 from framework.widgets.framework_widgets.c_title_bar.c_title_button import CTitleButton
 from framework.widgets.framework_widgets.c_window.c_window import CWindow
@@ -46,7 +46,7 @@ from framework.widgets.framework_widgets.c_window.c_window import CWindow
 __all__ = [
     "CAvatar",
     "CCalendar",
-    "MCardList",
+    "CCardList",
     "CCircularProgress",
     "CCollapse",
     "CCountUp",

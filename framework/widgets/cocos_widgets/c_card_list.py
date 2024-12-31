@@ -8,13 +8,13 @@ from framework.widgets.dayu_widgets.mixin import hover_shadow_mixin, cursor_mixi
 
 @hover_shadow_mixin
 @cursor_mixin
-class MPanMeta(QWidget):
+class CPanMeta(QWidget):
     """
     包装器带边缘效果
     """
 
     def __init__(self, widget):
-        super(MPanMeta, self).__init__()
+        super(CPanMeta, self).__init__()
         self.layout = QVBoxLayout(self)
         self.main_layout = QVBoxLayout()
         self.center_widget = QWidget()
@@ -24,13 +24,13 @@ class MPanMeta(QWidget):
         self.layout.addWidget(self.center_widget)
 
 
-class MCardList(QtWidgets.QWidget):
+class CCardList(QtWidgets.QWidget):
     """
     卡片列表，带滑动条
     """
 
     def __init__(self, parent=None):
-        super(MCardList, self).__init__(parent)
+        super(CCardList, self).__init__(parent)
         # 初始化UI
         self.init_ui()
 
@@ -56,14 +56,14 @@ class MCardList(QtWidgets.QWidget):
         task_widget.setLayout(self.task_card_lay)
 
     def add_setting(self, widget):
-        meta = MPanMeta(widget)
+        meta = CPanMeta(widget)
         self.task_card_lay.addWidget(meta)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # 创建窗口
-    demo_widget = MCardList()
+    demo_widget = CCardList()
     demo_widget.add_setting(widget=MPushButton("单位"))
     demo_widget.add_setting(widget=MSwitch())
     demo_widget.add_setting(widget=MLabel("黑龙江中医药大学"))
