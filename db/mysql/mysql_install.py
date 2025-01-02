@@ -1,6 +1,8 @@
 import logging
 import os.path
+import shutil
 import subprocess
+import traceback
 import zipfile
 import requests
 
@@ -46,6 +48,11 @@ def run_command(command, cwd, env=None):
 
 
 def check_mysql_service_exists(name=mysql_name):
+    """
+    检测是否存在指定的服务。
+    :param name:
+    :return:
+    """
     if name is None:
         name = "mysql"
     try:
@@ -61,6 +68,52 @@ def check_mysql_service_exists(name=mysql_name):
         return False
 
 
+import platform
+
+
+def is_service_running(name=mysql_name):
+    """
+    检测服务是否处于启动状态（跨平台）。
+    :param name: 服务名称
+    :return: True 表示服务正在运行，False 表示服务未运行
+    """
+    system = platform.system()
+    try:
+        if system == "Windows":
+            result = subprocess.run(
+                ["sc", "query", name],
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            return "RUNNING" in result.stdout
+        elif system == "Linux":
+            result = subprocess.run(
+                ["systemctl", "is-active", name],
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            return result.stdout.strip() == "active"
+        elif system == "Darwin":  # macOS
+            result = subprocess.run(
+                ["launchctl", "list", name],
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            return name in result.stdout
+        else:
+            logging.error(f"不支持的操作系统: {system}")
+            return False
+    except subprocess.CalledProcessError as e:
+        logging.error(f"查询服务状态失败: {e.stderr}")
+        return False
+
+
 def mysql_download():
     """
     下载mysql-5.7.38-winx64
@@ -72,8 +125,12 @@ def mysql_download():
     try:
         url = 'https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.38-winx64.zip'
         # 如果不存在MYSQL免安装包，则去解压压缩包
-        if not os.path.exists(os.path.join(current_directory, 'mysql-5.7.38-winx64')):
+        mysql_bin_path = os.path.join(current_directory, 'mysql-5.7.38-winx64', 'bin')
+        if not os.path.exists(mysql_bin_path):
+            # 下载之前，先清理一下
+            shutil.rmtree(os.path.join(current_directory, 'mysql-5.7.38-winx64'))
             # 如果不存在压缩包，则去下载压缩包
+
             if not os.path.exists(os.path.join(current_directory, 'mysql-5.7.38-winx64.zip')):
                 logging.info("即将下载MYSQL压缩包")
                 # 发送 GET 请求
@@ -86,19 +143,31 @@ def mysql_download():
                         # 分块写入文件
                         for chunk in r.iter_content(chunk_size=8192):
                             logging.info("正在下载MYSQL压缩包...")
+                            print("正在下载MYSQL压缩包...")
                             f.write(chunk)
                 logging.info("下载MYSQL压缩包完成")
+                print("下载MYSQL压缩包完成")
             else:
                 logging.info("MYSQL压缩包已存在,解压即可")
             logging.info("即将解压MYSQL压缩包")
             # 打开 ZIP 文件
-            with zipfile.ZipFile(os.path.join(current_directory, os.path.basename(url)), 'r') as zip_ref:
-                # 解压所有文件到指定文件夹
-                zip_ref.extractall(current_directory)
+            logging.info(f"压缩包地址: {os.path.join(current_directory, os.path.basename(url))}")
+            print(f"压缩包地址: {os.path.join(current_directory, os.path.basename(url))}")
+            try:
+                with zipfile.ZipFile(os.path.join(current_directory, os.path.basename(url)), 'r') as zip_ref:
+                    # 解压所有文件到指定文件夹
+                    zip_ref.extractall(current_directory)
+            except:
+                # 如果解压失败，则删除压缩包
+                os.remove(os.path.join(current_directory, os.path.basename(url)))
+                logging.info("解压MYSQL压缩包失败，已删除压缩包，请手动手下载并解压")
+
             logging.info("解压MYSQL压缩包完成")
         else:
             logging.info("MYSQL已存在,初始化即可")
     except:
+        traceback.format_exc()
+        traceback.print_exc()
         logging.info(
             "下载MYSQL失败，请去https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.38-winx64.zip手动下载，并将压缩文件放置到./db/mysql文件夹中")
 

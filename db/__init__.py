@@ -2,7 +2,8 @@
 import logging
 import os
 
-from db.mysql.mysql_install import check_mysql_service_exists, mysql_initialization, mysql_start_up, mysql_download
+from db.mysql.mysql_install import check_mysql_service_exists, mysql_initialization, mysql_start_up, mysql_download, \
+    is_service_running
 
 # mysql服务初始化检测
 if not check_mysql_service_exists():
@@ -12,6 +13,11 @@ if not check_mysql_service_exists():
     mysql_start_up()
 else:
     logging.info("MySQL 服务已存在，跳过安装步骤。")
+    # 检测一下服务是否已经启动
+    running = is_service_running()
+    if not running:
+        logging.info("MySQL 服务已存在，但是未启动！，所以开始启动。")
+        mysql_start_up()
 
 # 获取当前文件的绝对路径
 current_file_path = os.path.abspath(__file__)

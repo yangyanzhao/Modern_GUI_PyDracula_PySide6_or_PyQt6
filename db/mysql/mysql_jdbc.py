@@ -29,6 +29,7 @@ type_mapping = {
 # 创建一个线程池
 executor = ThreadPoolExecutor()
 
+
 def is_event_loop_running():
     try:
         # 尝试获取当前运行的事件循环
@@ -37,6 +38,7 @@ def is_event_loop_running():
     except RuntimeError:
         # 如果没有运行中的事件循环，会抛出 RuntimeError
         return False
+
 
 async def create_pool_with_no_db(host='localhost', port=3366, user='root', password=None, autocommit=True, minsize=1,
                                  maxsize=100):
@@ -978,6 +980,8 @@ def select_by_sql_by_database_table(database_name, sql: str):
             page_data = await select_by_sql(pool=pool, sql=sql)
             return page_data
         except:
+            exc_info = traceback.format_exc()
+            tips = "是不是MYSQL 没有安装，首次启动要用管理员权限启动哦，否则无法自动安装MYSQL"
             traceback.print_exc()
             exc_info = traceback.format_exc()
         finally:
@@ -1020,8 +1024,11 @@ def select_list_by_database_table(database_name, table_name, conditions: list[di
                                           order_by=[{'field': odb[0], 'value': odb[1]} for odb in orderby_list])
             return page_data
         except:
-            traceback.print_exc()
             exc_info = traceback.format_exc()
+            tips = "是不是MYSQL 没有安装，首次启动要用管理员权限启动哦，否则无法自动安装MYSQL"
+            traceback.print_exc()
+            logging.error(tips)
+            print(tips)
         finally:
             await close_pool(pool)
 
@@ -1033,7 +1040,10 @@ def select_list_by_database_table(database_name, table_name, conditions: list[di
         try:
             data_list = future.result(timeout=10)  # 阻塞等待结果
         except Exception as e:
+
             import traceback
+            exc_info = traceback.format_exc()
+            tips = "是不是MYSQL 没有安装，首次启动要用管理员权限启动哦，否则无法自动安装MYSQL"
             traceback.print_exc()
             exc_info = traceback.format_exc()
     else:
@@ -1082,6 +1092,8 @@ def select_by_id_by_database_table(database_name, table_name, id: int):
             data = future.result(timeout=10)  # 阻塞等待结果
         except Exception as e:
             import traceback
+            exc_info = traceback.format_exc()
+            tips = "是不是MYSQL 没有安装，首次启动要用管理员权限启动哦，否则无法自动安装MYSQL"
             traceback.print_exc()
             exc_info = traceback.format_exc()
     else:
