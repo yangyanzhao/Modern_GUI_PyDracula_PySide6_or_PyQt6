@@ -311,7 +311,8 @@ class UIFunctions:
     @staticmethod
     def add_menus(self, menus_list):
         right_slash = '\\'
-
+        # 生成一个按钮id与界面对象的映射
+        self.menu_interface_mapping = {menu["btn_id"]: menu["interface"] for menu in menus_list}
         for menu in menus_list:
             if menu['show_top']:
                 self.btn = QPushButton(self.leftMenuBg.leftMenuFrame.topMenu)

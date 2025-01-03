@@ -209,8 +209,7 @@ class MainWindow(QMainWindow):
                 "interface": ZhiHuMainInterface(parent=self)
             }
         ]
-        # 生成一个按钮id与界面对象的映射
-        self.menu_interface_mapping = {menu["btn_id"]: menu["interface"] for menu in menus_list}
+
         UIFunctions.add_menus(self, menus_list=menus_list)
 
 
