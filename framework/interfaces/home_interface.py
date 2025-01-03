@@ -5,9 +5,9 @@ from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 from resources.framework.images import images
 
 
-class DemoHomeInterface(QWidget):
+class HomeInterface(QWidget):
     def __init__(self, parent=None):
-        super(DemoHomeInterface, self).__init__(parent)
+        super(HomeInterface, self).__init__(parent)
         self.setObjectName(u"demo_home_interface")
         layout = QVBoxLayout(self)
         layout.setAlignment(Qt.AlignCenter)

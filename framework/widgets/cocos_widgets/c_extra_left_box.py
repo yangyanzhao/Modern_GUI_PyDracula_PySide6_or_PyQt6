@@ -24,11 +24,7 @@ class CExtraLeftBox(QFrame):
         self.setMaximumSize(QSize(0, 16777215))
         self.setFrameShape(QFrame.NoFrame)
         self.setFrameShadow(QFrame.Raised)
-        self.setStyleSheet(rf"""
-        #extraLeftBox {{
-            background-color: rgb(44, 49, 58);
-        }}
-        """)
+
         self.extraColumLayout = QVBoxLayout(self)
         self.extraColumLayout.setSpacing(0)
         self.extraColumLayout.setObjectName(u"extraColumLayout")
@@ -39,13 +35,7 @@ class CExtraLeftBox(QFrame):
         self.extraTopBg.setMaximumSize(QSize(16777215, 50))
         self.extraTopBg.setFrameShape(QFrame.NoFrame)
         self.extraTopBg.setFrameShadow(QFrame.Raised)
-        self.extraTopBg.setStyleSheet(
-            rf"""
-            #extraTopBg{{
-                background-color: rgb(189, 147, 249)
-            }}
-            """
-        )
+
         self.verticalLayout_5 = QVBoxLayout(self.extraTopBg)
         self.verticalLayout_5.setSpacing(0)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
@@ -77,11 +67,6 @@ class CExtraLeftBox(QFrame):
         self.extraLabel.setText("Left Box")
         self.extraLabel.setObjectName(u"extraLabel")
         self.extraLabel.setMinimumSize(QSize(150, 0))
-        self.extraLabel.setStyleSheet(
-            rf"""
-                #extraLabel {{ color: rgb(255, 255, 255); }}
-            """
-        )
 
         self.extraTopLayout.addWidget(self.extraLabel, 0, 1, 1, 1)
 
@@ -92,13 +77,7 @@ class CExtraLeftBox(QFrame):
         self.extraCloseColumnBtn.setMinimumSize(QSize(28, 28))
         self.extraCloseColumnBtn.setMaximumSize(QSize(28, 28))
         self.extraCloseColumnBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.extraCloseColumnBtn.setStyleSheet(
-            rf"""
-            #extraCloseColumnBtn {{ background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }}
-            #extraCloseColumnBtn:hover {{ background-color: rgb(196, 161, 249); border-style: solid; border-radius: 4px; }}
-            #extraCloseColumnBtn:pressed {{ background-color: rgb(180, 141, 238); border-style: solid; border-radius: 4px; }}
-            """
-        )
+
         icon = QIcon()
         icon.addFile(icons['icon_close.png'], QSize(), QIcon.Normal, QIcon.Off)
         self.extraCloseColumnBtn.setIcon(icon)
@@ -114,13 +93,6 @@ class CExtraLeftBox(QFrame):
         self.extraContent.setObjectName(u"extraContent")
         self.extraContent.setFrameShape(QFrame.NoFrame)
         self.extraContent.setFrameShadow(QFrame.Raised)
-        self.extraContent.setStyleSheet(
-            rf"""
-            #extraContent{{
-                border-top: 3px solid rgb(40, 44, 52);
-            }}
-            """
-        )
         self.verticalLayout_12 = QVBoxLayout(self.extraContent)
         self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -129,26 +101,6 @@ class CExtraLeftBox(QFrame):
         self.extraTopMenu.setObjectName(u"extraTopMenu")
         self.extraTopMenu.setFrameShape(QFrame.NoFrame)
         self.extraTopMenu.setFrameShadow(QFrame.Raised)
-        self.extraTopMenu.setStyleSheet(
-            rf"""
-            #extraTopMenu .QPushButton {{
-                background-position: left center;
-                    background-repeat: no-repeat;
-                    border: none;
-                    border-left: 22px solid transparent;
-                    background-color:transparent;
-                    text-align: left;
-                    padding-left: 44px;
-            }}
-            #extraTopMenu .QPushButton:hover {{
-            background-color: rgb(40, 44, 52);
-            }}
-            #extraTopMenu .QPushButton:pressed {{
-            background-color: rgb(189, 147, 249);
-            color: rgb(255, 255, 255);
-            }}
-            """
-        )
         self.verticalLayout_11 = QVBoxLayout(self.extraTopMenu)
         self.verticalLayout_11.setSpacing(0)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")

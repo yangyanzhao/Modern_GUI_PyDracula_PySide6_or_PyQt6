@@ -37,7 +37,6 @@ class CTopLogoInfo(QFrame):
         self.topLogo.setStyleSheet(
             rf"""
             background-image: url({images['PyDracula.png'].replace(right_slash, '/')});
-            background-color: rgb(33, 37, 43);
             background-position: centered;
             background-repeat: no-repeat;
             """)

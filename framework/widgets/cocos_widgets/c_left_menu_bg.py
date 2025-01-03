@@ -19,13 +19,6 @@ class CLeftMenuBg(QFrame):
         self.setMaximumSize(QSize(60, 16777215))
         self.setFrameShape(QFrame.Shape.NoFrame)
         self.setFrameShadow(QFrame.Shadow.Raised)
-        self.setStyleSheet(
-            rf"""
-            #leftMenuBg {{
-                background-color: rgb(33, 37, 43);
-            }}
-            """
-        )
         self.verticalLayout_3 = QVBoxLayout(self)
         self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")

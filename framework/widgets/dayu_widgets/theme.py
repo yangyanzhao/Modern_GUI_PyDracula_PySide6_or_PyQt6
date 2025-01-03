@@ -133,7 +133,7 @@ class MTheme(object):
         """
         super(MTheme, self).__init__()
         default_qss_file = utils.get_static_file("main.qss")
-        with open(default_qss_file, "r") as f:
+        with open(default_qss_file, "r",encoding='utf-8') as f:
             self.default_qss = QssTemplate(f.read())
         self.primary_color, self.item_hover_bg = (None, None)
         (

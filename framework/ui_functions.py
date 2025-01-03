@@ -21,6 +21,7 @@ from PySide6.QtWidgets import QPushButton, QGraphicsDropShadowEffect, QSizeGrip,
 
 from framework.app_settings import Settings
 from framework.widgets.cocos_widgets import CustomGrip
+from resources.framework.icons import icons
 
 # MAIN FILE
 # ///////////////////////////////////////////////////////////////
@@ -43,7 +44,8 @@ class UIFunctions:
             GLOBAL_STATE = True
             self.appMargins.setContentsMargins(0, 0, 0, 0)
             self.contentTopBg.rightButtons.maximizeRestoreAppBtn.setToolTip("Restore")
-            self.contentTopBg.rightButtons.maximizeRestoreAppBtn.setIcon(QIcon(u":/icons/images/icons/icon_restore.png"))
+            self.contentTopBg.rightButtons.maximizeRestoreAppBtn.setIcon(
+                QIcon(icons['icon_restore.png']))
             self.bottomBar.frame_size_grip.hide()
             self.left_grip.hide()
             self.right_grip.hide()
@@ -53,9 +55,10 @@ class UIFunctions:
             GLOBAL_STATE = False
             self.showNormal()
             self.resize(self.width() + 1, self.height() + 1)
-            self.appMargins.setContentsMargins(10, 10, 10, 10)
+            self.appMargins.setContentsMargins(0, 0, 0, 0)
             self.contentTopBg.rightButtons.maximizeRestoreAppBtn.setToolTip("Maximize")
-            self.contentTopBg.rightButtons.maximizeRestoreAppBtn.setIcon(QIcon(u":/icons/images/icons/icon_maximize.png"))
+            self.contentTopBg.rightButtons.maximizeRestoreAppBtn.setIcon(
+                QIcon(icons['icon_maximize.png']))
             self.bottomBar.frame_size_grip.show()
             self.left_grip.show()
             self.right_grip.show()
@@ -121,7 +124,8 @@ class UIFunctions:
                 self.leftMenuBg.leftMenuFrame.toggleLeftBox.setStyleSheet(style + color)
                 if widthRightBox != 0:
                     style = self.contentTopBg.rightButtons.settingsTopBtn.styleSheet()
-                    self.contentTopBg.rightButtons.settingsTopBtn.setStyleSheet(style.replace(Settings.BTN_RIGHT_BOX_COLOR, ''))
+                    self.contentTopBg.rightButtons.settingsTopBtn.setStyleSheet(
+                        style.replace(Settings.BTN_RIGHT_BOX_COLOR, ''))
             else:
                 widthExtended = standard
                 # RESET BTN
@@ -151,7 +155,8 @@ class UIFunctions:
                 self.contentTopBg.rightButtons.settingsTopBtn.setStyleSheet(style + color)
                 if widthLeftBox != 0:
                     style = self.leftMenuBg.leftMenuFrame.toggleLeftBox.styleSheet()
-                    self.leftMenuBg.leftMenuFrame.toggleLeftBox.setStyleSheet(style.replace(Settings.BTN_LEFT_BOX_COLOR, ''))
+                    self.leftMenuBg.leftMenuFrame.toggleLeftBox.setStyleSheet(
+                        style.replace(Settings.BTN_LEFT_BOX_COLOR, ''))
             else:
                 widthExtended = standard
                 # RESET BTN
@@ -317,12 +322,6 @@ class UIFunctions:
                 sizePolicy.setHeightForWidth(self.btn.sizePolicy().hasHeightForWidth())
                 self.btn.setSizePolicy(sizePolicy)
                 self.btn.setMinimumSize(QSize(0, 45))
-
-                self.btn.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(menu['interface']))
-                self.btn.clicked.connect(
-                    lambda: self.btn.setStyleSheet(UIFunctions.selectMenu(self.btn.styleSheet())))  # 设置所选按钮的样式
-                self.btn.clicked.connect(lambda: UIFunctions.resetStyle(self, menu['btn_id']))  # 重置所选的其他按钮的样式
-
                 self.btn.clicked.connect(self.buttonClick)
                 font = QFont()
                 font.setFamily(u"Segoe UI")
@@ -342,7 +341,7 @@ class UIFunctions:
                 # ui.btn.setIcon(QIcon(QPixmap(menu['btn_icon'])))
                 self.leftMenuBg.leftMenuFrame.topMenuLayout.addWidget(self.btn)
             else:
-                self.btn = QPushButton(self.topMenu)
+                self.btn = QPushButton(self.leftMenuBg.leftMenuFrame.topMenu)
                 self.btn.setObjectName(menu['btn_id'])
                 self.btn.setText(menu['btn_text'])
                 self.btn.setToolTip(menu['btn_tooltip'])
@@ -366,7 +365,9 @@ class UIFunctions:
                                             }}
                                         """)
                 # ui.btn.setIcon(QIcon(QPixmap(menu['btn_icon'])))
-                self.bottomMenuLayout.addWidget(self.btn)
+                self.leftMenuBg.leftMenuFrame.bottomMenuLayout.addWidget(self.btn)
+            pass
+            self.stackedWidget.addWidget(menu['interface'])
 
     @staticmethod
     def generate_random_color():

@@ -27,13 +27,6 @@ class CLeftMenuFrame(QFrame):
         self.verticalMenuLayout.setSpacing(0)
         self.verticalMenuLayout.setObjectName(u"verticalMenuLayout")
         self.verticalMenuLayout.setContentsMargins(0, 0, 0, 0)
-        self.setStyleSheet(
-            rf"""
-            #leftMenuFrame{{
-                border-top: 3px solid rgb(44, 49, 58);
-            }}
-            """
-        )
 
         self.toggleBox = QFrame(self)
         self.toggleBox.setObjectName(u"toggleBox")
@@ -66,16 +59,8 @@ class CLeftMenuFrame(QFrame):
                 background-repeat: no-repeat;
                 border: none;
                 border-left: 20px solid transparent;
-                background-color: rgb(37, 41, 48);
                 text-align: left;
                 padding-left: 44px;
-                color: rgb(113, 126, 149);
-            }}
-            #toggleButton:hover {{
-                background-color: rgb(40, 44, 52);
-            }}
-            #toggleButton:pressed {{
-                background-color: rgb(189, 147, 249);
             }}
             """
         )
@@ -114,76 +99,6 @@ class CLeftMenuFrame(QFrame):
         self.topMenuLayout.setSpacing(0)
         self.topMenuLayout.setObjectName(u"topMenuLayout")
         self.topMenuLayout.setContentsMargins(0, 0, 0, 0)
-
-        self.btn_home = QPushButton(parent=self.topMenu)
-        self.btn_home.setText("Home")
-        self.btn_home.setObjectName(u"btn_home")
-        self.sizePolicy.setHeightForWidth(self.btn_home.sizePolicy().hasHeightForWidth())
-        self.btn_home.setSizePolicy(self.sizePolicy)
-        self.btn_home.setMinimumSize(QSize(0, 45))
-        self.btn_home.setFont(font)
-        self.btn_home.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_home.setLayoutDirection(Qt.LeftToRight)
-        right_slash = '\\'
-        self.btn_home.setStyleSheet(rf"background-image: url({icons['cil-home.png'].replace(right_slash, '/')});")
-
-        self.topMenuLayout.addWidget(self.btn_home)
-
-        self.btn_widgets = QPushButton(parent=self.topMenu)
-        self.btn_widgets.setText("Widgets")
-        self.btn_widgets.setObjectName(u"btn_widgets")
-        self.sizePolicy.setHeightForWidth(self.btn_widgets.sizePolicy().hasHeightForWidth())
-        self.btn_widgets.setSizePolicy(self.sizePolicy)
-        self.btn_widgets.setMinimumSize(QSize(0, 45))
-        self.btn_widgets.setFont(font)
-        self.btn_widgets.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_widgets.setLayoutDirection(Qt.LeftToRight)
-
-        right_slash = '\\'
-        self.btn_widgets.setStyleSheet(rf"background-image: url({icons['cil-gamepad.png'].replace(right_slash, '/')});")
-        self.topMenuLayout.addWidget(self.btn_widgets)
-
-        self.btn_new = QPushButton(parent=self.topMenu)
-        self.btn_new.setText("New")
-        self.btn_new.setObjectName(u"btn_new")
-        self.sizePolicy.setHeightForWidth(self.btn_new.sizePolicy().hasHeightForWidth())
-        self.btn_new.setSizePolicy(self.sizePolicy)
-        self.btn_new.setMinimumSize(QSize(0, 45))
-        self.btn_new.setFont(font)
-        self.btn_new.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_new.setLayoutDirection(Qt.LeftToRight)
-
-        right_slash = '\\'
-        self.btn_new.setStyleSheet(rf"background-image: url({icons['cil-file.png'].replace(right_slash, '/')});")
-        self.topMenuLayout.addWidget(self.btn_new)
-
-        self.btn_save = QPushButton(parent=self.topMenu)
-        self.btn_save.setText("Save")
-        self.btn_save.setObjectName(u"btn_save")
-        self.sizePolicy.setHeightForWidth(self.btn_save.sizePolicy().hasHeightForWidth())
-        self.btn_save.setSizePolicy(self.sizePolicy)
-        self.btn_save.setMinimumSize(QSize(0, 45))
-        self.btn_save.setFont(font)
-        self.btn_save.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_save.setLayoutDirection(Qt.LeftToRight)
-
-        right_slash = '\\'
-        self.btn_save.setStyleSheet(rf"background-image: url({icons['cil-save.png'].replace(right_slash, '/')});")
-        self.topMenuLayout.addWidget(self.btn_save)
-
-        self.btn_exit = QPushButton(parent=self.topMenu)
-        self.btn_exit.setText("Exit")
-        self.btn_exit.setObjectName(u"btn_exit")
-        self.sizePolicy.setHeightForWidth(self.btn_exit.sizePolicy().hasHeightForWidth())
-        self.btn_exit.setSizePolicy(self.sizePolicy)
-        self.btn_exit.setMinimumSize(QSize(0, 45))
-        self.btn_exit.setFont(font)
-        self.btn_exit.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_exit.setLayoutDirection(Qt.LeftToRight)
-
-        right_slash = '\\'
-        self.btn_exit.setStyleSheet(rf"background-image: url({icons['cil-x.png'].replace(right_slash, '/')});")
-        self.topMenuLayout.addWidget(self.btn_exit)
 
         self.verticalMenuLayout.addWidget(self.topMenu, 0, Qt.AlignTop)
 

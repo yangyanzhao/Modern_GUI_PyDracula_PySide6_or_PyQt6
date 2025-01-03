@@ -184,7 +184,7 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
                 "editable": False,  # 是否支持编辑(如果是下拉框，则无法双击编辑，只能下拉选择)
                 "selectable": False,  # 是否支持下拉框选择，支持下拉框，需要数据中提供给key_list数据
                 "exclusive": False,  # 下拉框选择是否单选
-                "width": 40,  # 宽度
+                "width": 60,  # 宽度
                 # "font": lambda x, y: {"underline": True, "bold": True},  # 字体样式
                 # "icon": MIcon(path=icons['新增.svg'], color='#65DB79'),  # 图标，可以动态图标
                 # "display": lambda x, y: f"{x}",  # 显示格式化

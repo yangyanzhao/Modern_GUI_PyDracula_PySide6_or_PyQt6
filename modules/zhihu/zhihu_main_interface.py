@@ -23,7 +23,6 @@ class ZhiHuMainInterface(QWidget, MFieldMixin):
     def __init__(self, parent=None):
         super(ZhiHuMainInterface, self).__init__(parent)
         self.init_ui()
-        MTheme('dark').apply(self)
 
     def init_ui(self):
         self.setWindowTitle('知乎')
@@ -86,7 +85,7 @@ if __name__ == '__main__':
     asyncio.set_event_loop(loop)
     # 创建窗口
     demo_widget = ZhiHuMainInterface()
-
+    MTheme('dark').apply(demo_widget)
     # 显示窗口
     demo_widget.show()
     loop.run_forever()

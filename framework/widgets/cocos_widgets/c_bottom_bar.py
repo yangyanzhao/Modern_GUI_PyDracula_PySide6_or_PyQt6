@@ -14,12 +14,6 @@ class CBottomBar(QFrame):
         self.setFixedHeight(22)
         self.setFrameShape(QFrame.NoFrame)
         self.setFrameShadow(QFrame.Raised)
-        self.setStyleSheet(
-            rf"""
-            #bottomBar {{ background-color: rgb(44, 49, 58); }}
-            #bottomBar QLabel {{ font-size: 11px; color: rgb(113, 126, 149); padding-left: 10px; padding-right: 10px; padding-bottom: 2px; }}
-            """
-        )
         self.horizontalLayout_5 = QHBoxLayout(self)
         self.horizontalLayout_5.setSpacing(0)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")

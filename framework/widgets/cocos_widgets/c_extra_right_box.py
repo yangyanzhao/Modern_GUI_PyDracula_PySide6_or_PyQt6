@@ -22,11 +22,7 @@ class CExtraRightBox(QFrame):
         self.setMaximumSize(QSize(0, 16777215))
         self.setFrameShape(QFrame.NoFrame)
         self.setFrameShadow(QFrame.Raised)
-        self.setStyleSheet(
-            rf"""
-            #extraRightBox {{ background-color: rgb(44, 49, 58); }}
-            """
-        )
+
         self.verticalLayout_7 = QVBoxLayout(self)
         self.verticalLayout_7.setSpacing(0)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
@@ -36,11 +32,7 @@ class CExtraRightBox(QFrame):
         self.themeSettingsTopDetail.setMaximumSize(QSize(16777215, 3))
         self.themeSettingsTopDetail.setFrameShape(QFrame.NoFrame)
         self.themeSettingsTopDetail.setFrameShadow(QFrame.Raised)
-        self.themeSettingsTopDetail.setStyleSheet(
-            rf"""
-            #themeSettingsTopDetail {{ background-color: rgb(189, 147, 249); }}
-            """
-        )
+
 
         self.verticalLayout_7.addWidget(self.themeSettingsTopDetail)
 
@@ -48,26 +40,6 @@ class CExtraRightBox(QFrame):
         self.contentSettings.setObjectName(u"contentSettings")
         self.contentSettings.setFrameShape(QFrame.NoFrame)
         self.contentSettings.setFrameShadow(QFrame.Raised)
-        self.contentSettings.setStyleSheet(
-            rf"""
-            #contentSettings .QPushButton {{
-                background-position: left center;
-                background-repeat: no-repeat;
-                border: none;
-                border-left: 22px solid transparent;
-                background-color:transparent;
-                text-align: left;
-                padding-left: 44px;
-            }}
-            #contentSettings .QPushButton:hover {{
-                background-color: rgb(40, 44, 52);
-            }}
-            #contentSettings .QPushButton:pressed {{
-                background-color: rgb(189, 147, 249);
-                color: rgb(255, 255, 255);
-            }}
-            """
-        )
         self.verticalLayout_13 = QVBoxLayout(self.contentSettings)
         self.verticalLayout_13.setSpacing(0)
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")

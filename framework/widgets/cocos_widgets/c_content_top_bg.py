@@ -18,13 +18,6 @@ class CContentTopBg(QFrame):
         self.setMaximumSize(QSize(16777215, 50))
         self.setFrameShape(QFrame.NoFrame)
         self.setFrameShadow(QFrame.Raised)
-        self.setStyleSheet(
-            rf"""
-            #contentTopBg{{
-                background-color: rgb(33, 37, 43);
-            }}
-            """
-        )
         self.horizontalLayout = QHBoxLayout(self)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
