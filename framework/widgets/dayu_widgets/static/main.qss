@@ -8,31 +8,20 @@
     selection-color: @text_color_inverse;
     selection-background-color: @primary_color;
 }
-/* 右侧内容的背景色 */
-#bgApp {
-    background-color: rgb(40, 44, 52);
-}
 
 /* 右侧内容的顶部边框色 */
 #contentBottom{
-    border: 3px solid rgb(44, 149, 58);
-    border-top: 3px solid rgb(144, 149, 58);
+    border-top: 3px solid @primary_color;
 }
 
 /* 右侧内容的底部工信部信息背景色 */
-#bottomBar { background-color: rgb(144, 49, 58); }
+#bottomBar { background-color: rgb(44, 49, 58); }
 #bottomBar QLabel { font-size: 11px; color: rgb(113, 126, 149); padding-left: 10px; padding-right: 10px; padding-bottom: 2px; }
 
-/* 左侧菜单背景色 */
-#leftMenuBg { background-color: rgb(133, 37, 43);}
-
-/* 左侧LOGO背景色 */
-#topLogo { background-color: rgb(133, 37, 43);}
 
 /* 左侧菜单边框色 */
 #leftMenuFrame{
-    border: 3px solid rgb(44, 49, 158);
-    border-top: 3px solid rgb(44, 49, 258);
+    border-top: 3px solid @primary_color;
 }
 /* 左侧菜单展开隐藏按钮的颜色 */
 #toggleButton {
@@ -46,14 +35,7 @@
     background-color: rgb(189, 147, 249);
 }
 
-/* 设置界面的内容背景色 */
-#extraLeftBox {
-    background-color: rgb(44, 49, 58);
-}
-/* 设置界面的头部背景色 */
-#extraTopBg{
-    background-color: rgb(189, 147, 249)
-}
+
 /* 设置界面的头部字体颜色 */
 #extraLabel { color: rgb(255, 255, 255); }
 
@@ -64,8 +46,7 @@
 
 /* 设置界面的内容边框 */
 #extraContent {
-    border: 3px solid rgb(40, 44, 252);
-    border-top: 3px solid rgb(40, 44, 152);
+    border-top: 3px solid @primary_color;
 }
 /* 设置界面的内容按钮样式 */
 #extraTopMenu .QPushButton {
@@ -85,17 +66,13 @@
     color: rgb(255, 255, 255);
 }
 
-/* 右侧顶部背景颜色 */
-#contentTopBg{
-    background-color: rgb(33, 37, 43);
-}
 /* 右侧顶部按钮颜色 */
 #rightButtons .QPushButton { background-color: rgba(255, 255, 255, 0); border: none;  border-radius: 5px; }
 #rightButtons .QPushButton:hover { background-color: rgb(44, 49, 57); border-style: solid; border-radius: 4px; }
 #rightButtons .QPushButton:pressed { background-color: rgb(23, 26, 30); border-style: solid; border-radius: 4px; }
 
 /* 右侧扩展页面背景颜色 */
-#extraRightBox { background-color: rgb(44, 49, 58); }
+#extraRightBox { background-color: rgb(144, 49, 58); }
 /* 右侧扩展页面顶部线条颜色 */
 #themeSettingsTopDetail { background-color: rgb(189, 147, 249); }
 

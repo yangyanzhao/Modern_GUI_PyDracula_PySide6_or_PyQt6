@@ -6,7 +6,6 @@ from PySide6.QtWidgets import QApplication
 
 from qasync import QEventLoop
 
-from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
 from framework.widgets.cocos_widgets.c_table_view_widget.table_view_mysql_widget import TableViewWidgetMySQLAbstract
 from framework.widgets.cocos_widgets.c_table_view_widget.table_view_widget import ColumnConfig
 from framework.widgets.dayu_widgets.push_button import MPushButton
@@ -24,7 +23,6 @@ class ChatAPILogInterface(TableViewWidgetMySQLAbstract):
     TABLE_NAME = "chat_api_log"
 
     def __init__(self, parent=None):
-        increase_counter(destination="GPT日志初始化")
         super(ChatAPILogInterface, self).__init__(parent)
 
     def get_database_name(self) -> str:

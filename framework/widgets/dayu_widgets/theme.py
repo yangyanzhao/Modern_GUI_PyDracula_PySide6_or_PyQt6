@@ -133,7 +133,7 @@ class MTheme(object):
         """
         super(MTheme, self).__init__()
         default_qss_file = utils.get_static_file("main.qss")
-        with open(default_qss_file, "r",encoding='utf-8') as f:
+        with open(default_qss_file, "r", encoding='utf-8') as f:
             self.default_qss = QssTemplate(f.read())
         self.primary_color, self.item_hover_bg = (None, None)
         (
@@ -152,6 +152,8 @@ class MTheme(object):
         self._init_color()
         self.set_primary_color(primary_color or MTheme.blue)
         self.set_theme(theme)
+        # 计算颜色
+        self.computed_theme()
         self._init_font()
         # self._init_size()
         self.unit = "px"
@@ -364,6 +366,13 @@ class MTheme(object):
         self.mask_color = utils.fade_color(self.background_color, "90%")
         # 提示框颜色
         self.toast_color = q_secondary_dark_color
+
+    def computed_theme(self):
+        """
+        计算其他颜色
+        :return:
+        """
+        self.framework_background_color = adjust_brightness(self.background_color, 0.5)  # 比背景颜色暗一些
 
     def apply(self, widget):
         size_dict = get_theme_size()

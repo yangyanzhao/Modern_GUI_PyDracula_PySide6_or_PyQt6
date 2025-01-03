@@ -6,7 +6,6 @@ from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
 
 from qasync import QEventLoop
 
-from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
 from framework.widgets.dayu_widgets import dayu_theme, MTheme
 from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
 from framework.widgets.dayu_widgets.line_tab_widget import MLineTabWidget
@@ -16,10 +15,9 @@ from modules.gpt_4_free.interface.chat_interface import ChatInterface
 from modules.gpt_4_free.interface.images_interface import ImagesInterface
 
 
-class Gpt4FreeWidget(QWidget, MFieldMixin):
+class Gpt4FreeMainInterface(QWidget, MFieldMixin):
     def __init__(self, parent=None):
-        increase_counter("GPT窗口初始化...")
-        super(Gpt4FreeWidget, self).__init__(parent)
+        super(Gpt4FreeMainInterface, self).__init__(parent)
         self.init_ui()
 
     def init_ui(self):
@@ -59,7 +57,7 @@ if __name__ == '__main__':
     loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
     # 创建窗口
-    demo_widget = Gpt4FreeWidget()
+    demo_widget = Gpt4FreeMainInterface()
     MTheme('dark').apply(demo_widget)
     # 显示窗口
     demo_widget.show()

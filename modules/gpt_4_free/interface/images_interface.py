@@ -19,8 +19,6 @@ from qasync import QEventLoop
 from db.mysql.async_utils import is_in_async_context
 from framework.widgets.cocos_widgets.c_avatar import CAvatar
 from framework.widgets.cocos_widgets.c_dialog.c_confirm_dialog import CConfirmDialog
-from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
-from framework.widgets.dayu_widgets import MTheme
 from framework.widgets.dayu_widgets.combo_box import MComboBox
 from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
 from framework.widgets.dayu_widgets.label import MLabel
@@ -151,7 +149,6 @@ class CustomTextEdit(MTextEdit):
 
 class ImagesInterface(QWidget, MFieldMixin):
     def __init__(self,parent=None):
-        increase_counter("GPT绘图初始化...")
         super().__init__(parent)
         self.setWindowTitle("仿微信聊天界面")
         self.set_center_layout = QVBoxLayout(self)

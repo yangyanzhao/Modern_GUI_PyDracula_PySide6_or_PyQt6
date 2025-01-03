@@ -17,10 +17,9 @@ from PySide6.QtCore import Qt, Signal, QTimer
 from qasync import QEventLoop
 
 from db.mysql.async_utils import is_in_async_context
+from framework.widgets.cocos_widgets import CVoiceMessage
 from framework.widgets.cocos_widgets.c_avatar import CAvatar
 from framework.widgets.cocos_widgets.c_dialog.c_confirm_dialog import CConfirmDialog
-from framework.widgets.cocos_widgets.c_splash_screen.c_splash_screen import increase_counter
-from framework.widgets.cocos_widgets.c_voice_message.c_voice_message import CVoiceMessageWidget
 from framework.widgets.dayu_widgets import MTheme
 from framework.widgets.dayu_widgets.combo_box import MComboBox
 from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
@@ -123,7 +122,6 @@ class CustomTextEdit(MTextEdit):
 
 class SpeechInterface(QWidget, MFieldMixin):
     def __init__(self, parent=None):
-        increase_counter("GPT语音初始化...")
         super().__init__(parent)
         self.setWindowTitle("仿微信聊天界面")
         self.set_center_layout = QVBoxLayout(self)
@@ -371,14 +369,14 @@ class SpeechInterface(QWidget, MFieldMixin):
         container_layout = QHBoxLayout(message_container)
         if alignment == Qt.AlignRight:
             container_layout.addStretch()
-            voice_message = CVoiceMessageWidget(audio_data=voice, alignment=Qt.AlignRight, has_dot=True)
+            voice_message = CVoiceMessage(audio_data=voice, alignment=Qt.AlignRight, has_dot=True)
             container_layout.addWidget(voice_message)
             avatar_right = CAvatar(shape=CAvatar.Circle, url=icons['avatar_m.jpeg'], size=CAvatar.SizeSmall)
             container_layout.addWidget(avatar_right)
         else:
             avatar_left = CAvatar(shape=CAvatar.Rectangle, url=icons['avatar_w.jpeg'], size=CAvatar.SizeSmall)
             container_layout.addWidget(avatar_left)
-            voice_message = CVoiceMessageWidget(audio_data=voice, alignment=Qt.AlignLeft, has_dot=True)
+            voice_message = CVoiceMessage(audio_data=voice, alignment=Qt.AlignLeft, has_dot=True)
             container_layout.addWidget(voice_message)
             container_layout.addStretch()
         container_layout.setContentsMargins(10, 5, 10, 5)

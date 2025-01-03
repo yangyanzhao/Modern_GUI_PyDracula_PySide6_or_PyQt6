@@ -17,7 +17,6 @@ from qasync import QEventLoop
 
 from db.mysql.async_utils import is_in_async_context
 from framework.widgets.cocos_widgets.c_avatar import CAvatar
-from framework.widgets.dayu_widgets import MTheme
 from framework.widgets.dayu_widgets.combo_box import MComboBox
 from framework.widgets.dayu_widgets.field_mixin import MFieldMixin
 from framework.widgets.dayu_widgets.label import MLabel
