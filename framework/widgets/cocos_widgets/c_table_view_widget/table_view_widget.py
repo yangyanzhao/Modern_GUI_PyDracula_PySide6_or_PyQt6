@@ -587,9 +587,8 @@ class TableViewWidgetAbstract(QWidget, MFieldMixin):
         # 清空布局中的所有控件
         while self.order_list_flow_layout.count():
             item = self.order_list_flow_layout.takeAt(0)
-            widget = item.widget()
-            if widget:
-                widget.deleteLater()
+            if item:
+                item.deleteLater()
         if len(self.orderby_list) == 0:
             self.order_list_widget.hide()
         for key, order in self.orderby_list:
